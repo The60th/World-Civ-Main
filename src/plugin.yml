@@ -1,0 +1,26 @@
+name: WorldCivScoreboards
+main: com.worldciv.the60th.Main
+version: 1.0
+commands:
+  toggle:
+    description:
+    usage:
+  news:
+    description:
+    usage:
+  party:
+    description:
+    usage:
+  p:
+    description:
+    usage:
+  t:
+    description:
+    usage:
+permissions:
+  worldciv.togglevision:
+    description:
+  worldciv.cmds:
+    description:
+  worldciv.news:
+    description:
