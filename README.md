@@ -1,1 +1,1 @@
-# Demo-plugin
+# Private Repo for World Civ plugins. 
