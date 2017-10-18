@@ -1,4 +1,4 @@
-name: WorldCivScoreboards
+name: WorldCivMaster
 main: com.worldciv.the60th.Main
 version: 1.0
 commands:
