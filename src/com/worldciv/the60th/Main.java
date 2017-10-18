@@ -49,9 +49,12 @@ public class Main extends JavaPlugin implements Listener{
 
 
     public void onEnable() {
-        fileSystem = new FileSystem();
+        logger = Logger.getLogger("Minecraft");
+        plugin = this;
+
 
         getConfig().options().copyDefaults(true);
+        fileSystem = new FileSystem();
 
         if (getConfig().getString("newsmessage") == null) {
             getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");
@@ -59,9 +62,7 @@ public class Main extends JavaPlugin implements Listener{
         saveConfig();
 
         scoreboardManager = new scoreboardManager();
-        plugin = this;
         PluginDescriptionFile pdfFile = this.getDescription();
-        logger = Logger.getLogger("Minecraft");
 
         logger.info(pdfFile.getName()
                 + "has successfully enabled. The current version is: "
