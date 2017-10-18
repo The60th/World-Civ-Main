@@ -53,6 +53,7 @@ public class Gear {
         CustomTierOneBow();
         CustomTierOneArrow();
         CustomTierOnePike();
+        CustomTierOneLance();
     }
     private static void customTierOneHelm(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,WeaponType.SWORD ));

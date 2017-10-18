@@ -6,11 +6,14 @@ import com.worldciv.utility.ArmorType;
 import com.worldciv.utility.Tier;
 import com.worldciv.utility.WeaponType;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class CraftEvent implements Listener {
     //TODO
@@ -56,12 +59,23 @@ public class CraftEvent implements Listener {
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.I, WeaponType.ARROW)));
         }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
-            event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.PIKE)));
+            ItemStack itemStack = CustomItem.getItemFromCustomItem
+                            (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.PIKE));
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addEnchant(Enchantment.DURABILITY,1,true);
+            itemStack.setItemMeta(meta);
+            event.setCurrentItem(itemStack);
         }
         else if(result.equals(Gear.customTierOneLance.getResult().toString())){
-            event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.LANCE)));
+            ItemStack itemStack = CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.LANCE));
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addEnchant(Enchantment.DURABILITY,1,true);
+            itemStack.setItemMeta(meta);
+            event.setCurrentItem(itemStack);
+
         }
 
 

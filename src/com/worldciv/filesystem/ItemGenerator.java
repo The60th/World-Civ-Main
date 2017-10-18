@@ -3,6 +3,7 @@ package com.worldciv.filesystem;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.*;
 import org.bukkit.ChatColor;
+import org.bukkit.WeatherType;
 import org.bukkit.inventory.ItemStack;
 
 import javax.rmi.CORBA.Tie;
@@ -10,6 +11,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+//TODO Fix word list RNG?
 public class ItemGenerator {
     //Should make different min-max for armor vs weapons.
     private static final int tierOneMin = 1;
@@ -65,6 +67,10 @@ public class ItemGenerator {
             armor = calculateStat(rarity,tier) + SHIELD_ARMOR_FIX_VALUE_BUFF;
         }
         else if(weaponType == WeaponType.SWORD){
+            damage = calculateStat(rarity,tier);
+        }else if(weaponType == WeaponType.LANCE){
+            damage = calculateStat(rarity,tier);
+        }else if(weaponType == WeaponType.PIKE){
             damage = calculateStat(rarity,tier);
         }
         String name = getItemType(weaponType,tier);
@@ -230,7 +236,7 @@ public class ItemGenerator {
                 }
                 return string;
         }
-        return "Bob's old ";
+        return "Bob's olde ";
     }
 
 
@@ -272,6 +278,10 @@ public class ItemGenerator {
                 return WeaponType.BOW;
             case ARROW:
                 return WeaponType.ARROW;
+            case PIKE:
+                return WeaponType.PIKE;
+            case LANCE:
+                return WeaponType.LANCE;
         }
         return WeaponType.DEFAULT;
     }
