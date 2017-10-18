@@ -1,12 +1,12 @@
 package com.worldciv.events.player;
 
-import net.minecraft.server.v1_11_R1.EnumParticle;
-import net.minecraft.server.v1_11_R1.PacketPlayOutWorldParticles;
+import net.minecraft.server.v1_12_R1.EnumParticle;
+import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Furnace;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
