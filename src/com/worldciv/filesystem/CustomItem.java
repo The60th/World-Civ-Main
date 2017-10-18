@@ -59,7 +59,7 @@ public class CustomItem extends  FileSystem{
         return item;
     }
     public static CustomItem getCustomItemFromUUID(String UUID){
-        File dir = new File(Bukkit.getPluginManager().getPlugin("World_Civ_Combat").getDataFolder()+"/Custom_Items");
+        File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
         File file = new File(dir,UUID+".yml");
         YamlConfiguration yaml;
         yaml = YamlConfiguration.loadConfiguration(file);

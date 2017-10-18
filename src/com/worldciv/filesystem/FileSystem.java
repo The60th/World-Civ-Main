@@ -16,7 +16,7 @@ public class FileSystem {
     public static boolean exists = false;
 
     public FileSystem(){
-        File dir = new File(Bukkit.getPluginManager().getPlugin("World_Civ_Combat").getDataFolder()+"/Custom_Items");
+        File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
         if(!dir.exists()) {
             dir.mkdir();
             Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Warning!");
@@ -69,7 +69,7 @@ public class FileSystem {
 
     }
     public boolean saveItem(CustomItem item){
-        File dir = new File(Bukkit.getPluginManager().getPlugin("World_Civ_Combat").getDataFolder()+"/Custom_Items");
+        File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
         if(dir.exists()) {
             File file = new File(dir,CustomItem.unhideItemUUID(item.getId())+".yml");
             if(file.exists()){
