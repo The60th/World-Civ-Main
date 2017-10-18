@@ -1,9 +1,8 @@
 package com.worldciv.filesystem;
 
 import com.worldciv.the60th.Main;
-import com.worldciv.utility.ArmorType;
+import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
-import com.worldciv.utility.WeaponType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -98,16 +97,12 @@ public class FileSystem {
         }
 
     }
-    public CustomItem createItem(ItemStack itemType, Tier tier, WeaponType weaponType){
-        CustomItem customItem = ItemGenerator.generateItem(itemType,tier,weaponType);
+    public CustomItem createItem(ItemStack itemStack, Tier tier, ItemType itemType){
+        CustomItem customItem = ItemGenerator.generateItem(itemStack,tier,itemType);
         saveItem(customItem);
         return customItem;
     }
-    public CustomItem createItem(ItemStack itemType, Tier tier, ArmorType armorType){
-        CustomItem customItem = ItemGenerator.generateItem(itemType,tier,armorType);
-        saveItem(customItem);
-        return customItem;
-    }
+
     private YamlConfiguration createFileSectionsFromFile(YamlConfiguration yamlConfiguration){
         yamlConfiguration.createSection("Item-Data");
         yamlConfiguration.createSection("Item-Data.UUID");
@@ -129,7 +124,7 @@ public class FileSystem {
         if(item.getArmor()!=-1)yamlConfiguration.set("Item-Data.Armor",item.getArmor());
         if(item.getRarity()!=null)yamlConfiguration.set("Item-Data.Rarity",item.getRarity().toString());
         if(item.getTier()!=null)yamlConfiguration.set("Item-Data.Tier",item.getTier().toString());
-        if(item.getId()!=null)yamlConfiguration.set("Item-Data.ItemType",-1);
+        if(item.getId()!=null)yamlConfiguration.set("Item-Data.ItemType",item.getItemType().toString());
         if(item.getOther()!=-1)yamlConfiguration.set("Item-Data.Lore",item.getOther());
         if(item.getOther()!=-1)yamlConfiguration.set("Item-Data.Other",item.getOther());
         if(item.getItemStack()!=null)yamlConfiguration.set("Item-Data.ItemStack",item.getItemStack());

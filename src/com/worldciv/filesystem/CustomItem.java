@@ -1,11 +1,12 @@
 package com.worldciv.filesystem;
 
+import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Rarity;
 import com.worldciv.utility.Tier;
-import com.worldciv.utility.WeaponType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,7 +22,7 @@ public class CustomItem extends  FileSystem{
     private int other;
     private Rarity rarity;
     private Tier tier;
-    private WeaponType weaponType;
+    private ItemType itemType;
     public CustomItem(){}
 
     public CustomItem(ItemStack itemStack, String name, String id, int damage, int armor){
@@ -32,7 +33,7 @@ public class CustomItem extends  FileSystem{
         setArmor(armor);
 
     }
-    public CustomItem(ItemStack itemStack, String name, String id, int damage, int armor, Rarity rarity, Tier tier){
+    public CustomItem(ItemStack itemStack, String name, String id, int damage, int armor, Rarity rarity, Tier tier, ItemType itemType){
         this.setItemStack(itemStack);
         this.setName(name);
         this.setId(id);
@@ -41,9 +42,8 @@ public class CustomItem extends  FileSystem{
         this.setRarity(rarity);
         this.setTier(tier);
         this.setOther(-1);
+        this.setItemType(itemType);
     }
-
-
 
     public static ItemStack getItemFromCustomItem(CustomItem customItem){
         ItemStack item = new ItemStack(customItem.getItemStack().getType(), 1);
@@ -70,7 +70,8 @@ public class CustomItem extends  FileSystem{
         CustomItem item = new CustomItem(yaml.getItemStack("Item-Data.ItemStack"),
                                 yaml.getString("Item-Data.Name"),yaml.getString("Item-Data.UUID")
                 ,yaml.getInt("Item-Data.Damage"),yaml.getInt("Item-Data.Armor"),
-                /*getRarityFromString(yaml.getString("Item-Data.Rarity"))*/Rarity.Common,/*getTierFromString(yaml.getString("Item-Data.Tier"))*/Tier.I);
+                /*getRarityFromString(yaml.getString("Item-Data.Rarity"))*/Rarity.Common,/*getTierFromString(yaml.getString("Item-Data.Tier"))*/Tier.I,
+                ItemType.valueOf(yaml.getString("Item-Data.ItemType")));
         //ItemStack itemStack, String name, String id, int damage, int armor, Rarity rarity, Tier tier
         return item;
     }
@@ -146,5 +147,12 @@ public class CustomItem extends  FileSystem{
     public void setTier(Tier tier) {
         this.tier = tier;
 }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+    public ItemType getItemType() {
+        return itemType;
+    }
 
 }

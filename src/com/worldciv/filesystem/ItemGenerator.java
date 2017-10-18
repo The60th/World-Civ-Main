@@ -3,10 +3,8 @@ package com.worldciv.filesystem;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.*;
 import org.bukkit.ChatColor;
-import org.bukkit.WeatherType;
 import org.bukkit.inventory.ItemStack;
 
-import javax.rmi.CORBA.Tie;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -47,68 +45,54 @@ public class ItemGenerator {
 
     //TODO Create methoods that you pass a custom name to,
     //For now just check names within the generator.
-    public static CustomItem generateItem(ItemStack itemStack, Tier tier,WeaponType weaponType){
+    public static CustomItem generateItem(ItemStack itemStack, Tier tier,ItemType itemType){
         int damage = 0;
         int armor = 0;
         Rarity rarity = calculateRarity(0);
 
-        if(weaponType == WeaponType.ARROW){
+        if(itemType == ItemType.ARROW){
             damage = calculateStat(rarity,tier);
         }
-        else if(weaponType == WeaponType.AXE){
+        else if(itemType == ItemType.AXE){
             damage = calculateStat(rarity,tier);
         }
-        else if(weaponType == WeaponType.BOW){
+        else if(itemType == ItemType.BOW){
             damage = calculateStat(rarity,tier);
         }
-        else if(weaponType == WeaponType.SHIELD){
+        else if(itemType == ItemType.SHIELD){
             damage = (calculateStat(rarity,tier)/3);
             if(damage < 1) damage = 1;
             armor = calculateStat(rarity,tier) + SHIELD_ARMOR_FIX_VALUE_BUFF;
         }
-        else if(weaponType == WeaponType.SWORD){
+        else if(itemType == ItemType.SWORD){
             damage = calculateStat(rarity,tier);
-        }else if(weaponType == WeaponType.LANCE){
+        }else if(itemType == ItemType.LANCE){
             damage = calculateStat(rarity,tier);
-        }else if(weaponType == WeaponType.PIKE){
+        }else if(itemType == ItemType.PIKE){
             damage = calculateStat(rarity,tier);
-        }
-        String name = getItemType(weaponType,tier);
-        String id = CustomItem.unhideItemUUID(createUUID());
-        id = convertToInvisibleString(id);
-        return new CustomItem(itemStack,name,id,damage,armor,rarity,tier);
-    }
-    public static CustomItem generateItem(ItemStack itemStack, Tier tier, ArmorType armorType){
-        int armor = 0;
-        int damage = 0;
-        Rarity rarity = calculateRarity(0);
-        if(armorType == ArmorType.HELM){
+        }else if(itemType == ItemType.HELM){
             armor = (calculateStat(rarity,tier)/4);
             if(armor <= 0){armor = 1;}
         }
-        else if(armorType == ArmorType.CHESTPLATE){
+        else if(itemType == ItemType.CHESTPLATE){
             armor = (calculateStat(rarity,tier)/4);
             if(armor <= 0){armor = 1;}
             armor = armor+CHESTPLATE_ARMOR_FIX_VALUE_BUFF;
         }
-        else if(armorType == ArmorType.LEGGINGS){
+        else if(itemType == ItemType.LEGGINGS){
             armor = (calculateStat(rarity,tier)/4);
             if(armor <= 0){armor = 1;}
             armor = armor + LEGGINGS_ARMOR_FIX_VALUE_BUFF;
         }
-        else if(armorType == ArmorType.BOOTS){
+        else if(itemType == ItemType.BOOTS){
             armor = (calculateStat(rarity,tier)/4);
             if(armor <= 0){armor = 1;}
         }
-
-        int stat = calculateStat(rarity,tier)/4;
-        String name = getItemName(armorType,tier);
+        String name = getItemName(itemType,tier);
         String id = CustomItem.unhideItemUUID(createUUID());
         id = convertToInvisibleString(id);
-        return new CustomItem(itemStack,name,id,damage,armor,rarity,tier);
+        return new CustomItem(itemStack,name,id,damage,armor,rarity,tier,itemType);
     }
-
-
     private static Rarity calculateRarity(double modifier){
         //Add checks for the modifier later on.
         Random random = new Random(System.currentTimeMillis());
@@ -183,12 +167,8 @@ public class ItemGenerator {
                 return ChatColor.RED;
         }
     }
-
-    private static String getItemName(ArmorType armorType, Tier tier){
-        return createRandomName() +getMaterialByTier(tier)+ " "+checkArmorType(armorType).toString().toLowerCase();
-    }
-    private  static String getItemType(WeaponType weaponType, Tier tier){
-        return createRandomName() + getMaterialByTier(tier) +" "+ checkWeaponType(weaponType).toString().toLowerCase();
+    private  static String getItemName(ItemType itemType, Tier tier){
+        return createRandomName() + getMaterialByTier(tier) +" "+ checkItemType(itemType).toString().toLowerCase();
     }
     private static String createRandomName(){
         Random random = new Random();
@@ -253,37 +233,32 @@ public class ItemGenerator {
         return hidden;
     }
 
-    private static ArmorType checkArmorType(ArmorType armorType){
-        switch (armorType){
-            case HELM:
-                return ArmorType.HELM;
-            case CHESTPLATE:
-                return ArmorType.CHESTPLATE;
-            case LEGGINGS:
-                return  ArmorType.LEGGINGS;
-            case BOOTS:
-                return ArmorType.BOOTS;
-        }
-        return ArmorType.DEFAULT;
-    }
-    private static WeaponType checkWeaponType(WeaponType weaponType){
-        switch (weaponType){
+    private static ItemType checkItemType(ItemType itemType){
+        switch (itemType){
             case SHIELD:
-                return WeaponType.SWORD;
+                return ItemType.SWORD;
             case AXE:
-                return WeaponType.AXE;
+                return ItemType.AXE;
             case SWORD:
-                return WeaponType.SWORD;
+                return ItemType.SWORD;
             case BOW:
-                return WeaponType.BOW;
+                return ItemType.BOW;
             case ARROW:
-                return WeaponType.ARROW;
+                return ItemType.ARROW;
             case PIKE:
-                return WeaponType.PIKE;
+                return ItemType.PIKE;
             case LANCE:
-                return WeaponType.LANCE;
+                return ItemType.LANCE;
+            case HELM:
+                return ItemType.HELM;
+            case CHESTPLATE:
+                return ItemType.CHESTPLATE;
+            case LEGGINGS:
+                return  ItemType.LEGGINGS;
+            case BOOTS:
+                return ItemType.BOOTS;
         }
-        return WeaponType.DEFAULT;
+        return ItemType.DEFAULT;
     }
 
     private static String getMaterialByTier(Tier tier){
