@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="WorldCivMain">
-    <output-path>$PROJECT_DIR$/out/artifacts/WorldCivMain</output-path>
+    <output-path>$USER_HOME$/Desktop/World CIv Demo Server/plugins</output-path>
     <root id="archive" name="WorldCivMain.jar">
       <element id="module-output" name="World Civ Demo" />
       <element id="library" level="project" name="libs" />

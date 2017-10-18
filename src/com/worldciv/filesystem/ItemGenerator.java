@@ -179,10 +179,10 @@ public class ItemGenerator {
     }
 
     private static String getItemName(ArmorType armorType, Tier tier){
-        return createRandomName() +getMaterialByTier(tier)+ checkArmorType(armorType).toString().toLowerCase();
+        return createRandomName() +getMaterialByTier(tier)+ " "+checkArmorType(armorType).toString().toLowerCase();
     }
     private  static String getItemType(WeaponType weaponType, Tier tier){
-        return createRandomName() + getMaterialByTier(tier) + checkWeaponType(weaponType).toString().toLowerCase();
+        return createRandomName() + getMaterialByTier(tier) +" "+ checkWeaponType(weaponType).toString().toLowerCase();
     }
     private static String createRandomName(){
         Random random = new Random();

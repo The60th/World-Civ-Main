@@ -5,10 +5,7 @@ import com.worldciv.the60th.Main;
 import com.worldciv.utility.ExampleSelfCancelingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -37,6 +34,7 @@ public class AttackEvent implements Listener {
             //Not a PvP action, handle this elsewhere --> Write function to handle this with two Entity as params
           //  return;
        // }
+        if(!(defender instanceof Player))return;
         double customDamage;
         double damageScaler = 1;
         Player pAttacker;
@@ -142,6 +140,24 @@ public class AttackEvent implements Listener {
         + " pre armor and scale " + damagePostScale + " damage after scale " + damagePostArmor + " damage after armor. This leaves the defender at "
         + (pDefender.getHealth()) + " health. The raw damage of the attack was " + rawdamage + " the scale was " + damageScaler +
         "\n ****************** " + "\n");
+        if(attacker.isInsideVehicle()){
+            Entity entity = attacker.getVehicle();
+            if(entity != null){
+                if(entity instanceof AbstractHorse){
+                    if(entity instanceof Horse){
+                        Bukkit.broadcastMessage("Attacker is riding a true horse. Speed: " + entity.getVelocity().toString());
+                        System.out.println(attacker.getVelocity());
+                        System.out.println(entity.getVelocity());
+
+                    }else{
+                        Bukkit.broadcastMessage("Attacker is riding some sort of horse. Speed: " + entity.getVelocity().toString());
+                    }
+                }
+            }
+
+        }else{
+            System.out.println(attacker.getVelocity());
+        }
     }
 
 

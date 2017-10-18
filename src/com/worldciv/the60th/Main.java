@@ -51,7 +51,7 @@ public class Main extends JavaPlugin implements Listener{
     public void onEnable() {
         logger = Logger.getLogger("Minecraft");
         plugin = this;
-
+        javaPlugin = this;
 
         getConfig().options().copyDefaults(true);
         fileSystem = new FileSystem();

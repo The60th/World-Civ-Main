@@ -50,11 +50,18 @@ public class CraftEvent implements Listener {
         }
         else if(result.equals(Gear.customTierOneBow.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.I, WeaponType.SWORD)));
+                    (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.I, WeaponType.BOW)));
         }
         else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.I, WeaponType.SWORD)));
+                    (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.I, WeaponType.ARROW)));
+        }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.PIKE)));
+        }
+        else if(result.equals(Gear.customTierOneLance.getResult().toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, WeaponType.LANCE)));
         }
 
 

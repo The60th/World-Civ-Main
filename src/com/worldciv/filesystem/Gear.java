@@ -7,6 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Gear {
     //This should be done better? Feeder function to register recipes rather then by hand?
     //Swords need 3
@@ -36,6 +39,10 @@ public class Gear {
 
     public static ShapedRecipe customTierOneArrow;
 
+    public static ShapedRecipe customTierOnePike;
+
+    public  static ShapedRecipe customTierOneLance;
+
     public static void registerRecipes(){
         customTierOneSword();
         customTierOneHelm();
@@ -45,6 +52,7 @@ public class Gear {
         CustomTierOneShield();
         CustomTierOneBow();
         CustomTierOneArrow();
+        CustomTierOnePike();
     }
     private static void customTierOneHelm(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,WeaponType.SWORD ));
@@ -214,6 +222,51 @@ public class Gear {
 
         Bukkit.getServer().addRecipe(customTierOneBow);
     }
+    private static void  CustomTierOnePike(){
+        ItemStack item = new ItemStack(Material.IRON_SPADE,1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier One Pike");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Deals bonus damage to mounted foes."));
+        item.setItemMeta(meta);
+
+        customTierOnePike = new ShapedRecipe(item);
+        customTierOnePike.shape(
+                "  @",
+                " @ ",
+                "#  "
+        );
+        customTierOnePike.shape(
+                "@  ",
+                " @ ",
+                "  #"
+        );
+        customTierOnePike.setIngredient('@',Material.GLASS);
+        customTierOnePike.setIngredient('#',Material.STICK);
+        Bukkit.getServer().addRecipe(customTierOnePike);
+    }
+    private static void  CustomTierOneLance(){
+        ItemStack item = new ItemStack(Material.IRON_SPADE,1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier One Lance");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Deals bonus damage when used from horseback."));
+        item.setItemMeta(meta);
+
+        customTierOneLance = new ShapedRecipe(item);
+        customTierOneLance.shape(
+                "  @",
+                " # ",
+                "#  "
+        );
+        customTierOneLance.shape(
+                "@  ",
+                " # ",
+                "  #"
+        );
+        customTierOneLance.setIngredient('@',Material.GLASS);
+        customTierOneLance.setIngredient('#',Material.STICK);
+        Bukkit.getServer().addRecipe(customTierOneLance);
+    }
+
 }
 
 
