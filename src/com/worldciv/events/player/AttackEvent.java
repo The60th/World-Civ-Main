@@ -3,6 +3,7 @@ package com.worldciv.events.player;
 import com.worldciv.filesystem.CustomItem;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ExampleSelfCancelingTask;
+import com.worldciv.utility.ItemType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -68,7 +69,9 @@ public class AttackEvent implements Listener {
         else{
             pAttacker = (Player) attacker;
             customDamage = getDamageFromArray(getDamageItems(pAttacker));
+            customDamage = customDamage * getHorseAttackModifer(pAttacker,pDefender);
             damageScaler = getDamageScale(pAttacker,event.getDamage());
+            customDamage = customDamage * damageScaler;
         }
         //TODO Refactor this shit
         //@Legendary look at this wonderful code.
@@ -90,12 +93,11 @@ public class AttackEvent implements Listener {
             //No block no armor.
             armor = armor;
         }
-        double damagePostScale =customDamage*damageScaler;
-        double damagePostArmor =damagePostScale-armor;
+        double damagePostArmor =customDamage-armor;
 
         if(damagePostArmor <= 0){
             if(defenderArmorTracker.containsKey(pDefender)){
-                damagePostArmor = damagePostScale+defenderArmorTracker.get(pDefender);
+                damagePostArmor = customDamage+defenderArmorTracker.get(pDefender);
                 defenderArmorTracker.remove(pDefender);
                 if(pDefender.getHealth()-damagePostArmor < 0){
                     //Lets the player die normally.
@@ -114,7 +116,7 @@ public class AttackEvent implements Listener {
                     }
                 }
             }else{
-                defenderArmorTracker.put(pDefender,damagePostScale);
+                defenderArmorTracker.put(pDefender,customDamage);
                 BukkitTask task = new ExampleSelfCancelingTask(Main.javaPlugin, 30, pDefender).runTaskTimer(Main.javaPlugin, 0, 20);
                 //Damage did not overflow armor values.
                 //This is were hit tracking will be done later on.
@@ -137,27 +139,9 @@ public class AttackEvent implements Listener {
             }
         }
         Main.logger.info(/*pAttacker.getDisplayName() +*/ " just attacked " + pDefender.getDisplayName() + " dealing " + customDamage
-        + " pre armor and scale " + damagePostScale + " damage after scale " + damagePostArmor + " damage after armor. This leaves the defender at "
+        + " pre armor and scale " + getDamageScale((Player)attacker,event.getDamage()) + " damage after scale " + damagePostArmor + " damage after armor. This leaves the defender at "
         + (pDefender.getHealth()) + " health. The raw damage of the attack was " + rawdamage + " the scale was " + damageScaler +
         "\n ****************** " + "\n");
-        if(attacker.isInsideVehicle()){
-            Entity entity = attacker.getVehicle();
-            if(entity != null){
-                if(entity instanceof AbstractHorse){
-                    if(entity instanceof Horse){
-                        Bukkit.broadcastMessage("Attacker is riding a true horse. Speed: " + entity.getVelocity().toString());
-                        System.out.println(attacker.getVelocity());
-                        System.out.println(entity.getVelocity());
-
-                    }else{
-                        Bukkit.broadcastMessage("Attacker is riding some sort of horse. Speed: " + entity.getVelocity().toString());
-                    }
-                }
-            }
-
-        }else{
-            System.out.println(attacker.getVelocity());
-        }
     }
 
 
@@ -324,14 +308,30 @@ public class AttackEvent implements Listener {
         return customItems;
     }
     private int getDamageFromArray(CustomItem[] customItems){
+        //TODO         //Need more duel wielding checks for pikes and lances.
         int damage = 0;
         //for (CustomItem customItem : customItems) {
         // damage = damage + customItem.getDamage();
         for(int i = 0; i < customItems.length; i++){
           //  Bukkit.broadcastMessage("getDmgFA:2 " +i +":" + customItems[0].getDamage());
-            try {
-                damage = damage + customItems[i].getDamage();
-            }catch(NullPointerException e){}
+           try {
+                //Do not give off hand damage to pikes or lances!
+                if(i == 0){
+                    //Main hand
+                    damage = damage + customItems[i].getDamage();
+                }
+                else if(i == 1){
+                    //Off hand
+                    if(customItems[1].getItemType() == ItemType.PIKE || customItems[1].getItemType() == ItemType.LANCE){
+                        damage = damage;
+                    }
+                    else{
+                        damage = damage + customItems[i].getDamage();
+                    }
+                }
+            }catch(NullPointerException e){
+            //    System.out.println(e);
+            }
         }
         return damage;
     }
@@ -375,7 +375,32 @@ public class AttackEvent implements Listener {
         return damage/bowDamage;
     }
 
-    private void arrowAttackHandler(){}
+    private double getHorseAttackModifer(Player attacker, Player defender){
+        //Need more duel wielding checks for pikes and lances.
+        CustomItem customItemAttacker[] = getDamageItems(attacker);
+        double damageModifer = 1;
+        if(attacker.isInsideVehicle()){
+            Entity entity = attacker.getVehicle();
+            if(entity instanceof Horse){
+                if(customItemAttacker[0].getItemType() == ItemType.LANCE){
+                    damageModifer = 2.0d;
+                    //Do lance calcs
+                } //Get custom item from mainhand here.
+                else{
+                    //Not using a lance return raw horse value.
+                    damageModifer = 1.75d;
+                }
+            }
+            //Attacker lance damage.
+        }else if(defender.isInsideVehicle() && !attacker.isInsideVehicle()){
+            //Attacker pike damage
+            if(customItemAttacker[0].getItemType() == ItemType.PIKE){
+                damageModifer = 2.25d;
+            }
+        }
+        Bukkit.broadcastMessage("Returning horse scale of: " + damageModifer);
+        return damageModifer;
+    }
 
 
     private void damageTracker(){
