@@ -4,8 +4,15 @@
       <root url="jar://$PROJECT_DIR$/libs/bukkit-1.12.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/craftbukkit-1.12.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/spigot-api-1.12.2.jar!/" />
+      <root url="file://$PROJECT_DIR$/libs" />
+      <root url="jar://$PROJECT_DIR$/libs/worldedit-bukkit-6.1.7.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/worldguard-6.2.1.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/libs" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" type="SOURCES" />
   </library>
 </component>

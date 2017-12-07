@@ -1,6 +1,7 @@
 name: WorldCivMaster
 main: com.worldciv.the60th.Main
 version: 1.0
+depend: [WorldGuard, WorldEdit]
 commands:
   toggle:
     description:

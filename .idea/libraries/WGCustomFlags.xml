@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="WGCustomFlags">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/WGCustomFlags.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

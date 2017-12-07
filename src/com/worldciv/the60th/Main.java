@@ -1,5 +1,12 @@
 package com.worldciv.the60th;
 
+
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.worldciv.commands.News;
 import com.worldciv.commands.PartyCommand;
 import com.worldciv.commands.Toggle;
@@ -17,22 +24,12 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.worldciv.events.inventory.CraftEvent;
-import com.worldciv.events.inventory.CraftEvent;
 import com.worldciv.events.player.ArrowEvents;
 import com.worldciv.events.player.JoinEvent;
 import com.worldciv.events.player.AttackEvent;
-import com.worldciv.filesystem.CustomItem;
 import com.worldciv.filesystem.FileSystem;
 import com.worldciv.filesystem.Gear;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
-
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import sun.rmi.runtime.Log;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -48,10 +45,25 @@ public class Main extends JavaPlugin implements Listener{
     public static Logger logger;
 
 
+    public static final Flag vision_bypass = new StateFlag("vision-bypass", true);
+
+    public void onLoad(){
+
+        FlagRegistry registry = getWorldGuard().getFlagRegistry();
+        try {
+            registry.register(vision_bypass);
+        } catch (FlagConflictException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public void onEnable() {
         logger = Logger.getLogger("Minecraft");
         plugin = this;
         javaPlugin = this;
+
 
         getConfig().options().copyDefaults(true);
         fileSystem = new FileSystem();
@@ -179,6 +191,7 @@ public class Main extends JavaPlugin implements Listener{
         pm.registerEvents(new JoinEvent(), this);
         pm.registerEvents(new AttackEvent(), this);
         pm.registerEvents(new CraftEvent(), this);
+        pm.registerEvents(new RegionEvent(), this);
         pm.registerEvents(new ArrowEvents(), this);
     }
 
@@ -193,6 +206,27 @@ public class Main extends JavaPlugin implements Listener{
     }
 
 
+    public static WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            return null;
+        }
+
+        return (WorldGuardPlugin) plugin;
+    }
+
+    public static WorldEditPlugin getWorldEdit() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof WorldEditPlugin)) {
+            return null;
+        }
+
+        return (WorldEditPlugin) plugin;
+    }
 
 }
 

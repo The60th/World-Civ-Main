@@ -71,7 +71,7 @@ public class scoreboardManager {
                 updateScoreboard(player, obj, newsteam, torchteam , blankscoreofficial); //update every tick
             }
 
-        }.runTaskTimer(Main.plugin, 0, 2);
+        }.runTaskTimer(Main.plugin, 5, 10);
 
         player.setScoreboard(oboard);
 
@@ -116,7 +116,7 @@ public class scoreboardManager {
 
         // SCORE TO HAVE ✓ OR ✗ MARK
 
-        if (player.getGameMode() == GameMode.CREATIVE || togglevision.contains(player)) {
+        if (player.getGameMode() == GameMode.CREATIVE || togglevision.contains(player) || visionregion.contains(player)) {
             torchTeam.setPrefix(ChatColor.YELLOW + "VISION BYPASS");
             torchTeam.setSuffix(ChatColor.RESET + "");
         } else {

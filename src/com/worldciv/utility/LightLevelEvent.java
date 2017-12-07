@@ -1,6 +1,10 @@
 package com.worldciv.utility;
 
-import org.bukkit.*;
+import com.mewin.WGRegionEvents.events.RegionEnterEvent;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,7 +20,7 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class LightLevelEvent  {
 
     public static void updateLightLevelEvent(Player player){
-        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE){
+        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE || visionregion.contains(player)){
             if (currentlyBlinded.contains(player)) {
                 unBlindPlayer(player);
                 currentlyBlinded.remove(player);
@@ -71,15 +75,15 @@ public class LightLevelEvent  {
             else if(player.hasPotionEffect(PotionEffectType.BLINDNESS)){
                 unBlindPlayer(player);
 
-            }else{
-
             }
+
+
         }
     }
 
 
     //Make this function check the players light level, handle all checks here. //TODO
-    private static void updateHoldingLight(Player player) {
+    public static void updateHoldingLight(Player player) {
         Material currentItem = player.getInventory().getItemInMainHand().getType();
         Material offHandItem = player.getInventory().getItemInOffHand().getType();
 
@@ -126,7 +130,7 @@ public class LightLevelEvent  {
         }
     }
 
-    private static void blindPlayer(Player player){
+    public static void blindPlayer(Player player) {
 
         Location location = player.getLocation();
         Location vision = new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ());
@@ -148,7 +152,8 @@ public class LightLevelEvent  {
 
 
     }
-    private static void unBlindPlayer(Player player){
+
+    public static void unBlindPlayer(Player player) {
         if(!togglevisionmessage.contains(player)) player.sendMessage(worldciv + ChatColor.GRAY + " Your vision becomes clear.");
         player.removePotionEffect(PotionEffectType.BLINDNESS);
     }

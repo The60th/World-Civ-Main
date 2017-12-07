@@ -11,6 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.worldciv.the60th.Main.plugin;
 import static com.worldciv.utility.utilityArrays.setnewsmessage;
 import static com.worldciv.utility.utilityArrays.toggledisplay;
 import static com.worldciv.utility.utilityStrings.*;
@@ -27,10 +28,10 @@ public class News implements CommandExecutor {
                     sender.sendMessage(maintop);
                     sender.sendMessage(ChatColor.GRAY + " The latest news has been delivered to you:");
                     sender.sendMessage(" ");
-                    if (Main.plugin.getConfig().getString("newsmessage").equals("          " + ChatColor.YELLOW + "empty")) {
+                    if (plugin.getConfig().getString("newsmessage").equals("          " + ChatColor.YELLOW + "empty")) {
                         sender.sendMessage(ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', ChatColor.RED + "No news today!"));
                     } else {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("newsmessage")));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("newsmessage")));
                     }
                     sender.sendMessage(" ");
                     if(toggledisplay.contains(sender)) sender.sendMessage(ChatColor.GRAY + " In order to be able to see the animation display use /t sb and /t anim");
@@ -42,17 +43,17 @@ public class News implements CommandExecutor {
                 }
             } else if (args.length == 0) {
                 sender.sendMessage(maintop);
-                if (Main.plugin.getConfig().getString("newsmessage") == null) {
+                if (plugin.getConfig().getString("newsmessage") == null) {
                     sender.sendMessage(ChatColor.GRAY + "No current news message found for the server. To add one use:" + ChatColor.YELLOW + " /news set <message>" + ChatColor.GRAY + ".");
                     sender.sendMessage(mainbot);
                     return true;
                 }
                 sender.sendMessage(ChatColor.GRAY + " The current news message is set to:");
                 sender.sendMessage(" ");
-                if (Main.plugin.getConfig().getString("newsmessage").equals("          " + ChatColor.YELLOW + "empty")) {
+                if (plugin.getConfig().getString("newsmessage").equals("          " + ChatColor.YELLOW + "empty")) {
                     sender.sendMessage(ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', ChatColor.RED + "No news today!"));
                 } else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("newsmessage")));
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("newsmessage")));
                 }
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.GRAY + " To replace the current display message:" + ChatColor.YELLOW + " /news set <message>");
@@ -73,8 +74,8 @@ public class News implements CommandExecutor {
                         newsstring = ChatColor.YELLOW + str.toString().substring(0, str.length() - 1); //removes space
 
 
-                        Main.plugin.getConfig().set("newsmessage", "          " + newsstring);
-                        Main.plugin.saveConfig();
+                        plugin.getConfig().set("newsmessage", "          " + newsstring);
+                        plugin.saveConfig();
 
                         sender.sendMessage(worldciv + ChatColor.GREEN + " The news message has been set to: ");
 
@@ -128,7 +129,7 @@ public class News implements CommandExecutor {
                             }
                             x++;
                         }
-                    }.runTaskTimer(Main.plugin, 0, 20);
+                    }.runTaskTimer(plugin, 0, 20);
 
 
                     return true;
@@ -145,8 +146,8 @@ public class News implements CommandExecutor {
                 }
 
 
-                Main.plugin.getConfig().set("newsmessage", "          " + newsstring);
-                Main.plugin.saveConfig();
+                plugin.getConfig().set("newsmessage", "          " + newsstring);
+                plugin.saveConfig();
 
                 sender.sendMessage(worldciv + ChatColor.GREEN + " The news message has been set!");
 

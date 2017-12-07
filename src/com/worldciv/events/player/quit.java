@@ -22,7 +22,5 @@ public class quit implements Listener {
             party.remove(p);
         }
 
-        //check if he was in a party && waas setLeader
-
     }
 }

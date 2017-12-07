@@ -15,4 +15,6 @@ public final class utilityArrays {
     public static ArrayList<Player> holdingLight = new ArrayList<Player>();
 
     public final static ArrayList<Player> setnewsmessage = new ArrayList<Player>();
+
+    public final static ArrayList<Player> visionregion = new ArrayList<Player>();
 }
