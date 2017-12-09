@@ -386,7 +386,6 @@ public class PartyCommand implements CommandExecutor {
 
                     if (party.hasParty(sender)) {
                         party.show(sender);
-                        System.out.println(party.getPlayers(sender));
 
                     } else {
                         sender.sendMessage(worldciv + ChatColor.GRAY + " You're not in a party!");

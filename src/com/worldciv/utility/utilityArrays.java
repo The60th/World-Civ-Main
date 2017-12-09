@@ -17,4 +17,6 @@ public final class utilityArrays {
     public final static ArrayList<Player> setnewsmessage = new ArrayList<Player>();
 
     public final static ArrayList<Player> visionregion = new ArrayList<Player>();
+
+    public final static ArrayList<String> dungeonregionlist = new ArrayList();
 }

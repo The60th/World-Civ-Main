@@ -6,6 +6,12 @@ commands:
   toggle:
     description:
     usage:
+  dungeon:
+    description:
+    usage:
+  dg:
+    description:
+    usage:
   news:
     description:
     usage:
@@ -24,4 +30,6 @@ permissions:
   worldciv.cmds:
     description:
   worldciv.news:
+    description:
+  worldciv.dungeonadmin:
     description:

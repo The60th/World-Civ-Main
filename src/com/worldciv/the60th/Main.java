@@ -7,13 +7,18 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.worldciv.commands.News;
+import com.worldciv.commands.DungeonCommand;
+import com.worldciv.commands.NewsCommand;
 import com.worldciv.commands.PartyCommand;
-import com.worldciv.commands.Toggle;
+import com.worldciv.commands.ToggleCommand;
+import com.worldciv.events.inventory.AnvilCreate;
+import com.worldciv.events.inventory.CraftCreate;
+import com.worldciv.events.inventory.FurnaceCreate;
 import com.worldciv.events.player.*;
 import com.worldciv.scoreboard.scoreboardManager;
 import com.worldciv.utility.CraftingRecipes;
 import com.worldciv.utility.FurnaceRecipes;
+import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -46,12 +51,14 @@ public class Main extends JavaPlugin implements Listener{
 
 
     public static final Flag vision_bypass = new StateFlag("vision-bypass", true);
+    public static final Flag dungeon_region = new StateFlag("dungeon-region", true);
 
     public void onLoad(){
 
         FlagRegistry registry = getWorldGuard().getFlagRegistry();
         try {
             registry.register(vision_bypass);
+            registry.register(dungeon_region);
         } catch (FlagConflictException e) {
             e.printStackTrace();
         }
@@ -172,22 +179,23 @@ public class Main extends JavaPlugin implements Listener{
     }
 
     public void registerCommands(){
-        getCommand("toggle").setExecutor(new Toggle());
-        getCommand("news").setExecutor(new News());
+        getCommand("toggle").setExecutor(new ToggleCommand());
+        getCommand("dungeon").setExecutor(new DungeonCommand());
+        getCommand("dg").setExecutor(new DungeonCommand());
+        getCommand("news").setExecutor(new NewsCommand());
         getCommand("party").setExecutor(new PartyCommand());
         getCommand("p").setExecutor(new PartyCommand());
-        getCommand("t").setExecutor(new Toggle());
+        getCommand("t").setExecutor(new ToggleCommand());
     }
 
     public void registerEvents(){
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new quit(), this);
-        pm.registerEvents(new join(), this);
-        pm.registerEvents(new commandPreprocess(), this);
-        pm.registerEvents(new weatherChangeEvent(), this);
-        pm.registerEvents(new anvilCreate(), this);
-        pm.registerEvents(new craftCreate(), this);
-        pm.registerEvents(new furnaceCreate(), this);
+        pm.registerEvents(new QuitEvent(), this);
+        pm.registerEvents(new CommandPreprocess(), this);
+        pm.registerEvents(new WeatherChangingEvent(), this);
+        pm.registerEvents(new AnvilCreate(), this);
+        pm.registerEvents(new CraftCreate(), this);
+        pm.registerEvents(new FurnaceCreate(), this);
         pm.registerEvents(new JoinEvent(), this);
         pm.registerEvents(new AttackEvent(), this);
         pm.registerEvents(new CraftEvent(), this);
@@ -226,6 +234,17 @@ public class Main extends JavaPlugin implements Listener{
         }
 
         return (WorldEditPlugin) plugin;
+    }
+
+    public static MythicMobs getMythicMobs() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof MythicMobs)) {
+            return null;
+        }
+
+        return (MythicMobs) plugin;
     }
 
 }

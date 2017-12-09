@@ -1,6 +1,7 @@
 package com.worldciv.parties;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.bukkit.Bukkit;
@@ -360,9 +361,60 @@ public class Party {
         stringplayers = stringplayers.replace("[", "");
         stringplayers = stringplayers.replace("]", "");
 
-        List<String> arrayplayers = Arrays.asList(stringplayers);
+        List<String> arrayplayers = Arrays.asList(stringplayers.split(", "));
 
         return arrayplayers;
+
+    }
+
+    public boolean isAllNear(Player source_player, double distance) {
+
+        for (String teammate_string : getPlayers(source_player)) {
+
+            Player teammate_player = Bukkit.getServer().getPlayer(teammate_string);
+
+            if (teammate_player != source_player) {
+
+                long radius = Math.round(source_player.getLocation().distance(teammate_player.getLocation()));
+
+                if (radius <= distance) {
+                    //Teammate is within the distance parameter.
+                } else {
+                    return false;
+                }
+            }
+
+        }
+        return true;
+
+    }
+
+
+    public Multimap<String, String> getWhoNotNear(Player source_player, double distance) {
+
+        Multimap<String, String> playersnotnear = HashMultimap.create();
+
+        for (String teammate_string : getPlayers(source_player)) {
+
+            Player teammate_player = Bukkit.getServer().getPlayer(teammate_string);
+
+            if (teammate_player != source_player) {
+
+                double radius = Math.round(source_player.getLocation().distance(teammate_player.getLocation()));
+
+                if (radius <= distance) {
+                    playersnotnear.put(teammate_string, "Acceptable Range");
+                } else {
+                    double quickmaths = radius-distance;
+                    playersnotnear.put(teammate_string, String.valueOf(quickmaths));
+                }
+            }
+
+        }
+
+
+        return playersnotnear;
+
 
     }
 
