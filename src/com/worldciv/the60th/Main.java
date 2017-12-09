@@ -11,6 +11,7 @@ import com.worldciv.commands.DungeonCommand;
 import com.worldciv.commands.NewsCommand;
 import com.worldciv.commands.PartyCommand;
 import com.worldciv.commands.ToggleCommand;
+import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.inventory.AnvilCreate;
 import com.worldciv.events.inventory.CraftCreate;
 import com.worldciv.events.inventory.FurnaceCreate;
@@ -43,10 +44,11 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class Main extends JavaPlugin implements Listener{
 
 
-    public static scoreboardManager scoreboardManager;
+    protected static scoreboardManager scoreboardManager;
     public static Plugin plugin;
     public static JavaPlugin javaPlugin;
     public static FileSystem fileSystem;
+    public static DungeonManager dungeonManager;
     public static Logger logger;
 
 
@@ -74,6 +76,7 @@ public class Main extends JavaPlugin implements Listener{
 
         getConfig().options().copyDefaults(true);
         fileSystem = new FileSystem();
+        dungeonManager = new DungeonManager();
 
         if (getConfig().getString("newsmessage") == null) {
             getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");

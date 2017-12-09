@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.dungeons.Dungeon;
 import com.worldciv.mythicmobs.CustomMobs;
 import com.worldciv.parties.Party;
+import com.worldciv.the60th.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -165,7 +166,8 @@ public class DungeonCommand implements CommandExecutor {
 
 
                             Dungeon dungeon = new Dungeon(party, args[1], Integer.parseInt(args[2]));
-
+                            Main.dungeonManager.addDungeonToTracker(dungeon);
+                            
                             sender.sendMessage(mainbot);
                             return true;
                         }
