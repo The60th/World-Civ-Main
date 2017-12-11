@@ -1,21 +1,65 @@
 package com.worldciv.dungeons;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.worldciv.parties.Party;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static com.worldciv.the60th.Main.getDungeonManager;
+import static com.worldciv.the60th.Main.getWorldGuard;
+import static com.worldciv.utility.utilityMultimaps.partyid;
 
 public class Dungeon {
 
-    Party party;
-    String dungeon_id;
+    public String getPartyID() {
+        return PartyID;
+    }
+
+    public String getDungeonID() {
+        return DungeonID;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    String PartyID;
+    String DungeonID;
     int difficulty;
 
 
-    public Dungeon(Party party, String dungeon_id, int difficulty){
-        this.party = party;
-        this.dungeon_id = dungeon_id;
+    public Dungeon(String party_id, String dungeon_id, int difficulty){
+        PartyID = party_id;
+        DungeonID = dungeon_id;
         this.difficulty = difficulty;
-
-    
 
                 //spawn all party members to dungeon_id player spawn.
     }
+
+    public void teleportToDungeon(){
+
+       // for (String partyids : partyid.)
+
+    }
+
+    public List<String> getPlayers(String party_id){
+
+        Multimap<String, String> inversepartyid = Multimaps.invertFrom(partyid, ArrayListMultimap.<String, String>create()); //Converts key - value to value - key
+
+        Collection<String> collectionplayers = inversepartyid.get(party_id); //this returns all the players in the party in a collection
+        String stringplayers = collectionplayers.toString();
+
+        stringplayers = stringplayers.replace("[", "");
+        stringplayers = stringplayers.replace("]", "");
+
+        List<String> arrayplayers = Arrays.asList(stringplayers.split(", "));
+
+        return arrayplayers;
+
+    }
+
 }

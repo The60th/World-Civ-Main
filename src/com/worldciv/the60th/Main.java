@@ -48,7 +48,7 @@ public class Main extends JavaPlugin implements Listener{
     public static Plugin plugin;
     public static JavaPlugin javaPlugin;
     public static FileSystem fileSystem;
-    public static DungeonManager dungeonManager;
+    public static DungeonManager getDungeonManager;
     public static Logger logger;
 
 
@@ -76,7 +76,7 @@ public class Main extends JavaPlugin implements Listener{
 
         getConfig().options().copyDefaults(true);
         fileSystem = new FileSystem();
-        dungeonManager = new DungeonManager();
+        getDungeonManager = new DungeonManager();
 
         if (getConfig().getString("newsmessage") == null) {
             getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");

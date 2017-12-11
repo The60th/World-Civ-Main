@@ -267,7 +267,7 @@ public class PartyCommand implements CommandExecutor {
 
                     if (party.isLeader(sender)) {
                         sender.sendMessage(worldciv + ChatColor.GRAY + " You are the leader of this party! You must assign leadership to someone else with "
-                                + ChatColor.YELLOW + " /party leader <player>" + ChatColor.GRAY + " or disband the party with " + ChatColor.YELLOW + " /party disband <player>");
+                                + ChatColor.YELLOW + " /party leader <player>" + ChatColor.GRAY + " or disband the party with " + ChatColor.YELLOW + " /party disband" +ChatColor.GRAY+".");
                         return true;
                     }
 

@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.worldciv.dungeons.Dungeon;
 import com.worldciv.parties.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,10 +16,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static com.worldciv.the60th.Main.dungeon_region;
-import static com.worldciv.the60th.Main.getWorldGuard;
-import static com.worldciv.the60th.Main.vision_bypass;
+import java.util.Collection;
+
+import static com.worldciv.dungeons.DungeonManager.activedungeons;
+import static com.worldciv.the60th.Main.*;
 import static com.worldciv.utility.utilityArrays.visionregion;
+import static com.worldciv.utility.utilityMultimaps.partyid;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class RegionEvent implements Listener {
@@ -74,6 +77,16 @@ public class RegionEvent implements Listener {
             }
 
             if(e.getRegion().getFlag(dungeon_region) == StateFlag.State.ALLOW && e.isCancellable()) {
+
+                Collection<String> party_id = partyid.get(player.getName());
+                String party_uuid = party_id.toString();
+                party_uuid = party_uuid.replace("[", "");
+                party_uuid = party_uuid.replace("]", "");
+
+                Dungeon dungeon = getDungeonManager.getDungeon(party_uuid);
+
+                activedungeons.remove(dungeon);
+
                 player.sendMessage(worldciv + ChatColor.GOLD + " You have exited the dungeon.");
 
             }

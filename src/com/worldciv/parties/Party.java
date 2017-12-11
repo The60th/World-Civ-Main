@@ -194,6 +194,18 @@ public class Party {
         }
     }
 
+
+
+    public String getPartyID(Player sender){
+
+        Collection collectionuuid = partyid.get(sender.getName());
+        String stringuuid = collectionuuid.toString();
+        stringuuid = stringuuid.replace("[", "");
+        stringuuid = stringuuid.replace("]", "");
+
+        return stringuuid;
+    }
+
     public boolean hasSameParty(Player sender, Player receiver) {
 
         Collection collectionuuid = partyid.get(sender.getName());
@@ -201,13 +213,12 @@ public class Party {
         stringuuid = stringuuid.replace("[", "");
         stringuuid = stringuuid.replace("]", "");
 
-        System.out.print(partyid.entries().toString());
 
         if (partyid.containsEntry(receiver.getName(), stringuuid)) {
-            System.out.print("found in partyid multimap");
+
             return true;
         } else {
-            System.out.print("not found in partyid multimap");
+
             return false;
 
         }
@@ -364,6 +375,15 @@ public class Party {
         List<String> arrayplayers = Arrays.asList(stringplayers.split(", "));
 
         return arrayplayers;
+
+    }
+
+    public void sendToParty(Player memberofparty, String msg){
+
+        for (String player_string : getPlayers(memberofparty)){
+            Player player = Bukkit.getPlayer(player_string);
+            player.sendMessage(msg);
+        }
 
     }
 

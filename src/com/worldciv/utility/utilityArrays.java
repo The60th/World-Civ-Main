@@ -1,5 +1,6 @@
 package com.worldciv.utility;
 
+import com.worldciv.dungeons.Dungeon;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ public final class utilityArrays {
     public static ArrayList<Player> holdingLight = new ArrayList<Player>();
 
     public final static ArrayList<Player> setnewsmessage = new ArrayList<Player>();
+    public final static ArrayList<Player> joiningdungeon = new ArrayList<Player>();
 
     public final static ArrayList<Player> visionregion = new ArrayList<Player>();
 
     public final static ArrayList<String> dungeonregionlist = new ArrayList();
+    public final static ArrayList<Dungeon> alldungeons = new ArrayList();
+
 }

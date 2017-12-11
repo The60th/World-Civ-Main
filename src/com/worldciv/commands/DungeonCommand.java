@@ -9,7 +9,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.dungeons.Dungeon;
 import com.worldciv.mythicmobs.CustomMobs;
 import com.worldciv.parties.Party;
-import com.worldciv.the60th.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,12 +16,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static com.worldciv.the60th.Main.*;
-import static com.worldciv.utility.utilityArrays.dungeonregionlist;
+import static com.worldciv.utility.utilityArrays.joiningdungeon;
+import static com.worldciv.utility.utilityArrays.setnewsmessage;
+import static com.worldciv.utility.utilityMultimaps.partyid;
 import static com.worldciv.utility.utilityStrings.*;
 
 public class DungeonCommand implements CommandExecutor {
@@ -44,17 +46,21 @@ public class DungeonCommand implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("dungeon") || cmd.getName().equalsIgnoreCase("dg")) {
             if (args.length == 0) {
 
-                if (true) { //displays available dungeons?
+                if(getDungeonManager.getDungeon(sender) == null){
+                    sender.sendMessage(maintop);
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon join <dungeon-id> <#difficulty>" + ChatColor.GRAY + ": Join a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon list" + ChatColor.GRAY + ": Displays all dungeon's status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon leave" + ChatColor.GRAY + ": Leave a dungeon as group.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon cancel" + ChatColor.GRAY + ": Cancel pending dungeon joining status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon stats" + ChatColor.GRAY + ": Statistics for current dungeon.");
 
-                    return true;
-                } else { //if youre in a dungeon atm. show stats
-
-                    return true;
-                }
+                    sender.sendMessage(mainbot);
+                } else {
+                    //if in dungeon show wot current dungeon ur in
             }
 
             switch (args[0]) {
-                case "create":
+                case "create": //This command is for staff use only and creates a dungeon when a //wand selection is used.
 
                     if (!isStaff(sender)) {
                         return true;
@@ -96,7 +102,7 @@ public class DungeonCommand implements CommandExecutor {
                     }
                     sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg create <id>");
                     return true;
-                case "list": //LISTS ALL DUNGEON REGIONS
+                case "list": //This command will list available dungeons and information about them.
 
                     if (!isStaff(sender)) {
                         return true;
@@ -104,25 +110,55 @@ public class DungeonCommand implements CommandExecutor {
 
                     if (args.length == 1) {
 
+                        sender.sendMessage(worldciv + ChatColor.GRAY + " Dungeons: ");
 
-                        for (Object regionname : getWorldGuard().getRegionManager(sender.getWorld()).getRegions().keySet().toArray()) { //CHANGE REGION WORLDS
+                        if (getDungeonManager.getAllDungeons() == null) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " There are no established dungeons on this server.");
+                            return true;
+                        }
 
-                            if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(regionname.toString()).getFlag(dungeon_region) == StateFlag.State.ALLOW) {
+                        for (String dungeonid : getDungeonManager.getAllDungeons()) {
 
-                                if (!dungeonregionlist.contains(regionname.toString())) {
-                                    dungeonregionlist.add(regionname.toString());
+                            if (getDungeonManager.getAllActiveDungeons() == null) {
+                                sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.GREEN + "Available");
+                            } else if (!getDungeonManager.getAllActiveDungeons().containsKey(dungeonid)) {
+                                sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.GREEN + "Available");
+                            } else if (getDungeonManager.getAllActiveDungeons().containsKey(dungeonid)) {
+
+                                if(!party.hasParty(sender)){
+                                    sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.RED + "Occupied");
+                                    return true;
+                                }
+
+                                String party_id = party.getPartyID(sender);
+                                Dungeon dungeon = getDungeonManager.getDungeon(party_id);
+
+                                if (dungeon == null){
+                                    sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.RED + "Occupied");
+                                    return true;
+                                }
+
+                                List<String> playersindungeon = dungeon.getPlayers(party_id);
+
+
+                                if (getDungeonManager.getAllActiveDungeons().get(dungeonid).equalsIgnoreCase(playersindungeon.toString())) {
+                                    String players = getDungeonManager.getAllActiveDungeons().get(dungeonid);
+                                    players = players.replace("[", "");
+                                    players = players.replace("]", "");
+
+                                    sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.AQUA + players);
+                                } else { //in dungeon but not with same players
+                                    sender.sendMessage(ChatColor.GOLD + dungeonid + ": " + ChatColor.RED + "Occupied");
 
                                 }
                             }
                         }
 
-                        Collections.sort(dungeonregionlist);
-
-                        sender.sendMessage(worldciv + ChatColor.GRAY + " Dungeon Regions: " + ChatColor.YELLOW + dungeonregionlist);
-
+                        return true;
                     }
                     sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg list");
                     return true;
+                case "j":
                 case "join": //public use to join dungeons'
 
                     if (args.length == 3) {
@@ -137,13 +173,34 @@ public class DungeonCommand implements CommandExecutor {
                             return true;
                         }
 
+                        if(getDungeonManager.getDungeon(sender) != null){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You're already in a dungeon.");
+
+                            return true;
+                        }
+
+                        if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(args[1]) == null) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name.");
+                            return true;
+                        }
+
                         if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(args[1]).getFlag(dungeon_region) != StateFlag.State.ALLOW) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon region id.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name.");
                             return true;
                         }
 
                         if(!args[2].matches(".*\\d.*")){
                             sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a numerical value as a difficulty.");
+                            return true;
+                        } else {
+                            if (!(1 <= Integer.parseInt(args[2]) && 3 >= Integer.parseInt(args[2]))) {
+                                sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a numerical value between 1-3.");
+                                return true;
+                            }
+                        }
+
+                        if(getDungeonManager.isDungeon(args[1])){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " This dungeon is occupied.");
                             return true;
                         }
 
@@ -165,19 +222,85 @@ public class DungeonCommand implements CommandExecutor {
                             }
 
 
-                            Dungeon dungeon = new Dungeon(party, args[1], Integer.parseInt(args[2]));
-                            Main.dungeonManager.addDungeonToTracker(dungeon);
-                            
+
                             sender.sendMessage(mainbot);
                             return true;
                         }
 
-                        Bukkit.broadcastMessage("all players are currently grouped up!");
+                        String officialdungeonid = getWorldGuard().getRegionManager(Bukkit.getWorld("world")).getRegion(args[1]).getId();
+                        String messagetoparty = worldciv + ChatColor.GOLD + " You are about to enter dungeon: " + ChatColor.YELLOW + "'" + officialdungeonid + "'" + ChatColor.GOLD
+                                + ", difficulty " + ChatColor.YELLOW + "'" + args[2] + "'" +ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" +
+                                party.size(sender) + "'" +ChatColor.GOLD + " in " +ChatColor.RED + "15" + ChatColor.GOLD+ " seconds.";
+
+                        String messagehowtocancel = ChatColor.RED + "To cancel, leave your party with " +ChatColor.YELLOW + "/party leave" +
+                                ChatColor.RED +" or the leader can use command" + ChatColor.YELLOW + " /dg cancel" +
+                        ChatColor.RED + " or " + ChatColor.YELLOW + "/dg c " + ChatColor.RED + "to stop the dungeon joining process.";
+
+                        party.sendToParty(sender, messagetoparty);
+                        party.sendToParty(sender, messagehowtocancel);
+                        joiningdungeon.add(sender);
+
+                        new BukkitRunnable() {
+                            int x = 0;
+
+                            public void run() {
+
+                                if (!joiningdungeon.contains(sender)) {
+                                    cancel();
+                                    return;
+                                }
+
+
+                                if (x == 15) {
+                                    Dungeon dungeon = new Dungeon(party.getPartyID(sender), args[1], Integer.parseInt(args[2]));
+                                    getDungeonManager.addDungeon(dungeon);
+                                    cancel();
+                                    return;
+                                }
+                                x++;
+                            }
+                        }.runTaskTimer(plugin, 0, 20);
                         return true;
                     }
                     sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg join <dungeon-id> <difficulty>");
                     return true;
+                case "c":
+                case "cancel":
 
+                    if(args.length == 1){
+
+                        //you cant cancel a processed dungeon. you can leave as group with /dg leave
+
+                        if (!party.hasParty(sender)) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be in a party to cancel.");
+                            return true;
+                        }
+
+                        if(!party.isLeader(sender)){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be the leader of the party to cancel.");
+
+                        }
+
+                        if(getDungeonManager.getDungeon(sender) != null){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You already joined the dungeon. Use" +ChatColor.YELLOW + " /dg leave" +  ChatColor.GRAY +
+                                    " to leave the party as a group.");
+                            return true;
+
+                        }
+
+                        if (!joiningdungeon.contains(sender)) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be in pending status to cancel a processing dungeon.");
+                            return true;
+                        }
+
+                        String msg = worldciv + ChatColor.GRAY + " The leader has cancelled joining the dungeon.";
+
+                        party.sendToParty(sender, msg);
+                        joiningdungeon.remove(sender);
+                        return true;
+                    }
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg cancel");
+                    return true;
 
                 case "mobspawn":
 
