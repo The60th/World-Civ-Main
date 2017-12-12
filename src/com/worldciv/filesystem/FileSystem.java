@@ -1,34 +1,151 @@
 package com.worldciv.filesystem;
 
+import com.sk89q.worldedit.util.YAMLConfiguration;
+import com.worldciv.dungeons.Dungeon;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
+import java.util.logging.Level;
+
+import static com.worldciv.dungeons.DungeonManager.activedungeons;
+import static com.worldciv.the60th.Main.logger;
+import static com.worldciv.the60th.Main.plugin;
+import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class FileSystem {
-    public static boolean itemFilesExists = false;
+    File dungeons_folder;
+    File dungeons_file;
+    YamlConfiguration dungeons_yml;
 
     public FileSystem(){
-        File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
-        if(!dir.exists()) {
-            dir.mkdir();
-            Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Warning! Check console for debug data!");
-            Main.logger.info(("Creating new UID System, please check all plugins if this is not wanted!"));
-        }
-        else{
-            itemFilesExists = true;
+        File custom_items_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
+
+        dungeons_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/dungeons");
+        dungeons_file = new File(dungeons_folder, "dungeons.yml");
+
+        if(!custom_items_folder.exists()) {
+            custom_items_folder.mkdir();
         }
 
+        if(!dungeons_folder.exists()){
+            dungeons_folder.mkdir();
+        }
 
-        //MainCombat.logger.info("Loading UID system.");
+        if(!dungeons_file.exists()){
+            saveResource("dungeons.yml", dungeons_folder, false);
+        }
+
+        dungeons_yml = YamlConfiguration.loadConfiguration(dungeons_file);
+    }
+
+    public void createDungeon(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        dungeons_yml.createSection(dungeon_id);
+        dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
 
     }
+    public void setPlayerSpawn(String dungeon_id, Location location ){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        //String concat_coords = String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z);
+
+        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", location);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public Location getPlayerSpawn(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return null;
+        }
+        return (Location) dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
+    }
+
+    public void removeDungeon(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        dungeons_yml.set(dungeon_id, null);
+        activedungeons.remove(dungeon_id);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveResource(String resourcePath, File out_to_folder, boolean replace) {
+        if (resourcePath != null && !resourcePath.equals("")) {
+            resourcePath = resourcePath.replace('\\', '/');
+            InputStream in = plugin.getResource(resourcePath);
+            if (in == null) {
+                throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + plugin.getName());
+            } else {
+                File outFile = new File(out_to_folder, resourcePath);
+                int lastIndex = resourcePath.lastIndexOf(47);
+                File outDir = new File(out_to_folder, resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+                if (!outDir.exists()) {
+                    outDir.mkdirs();
+                }
+
+                try {
+                    if (outFile.exists() && !replace) {
+                        plugin.getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                    } else {
+                        OutputStream out = new FileOutputStream(outFile);
+                        byte[] buf = new byte[1024];
+
+                        int len;
+                        while((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+
+                        out.close();
+                        in.close();
+                    }
+                } catch (IOException var10) {
+                    plugin.getLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, var10);
+                }
+
+            }
+        } else {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
+    }
+
     public boolean saveItem(CustomItem item){
         File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");
         if(dir.exists()) {
@@ -43,8 +160,6 @@ public class FileSystem {
 
                 try {
                     yaml.save(file);
-
-
                     return true;
                 } catch (IOException e) {
                     Main.logger.info("Failed error has occurred when saving an item. Item UUID: [" + item.getId() + "}");

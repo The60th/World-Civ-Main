@@ -49,8 +49,14 @@ public class RegionEvent implements Listener {
                 return;
             }
 
+            Dungeon dungeon = getDungeonManager.getDungeon(player);
+
+            if(dungeon == null) {
+            return;
+            }
+
             player.sendMessage(worldciv + ChatColor.GOLD + " You have entered dungeon " + ChatColor.YELLOW + "'" + e.getRegion().getId() + "'" + ChatColor.GOLD
-                    + ", difficulty " + ChatColor.YELLOW + "'" + "INSERT_DIFFICULTY" + "'" +ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" + party.size(player) + "'" +ChatColor.GOLD + ".");
+                    + ", difficulty " + ChatColor.YELLOW + "'" + dungeon.getDungeonID() + "'" +ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" + party.size(player) + "'" +ChatColor.GOLD + ".");
         }
 
 

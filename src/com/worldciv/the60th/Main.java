@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 import static com.worldciv.utility.utilityStrings.worldciv;
 
-public class Main extends JavaPlugin implements Listener{
+public class Main extends JavaPlugin {
 
 
     protected static scoreboardManager scoreboardManager;
@@ -74,9 +74,10 @@ public class Main extends JavaPlugin implements Listener{
         javaPlugin = this;
 
 
-        getConfig().options().copyDefaults(true);
+        getConfig().options().copyDefaults(true); //creates data folder for pl
         fileSystem = new FileSystem();
         getDungeonManager = new DungeonManager();
+
 
         if (getConfig().getString("newsmessage") == null) {
             getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");

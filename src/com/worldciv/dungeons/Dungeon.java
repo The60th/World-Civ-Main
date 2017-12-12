@@ -4,11 +4,15 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.worldciv.parties.Party;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.the60th.Main.getDungeonManager;
 import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.utility.utilityMultimaps.partyid;
@@ -41,6 +45,14 @@ public class Dungeon {
     }
 
     public void teleportToDungeon(){
+
+        for(String players_in_party : getPlayers(getPartyID())){
+
+            Player player = Bukkit.getPlayer(players_in_party);
+
+            player.teleport(fileSystem.getPlayerSpawn(this.getDungeonID()));
+
+        }
 
        // for (String partyids : partyid.)
 
