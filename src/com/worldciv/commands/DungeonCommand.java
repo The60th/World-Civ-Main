@@ -34,24 +34,22 @@ public class DungeonCommand implements CommandExecutor {
 
         Party party = new Party();
         String dungeonregionname;
-        if (!(robotsender instanceof Player)) {
-            robotsender.sendMessage(ChatColor.RED + "Silly console! You can't join dungeons, that's unfair!");
-            return true;
-        }
-
-        Player sender = (Player) robotsender;
-
 
         if (cmd.getName().equalsIgnoreCase("dungeon") || cmd.getName().equalsIgnoreCase("dg")) {
+            if (!(robotsender instanceof Player)) {
+                robotsender.sendMessage(ChatColor.RED + "Silly console! You can't join dungeons, that's unfair!");
+                return true;
+            }
 
+            Player sender = (Player) robotsender;
             if (args.length == 0) {
 
                 if (getDungeonManager.getDungeon(sender) == null) {
                     sender.sendMessage(maintop);
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon join <dungeon-id> <#difficulty>" + ChatColor.GRAY + ": Join a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon list" + ChatColor.GRAY + ": Displays all dungeon's status.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon ready" + ChatColor.GRAY + ": Marks you ready to join a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon leave" + ChatColor.GRAY + ": Leave a dungeon as group.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon cancel" + ChatColor.GRAY + ": Cancel pending dungeon joining status.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon stats" + ChatColor.GRAY + ": Statistics for current dungeon.");
 
                     if (isDungeonAdmin(sender)) {
@@ -228,6 +226,11 @@ public class DungeonCommand implements CommandExecutor {
                             return true;
                         }
 
+                        if(notreadylist.contains(sender)){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You're in pending status to join a dungeon.");
+                            return true;
+                        }
+
                         if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(args[1]) == null) {
                             sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name.");
                             return true;
@@ -278,12 +281,13 @@ public class DungeonCommand implements CommandExecutor {
                         String officialdungeonid = getWorldGuard().getRegionManager(Bukkit.getWorld("world")).getRegion(args[1]).getId();
                         String messagetoparty = worldciv + ChatColor.GOLD + " You are about to enter dungeon: " + ChatColor.YELLOW + "'" + officialdungeonid + "'" + ChatColor.GOLD
                                 + ", difficulty " + ChatColor.YELLOW + "'" + args[2] + "'" + ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" +
-                                party.size(sender) + "'" + ChatColor.GOLD + " in " + ChatColor.YELLOW + "10" + ChatColor.GOLD + " seconds.";
+                                party.size(sender) + "'" + ChatColor.GOLD + " in " + ChatColor.YELLOW + "15" + ChatColor.GOLD + " seconds.";
 
-                        String messagehowtojoin = ChatColor.RED + "All players in the party MUST be ready with " + ChatColor.YELLOW + "/dg ready " +
+                        String messagehowtojoin = ChatColor.RED + "All players in the party MUST be ready with " + ChatColor.YELLOW + "/dg ready " + ChatColor.RED +
                                 "in order to join the dungeon.";
 
                         party.sendToParty(sender, messagetoparty);
+                        party.sendToParty(sender, " ");
                         party.sendToParty(sender, messagehowtojoin);
 
                         for(String players_in_string : party.getPlayers(sender)){
@@ -298,6 +302,13 @@ public class DungeonCommand implements CommandExecutor {
                             public void run() {
 
                                if(getDungeonManager.allReady(sender)){
+                                   Dungeon dungeon = new Dungeon(party.getPartyID(sender), args[1], Integer.parseInt(args[2]));
+
+                                   String allrdy = worldciv + ChatColor.GREEN + " All players are ready to join the dungeon! DEBUG 0";
+
+                                   party.sendToParty(sender, allrdy);
+
+                                   getDungeonManager.addDungeon(dungeon);
                                    cancel();
                                    return;
                                }
@@ -305,12 +316,11 @@ public class DungeonCommand implements CommandExecutor {
 
 
 
-                                if (x == 10) {
+                                if (x == 15) {
                                     if(!getDungeonManager.allReady(sender)) {
-
                                         String msgclean = getDungeonManager.getPlayersNotReady(sender).toString().replace("]", "").replace("[", "");
 
-                                        String msg = worldciv + ChatColor.GRAY+ " The following players did not ready up: " +ChatColor.AQUA + msgclean;
+                                        String msg = worldciv + ChatColor.GRAY + " The following players did not ready up: " + ChatColor.AQUA + msgclean;
                                         party.sendToParty(sender, msg);
 
                                         for(String players_in_string : getDungeonManager.getPlayersNotReady(sender)){
@@ -347,20 +357,13 @@ public class DungeonCommand implements CommandExecutor {
                         }
 
 
-
-                        String msg = worldciv + ChatColor.AQUA + sender.getName() + ChatColor.GRAY + " is ready to join the dungeon!";
+                        String msg = worldciv + " " + ChatColor.AQUA + sender.getName() + ChatColor.GRAY + " is ready to join the dungeon!";
 
                         party.sendToParty(sender, msg);
                         notreadylist.remove(sender);
 
                         if(getDungeonManager.allReady(sender)){
-                            Dungeon dungeon = new Dungeon(party.getPartyID(sender), args[1], Integer.parseInt(args[2]));
-
-                            String allrdy = worldciv + ChatColor.GREEN + "All players are ready to join the dungeon!";
-
-                            party.sendToParty(sender, allrdy);
-
-                            getDungeonManager.addDungeon(dungeon);
+//processing
                         }
                         return true;
                     }
@@ -511,7 +514,7 @@ public class DungeonCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon delete <id>" + ChatColor.GRAY + ": Remove a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon inspect" + ChatColor.GRAY + ": Inspect the region you're standing on.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon setspawn" + ChatColor.GRAY + ": Set the player-spawn in a dungeon.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon mobspawn <mob-id>" + ChatColor.GRAY + ": Set the mob-spawn(s) in a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon mobspawn <mob-id> <difficulty>" + ChatColor.GRAY + ": Set the mob-spawn(s) in a dungeon.");
                     //  sender.sendMessage(ChatColor.YELLOW + "/dungeon cp <cp-id>" + ChatColor.GRAY + ": Set dungeon checkpoints.");
                     sender.sendMessage(mainbot);
 
