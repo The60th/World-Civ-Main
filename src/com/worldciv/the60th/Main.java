@@ -88,7 +88,7 @@ public class Main extends JavaPlugin {
         PluginDescriptionFile pdfFile = this.getDescription();
 
         logger.info(pdfFile.getName()
-                + "has successfully enabled. The current version is: "
+                + " has successfully enabled. The current version is: "
                 + pdfFile.getVersion());
 
         registerEvents();

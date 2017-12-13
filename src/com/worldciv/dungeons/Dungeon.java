@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.worldciv.parties.Party;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -16,6 +17,7 @@ import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.the60th.Main.getDungeonManager;
 import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.utility.utilityMultimaps.partyid;
+import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class Dungeon {
 
@@ -27,16 +29,16 @@ public class Dungeon {
         return DungeonID;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
     String PartyID;
     String DungeonID;
-    int difficulty;
+    String difficulty;
 
 
-    public Dungeon(String party_id, String dungeon_id, int difficulty){
+    public Dungeon(String party_id, String dungeon_id, String difficulty){
         PartyID = party_id;
         DungeonID = dungeon_id;
         this.difficulty = difficulty;
@@ -50,11 +52,35 @@ public class Dungeon {
 
             Player player = Bukkit.getPlayer(players_in_party);
 
+            if(fileSystem.getPlayerSpawn(this.getDungeonID()) == null){
+player.sendMessage(worldciv + ChatColor.GRAY + " There is no dungeon teleport entry.");
+return;
+            }
+
             player.teleport(fileSystem.getPlayerSpawn(this.getDungeonID()));
 
         }
 
        // for (String partyids : partyid.)
+
+    }
+
+    public void teleportOutOfDungeon(){
+
+        for(String players_in_party : getPlayers(getPartyID())){
+
+            Player player = Bukkit.getPlayer(players_in_party);
+
+            if(fileSystem.getPlayerEndSpawn(this.getDungeonID()) == null){
+                player.sendMessage(worldciv + ChatColor.GRAY + " There is no dungeon teleport exit.");
+                return;
+            }
+
+            player.teleport(fileSystem.getPlayerEndSpawn(this.getDungeonID()));
+
+        }
+
+        // for (String partyids : partyid.)
 
     }
 

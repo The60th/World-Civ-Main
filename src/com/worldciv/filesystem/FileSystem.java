@@ -46,67 +46,6 @@ public class FileSystem {
         dungeons_yml = YamlConfiguration.loadConfiguration(dungeons_file);
     }
 
-    public void createDungeon(String dungeon_id){
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return;
-        }
-
-        dungeons_yml.createSection(dungeon_id);
-        dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
-
-        try {
-            dungeons_yml.save(dungeons_file);
-        } catch (IOException e){
-            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
-            e.printStackTrace();
-        }
-
-    }
-    public void setPlayerSpawn(String dungeon_id, Location location ){
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return;
-        }
-
-        //String concat_coords = String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z);
-
-        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", location);
-
-        try {
-            dungeons_yml.save(dungeons_file);
-        } catch (IOException e){
-            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
-            e.printStackTrace();
-        }
-
-    }
-
-    public Location getPlayerSpawn(String dungeon_id){
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return null;
-        }
-        return (Location) dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
-    }
-
-    public void removeDungeon(String dungeon_id){
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return;
-        }
-
-        dungeons_yml.set(dungeon_id, null);
-        activedungeons.remove(dungeon_id);
-
-        try {
-            dungeons_yml.save(dungeons_file);
-        } catch (IOException e){
-            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
-            e.printStackTrace();
-        }
-    }
-
     public void saveResource(String resourcePath, File out_to_folder, boolean replace) {
         if (resourcePath != null && !resourcePath.equals("")) {
             resourcePath = resourcePath.replace('\\', '/');
@@ -126,7 +65,7 @@ public class FileSystem {
                         plugin.getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
                     } else {
                         OutputStream out = new FileOutputStream(outFile);
-                        byte[] buf = new byte[1024];
+                        byte[] buf = new byte[4096];
 
                         int len;
                         while((len = in.read(buf)) > 0) {
@@ -145,6 +84,112 @@ public class FileSystem {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
     }
+
+    public void createDungeon(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        dungeons_yml.createSection(dungeon_id);
+        dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
+        dungeons_yml.createSection(dungeon_id + ".Player-End-Spawn-Location");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+
+    }
+    public void removeDungeon(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        dungeons_yml.set(dungeon_id, null);
+        activedungeons.remove(dungeon_id);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+    }
+
+    public void saveEntity(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        dungeons_yml.createSection(dungeon_id);
+        dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
+        dungeons_yml.createSection(dungeon_id + ".Player-End-Spawn-Location");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setPlayerSpawn(String dungeon_id, Location location ){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        //String concat_coords = String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z);
+
+        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", location);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+    }
+    public Location getPlayerSpawn(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return null;
+        }
+        return (Location) dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
+    }
+
+    public void setPlayerEndSpawn(String dungeon_id, Location location ){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        //String concat_coords = String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z);
+
+        dungeons_yml.set(dungeon_id + ".Player-End-Spawn-Location", location);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
+    }
+    public Location getPlayerEndSpawn(String dungeon_id){
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return null;
+        }
+        return (Location) dungeons_yml.get(dungeon_id + ".Player-End-Spawn-Location");
+    }
+
 
     public boolean saveItem(CustomItem item){
         File dir = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/Custom_Items");

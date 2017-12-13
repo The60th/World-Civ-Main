@@ -1,10 +1,13 @@
 package com.worldciv.events.player;
 
+import com.worldciv.dungeons.Dungeon;
 import com.worldciv.parties.Party;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import static com.worldciv.the60th.Main.getDungeonManager;
 
 public class QuitEvent implements Listener {
     @EventHandler
@@ -13,7 +16,12 @@ public class QuitEvent implements Listener {
         Party party = new Party();
 
 
-
+        if(getDungeonManager.getDungeon(p) != null){ //player is in dungeon
+            if(party.size(p) == 1){ //cant be zero hes still in. must be 1 to be last player
+               Dungeon dungeon = getDungeonManager.getDungeon(p);
+               getDungeonManager.removeDungeon(dungeon);
+            }
+        }
         if(party.isLeader(p)){
             party.removeLeader(p); //TIHS ALSO REMOVES PARTY DW!
         }
@@ -21,6 +29,8 @@ public class QuitEvent implements Listener {
         if(party.hasParty(p)){
             party.remove(p);
         }
+
+
 
     }
 }

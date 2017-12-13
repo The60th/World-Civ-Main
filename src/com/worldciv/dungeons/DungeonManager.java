@@ -26,6 +26,15 @@ public class DungeonManager {
         }
     }
 
+    public void removeDungeon(Dungeon dungeon) {
+
+        if(isDungeon(dungeon.getDungeonID())){
+
+            activedungeons.remove(dungeon);
+            dungeon.teleportOutOfDungeon();
+        }
+    }
+
     public boolean isDungeon(String dungeonid){
 
         for(Dungeon dungeon : activedungeons){
@@ -130,7 +139,7 @@ public class DungeonManager {
     }
 
     public List<String> getPlayersNotReady(Player player){
-        if(!allReady(player)){
+        if(allReady(player)){
             return null;
         }
         Party party = new Party();

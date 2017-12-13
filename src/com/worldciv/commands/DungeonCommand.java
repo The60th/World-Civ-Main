@@ -44,12 +44,12 @@ public class DungeonCommand implements CommandExecutor {
             Player sender = (Player) robotsender;
             if (args.length == 0) {
 
-                if (getDungeonManager.getDungeon(sender) == null) {
+               if (true){// if (getDungeonManager.getDungeon(sender) == null) {
                     sender.sendMessage(maintop);
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon join <dungeon-id> <#difficulty>" + ChatColor.GRAY + ": Join a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon join <dungeon-id> <difficulty> " + ChatColor.GRAY + ": Join a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon list" + ChatColor.GRAY + ": Displays all dungeon's status.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon ready" + ChatColor.GRAY + ": Marks you ready to join a dungeon.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon leave" + ChatColor.GRAY + ": Leave a dungeon as group.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon quit" + ChatColor.GRAY + ": Quit a dungeon as group.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon stats" + ChatColor.GRAY + ": Statistics for current dungeon.");
 
                     if (isDungeonAdmin(sender)) {
@@ -154,6 +154,7 @@ public class DungeonCommand implements CommandExecutor {
 
                   */
                 case "l":
+                case "show":
                 case "list":
                     if (args.length == 1) {
 
@@ -203,8 +204,42 @@ public class DungeonCommand implements CommandExecutor {
 
                         return true;
                     }
-                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg list");
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg list"+ChatColor.GRAY+" to display available dungeons.");
                     return true;
+                    /*
+                    The quit command will allow the party leader to quit an ongoing dungeon. Leaves the dungeon as group.
+                     */
+                case "leave":
+                case "q":
+                case "quit":
+                    if(args.length == 1){
+
+                        if (getDungeonManager.getDungeon(sender) == null) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You're not in a dungeon.");
+                            return true;
+                        }
+
+                        if(!party.hasParty(sender)){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be in a party to quit.");
+                            return true;
+                        }
+
+                        if (!party.isLeader(sender)) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be the party leader to leave the dungeon.");
+                            return true;
+                        }
+
+                        Dungeon dungeon = getDungeonManager.getDungeon(sender);
+                        String quittingdungeon = worldciv + ChatColor.AQUA+  " " + sender.getName() + " has chosen to abandon the dungeon!";
+                        party.sendToParty(sender, quittingdungeon);
+                        getDungeonManager.removeDungeon(dungeon);
+
+                    }
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg quit"+ChatColor.GRAY + " to leave the dungeon as group.");
+                    return true;
+                /*
+                The join command allows the party leader to join a dungeon as party.
+                 */
                 case "j":
                 case "join": //public use to join dungeons'
 
@@ -232,29 +267,21 @@ public class DungeonCommand implements CommandExecutor {
                         }
 
                         if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(args[1]) == null) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name. Use" +ChatColor.YELLOW + " /dg list" + ChatColor.GRAY + " to display available dungeons.");
                             return true;
                         }
 
                         if (getWorldGuard().getRegionManager(sender.getWorld()).getRegion(args[1]).getFlag(dungeon_region) != StateFlag.State.ALLOW) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid dungeon name. Use" +ChatColor.YELLOW + " /dg list" + ChatColor.GRAY + " to display available dungeons.");
                             return true;
                         }
 
-                        if (!args[2].matches(".*\\d.*")) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a numerical value as a difficulty.");
+                        if(!args[2].equalsIgnoreCase("easy") && !args[2].equalsIgnoreCase("medium") && !args[2].equalsIgnoreCase("hard")){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid difficulty: easy, medium, or hard.");
                             return true;
-                        } else {
-                            if (!(1 <= Integer.parseInt(args[2]) && 3 >= Integer.parseInt(args[2]))) {
-                                sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a numerical value between 1-3.");
-                                return true;
-                            }
                         }
 
-                        if (getDungeonManager.isDungeon(args[1])) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " This dungeon is occupied.");
-                            return true;
-                        }
+
 
 
                         if (!party.isAllNear(sender, 6)) { //you must be with all your team together
@@ -280,7 +307,7 @@ public class DungeonCommand implements CommandExecutor {
 
                         String officialdungeonid = getWorldGuard().getRegionManager(Bukkit.getWorld("world")).getRegion(args[1]).getId();
                         String messagetoparty = worldciv + ChatColor.GOLD + " You are about to enter dungeon: " + ChatColor.YELLOW + "'" + officialdungeonid + "'" + ChatColor.GOLD
-                                + ", difficulty " + ChatColor.YELLOW + "'" + args[2] + "'" + ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" +
+                                + ", difficulty " + ChatColor.YELLOW + "'" + args[2].toUpperCase() + "'" + ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" +
                                 party.size(sender) + "'" + ChatColor.GOLD + " in " + ChatColor.YELLOW + "15" + ChatColor.GOLD + " seconds.";
 
                         String messagehowtojoin = ChatColor.RED + "All players in the party MUST be ready with " + ChatColor.YELLOW + "/dg ready " + ChatColor.RED +
@@ -302,9 +329,17 @@ public class DungeonCommand implements CommandExecutor {
                             public void run() {
 
                                if(getDungeonManager.allReady(sender)){
-                                   Dungeon dungeon = new Dungeon(party.getPartyID(sender), args[1], Integer.parseInt(args[2]));
 
-                                   String allrdy = worldciv + ChatColor.GREEN + " All players are ready to join the dungeon! DEBUG 0";
+                                   if (getDungeonManager.isDungeon(args[1])) {
+                                       String errortoolate = worldciv + ChatColor.GRAY + " You joined the dungeon too late! Another party got in first!"; //theres another way to fix it, still want to know why double messaging tho
+                                       party.sendToParty(sender, errortoolate);
+                                       cancel();
+                                       return;
+                                   }
+
+                                   Dungeon dungeon = new Dungeon(party.getPartyID(sender), args[1], args[2].toUpperCase());
+
+                                   String allrdy = worldciv + ChatColor.GREEN + " All players are ready to join the dungeon!"; //theres another way to fix it, still want to know why double messaging tho
 
                                    party.sendToParty(sender, allrdy);
 
@@ -350,8 +385,7 @@ public class DungeonCommand implements CommandExecutor {
                         }
 
                         if (getDungeonManager.getDungeon(sender) != null) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You already joined the dungeon. The leader can use" + ChatColor.YELLOW + " /dg leave" + ChatColor.GRAY +
-                                    " to leave the party as a group.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You already joined the dungeon.");
                             return true;
 
                         }
@@ -362,9 +396,6 @@ public class DungeonCommand implements CommandExecutor {
                         party.sendToParty(sender, msg);
                         notreadylist.remove(sender);
 
-                        if(getDungeonManager.allReady(sender)){
-//processing
-                        }
                         return true;
                     }
                     sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments! Use " + ChatColor.YELLOW + "/dg ready" +ChatColor.GRAY +
@@ -455,6 +486,45 @@ public class DungeonCommand implements CommandExecutor {
                     sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments. Use" + ChatColor.YELLOW + " /dg inspect" + ChatColor.GRAY + "inside a dungeon region.");
                     return true;
 
+                case "ses":
+                case "setendspawn":
+                    if (!isDungeonAdmin(sender)) {
+                        return true;
+                    }
+
+                    if (args.length == 2) {
+
+                        String dungenname = "";
+
+                            for (String dungeon_id : getDungeonManager.getAllDungeons()) {
+
+                                if (dungeon_id.equalsIgnoreCase(args[1])){
+                                    dungenname += dungeon_id;
+                                }
+                            }
+
+
+                        if (dungenname.equalsIgnoreCase("")) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " There is no dungeon with that name.");
+                            return true;
+                        }
+
+                        Location loc = sender.getLocation();
+
+                        if(loc == null){
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " Somehow your location is null. Try again.");
+                            return true;
+                        }
+
+                        fileSystem.setPlayerEndSpawn(dungenname, loc);
+                        sender.sendMessage(worldciv + ChatColor.GRAY + " You have set the player end spawn coordinates to your current location in " + ChatColor.YELLOW + "'" + dungenname + "'" + ChatColor.GRAY + ".");
+                        return true;
+
+
+                    }
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments. Use" + ChatColor.YELLOW + " /dg setendspawn <dungeon-id> "+ ChatColor.GRAY + "to set the outro player spawn when exiting a dungeon.");
+                    return true;
+
                 case "ss":
                 case "setspawn":
                     if (!isDungeonAdmin(sender)) {
@@ -513,7 +583,8 @@ public class DungeonCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon create <id>" + ChatColor.GRAY + ": Create a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon delete <id>" + ChatColor.GRAY + ": Remove a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon inspect" + ChatColor.GRAY + ": Inspect the region you're standing on.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon setspawn" + ChatColor.GRAY + ": Set the player-spawn in a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon setspawn" + ChatColor.GRAY + ": Set the intro player-spawn in a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon setendspawn <dungeon-id>" + ChatColor.GRAY + ": Set the outro player-spawn for a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon mobspawn <mob-id> <difficulty>" + ChatColor.GRAY + ": Set the mob-spawn(s) in a dungeon.");
                     //  sender.sendMessage(ChatColor.YELLOW + "/dungeon cp <cp-id>" + ChatColor.GRAY + ": Set dungeon checkpoints.");
                     sender.sendMessage(mainbot);
