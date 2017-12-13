@@ -44,8 +44,9 @@ public class RegionEvent implements Listener {
 
             Party party = new Party();
 
-            if(!party.hasParty(player)){
+            if(!party.hasParty(player) && !player.hasPermission("worldciv.dungeonadmin")){
                 player.sendMessage(worldciv + ChatColor.RED + " You can't enter a dungeon without being in a party.");
+                e.setCancelled(true);
                 return;
             }
 
@@ -56,7 +57,7 @@ public class RegionEvent implements Listener {
             }
 
             player.sendMessage(worldciv + ChatColor.GOLD + " You have entered dungeon " + ChatColor.YELLOW + "'" + e.getRegion().getId() + "'" + ChatColor.GOLD
-                    + ", difficulty " + ChatColor.YELLOW + "'" + dungeon.getDungeonID() + "'" +ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" + party.size(player) + "'" +ChatColor.GOLD + ".");
+                    + ", difficulty " + ChatColor.YELLOW + "'" + dungeon.getDifficulty() + "'" +ChatColor.GOLD + ", and party total size " + ChatColor.YELLOW + "'" + party.size(player) + "'" +ChatColor.GOLD + ".");
         }
 
 
