@@ -63,11 +63,6 @@ public class scoreboardManager {
                     cancel();
                 }
 
-                if(dummytoggleboard.contains(player)){
-                    cancel();
-                }
-
-
                 updateScoreboard(player, obj, newsteam, torchteam , blankscoreofficial); //update every tick
             }
 
@@ -99,6 +94,11 @@ public class scoreboardManager {
         //blankscore
 
 
+        if(dummytoggleboard.contains(player)){
+            return;
+        }
+
+
         Score score = objective.getScore(ChatColor.AQUA + "IGN:");
         score.setScore(9);
 
@@ -116,7 +116,7 @@ public class scoreboardManager {
 
         // SCORE TO HAVE ✓ OR ✗ MARK
 
-        if (player.getGameMode() == GameMode.CREATIVE || togglevision.contains(player) || visionregion.contains(player) || lighttutorial.contains(player)) {
+        if (player.getGameMode() == GameMode.CREATIVE || togglevision.contains(player) || visionregion.contains(player)) {
             torchTeam.setPrefix(ChatColor.YELLOW + "VISION BYPASS");
             torchTeam.setSuffix(ChatColor.RESET + "");
         } else {
