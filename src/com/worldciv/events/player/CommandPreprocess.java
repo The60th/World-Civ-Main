@@ -23,7 +23,7 @@ public class CommandPreprocess implements Listener {
             event.getPlayer().sendMessage("Unknown command. Type \"/help\" for help."); //diguise
             event.setCancelled(true);
         }
-        if ((event.getMessage().toLowerCase().startsWith("/pl") || event.getMessage().toLowerCase().startsWith("/help") || event.getMessage().toLowerCase().startsWith("/?")) && !event.getPlayer().hasPermission("worlciv.cmds")) {
+        if ((event.getMessage().toLowerCase().startsWith("/pl") || event.getMessage().toLowerCase().startsWith("/?")) && !event.getPlayer().hasPermission("worlciv.cmds")) {
             event.getPlayer().sendMessage(worldciv + ChatColor.GRAY + " Not allowed to use this special command.");
             event.setCancelled(true);
         }

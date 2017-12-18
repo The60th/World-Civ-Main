@@ -21,19 +21,15 @@ import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.the60th.Main.plugin;
 import static com.worldciv.utility.utilityArrays.lighttutorial;
 import static com.worldciv.utility.utilityArrays.setnewsmessage;
+import static com.worldciv.utility.utilityArrays.visionregion;
 import static com.worldciv.utility.utilityStrings.*;
 
 public class WorldCivCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender robotsender, Command cmd, String alias, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("worldciv")) {
-            if (!(robotsender instanceof Player)) {
-                robotsender.sendMessage(ChatColor.RED + "To prevent errors in the future. Sorry, console.");
-                return true;
-            }
 
-            Player sender = (Player) robotsender;
 
             if (args.length == 0) {
 
@@ -93,7 +89,7 @@ public class WorldCivCommand implements CommandExecutor {
                 case "quit":
                 case "q":
 
-                    removeLightTutorial(sender);
+                    removeLightTutorial((Player) sender);
                     return true;
 
 
@@ -120,6 +116,8 @@ public class WorldCivCommand implements CommandExecutor {
 
 
         player.teleport(location);
+
+        visionregion.remove(player);
 
         lighttutorial.add(player); //add to an array of  ppl inside lighttutorial.
 
@@ -219,6 +217,7 @@ public class WorldCivCommand implements CommandExecutor {
         Location location = new Location(Bukkit.getWorld("world"), 8125, 153, 6374, (-90), 0);
         player.teleport(location);
         lighttutorial.remove(player);
+        visionregion.add(player);
         player.sendMessage(worldciv + ChatColor.GRAY + " You have exited the tutorial.");
         return;
 
