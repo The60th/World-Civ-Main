@@ -20,7 +20,7 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class LightLevelEvent  {
 
     public static void updateLightLevelEvent(Player player){
-        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || visionregion.contains(player)){
+        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || visionregion.contains(player) || lighttutorial.contains(player)){
             if (currentlyBlinded.contains(player)) {
                 unBlindPlayer(player);
                 currentlyBlinded.remove(player);

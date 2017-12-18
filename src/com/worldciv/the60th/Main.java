@@ -3,10 +3,12 @@ package com.worldciv.the60th;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
 import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.inventory.*;
@@ -32,6 +34,7 @@ import com.worldciv.filesystem.Gear;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import static com.worldciv.utility.utilityArrays.visionregion;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class Main extends JavaPlugin {
@@ -164,6 +167,21 @@ public class Main extends JavaPlugin {
         CraftingRecipes.registerRecipes();
         FurnaceRecipes.registerFurnaceRecipes();
         Gear.registerRecipes();
+
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            ApplicableRegionSet set = getWorldGuard().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
+
+            if (!visionregion.contains(p)) {
+
+                for (ProtectedRegion region : set) {
+                    if (region.getFlag(vision_bypass) == StateFlag.State.ALLOW) {
+                        visionregion.add(p);
+                    }
+                }
+
+            }
+        }
 
         Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " Refreshing plugin data.");
     }

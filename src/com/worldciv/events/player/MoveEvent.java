@@ -16,16 +16,6 @@ public class MoveEvent implements Listener {
     @EventHandler
     public void onMoveEvent(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        ApplicableRegionSet set = getWorldGuard().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
 
-        if (!visionregion.contains(p)) {
-
-            for (ProtectedRegion region : set) {
-                if (region.getFlag(vision_bypass) == StateFlag.State.ALLOW) {
-                    visionregion.add(p);
-                }
-            }
-
-        }
     }
 }
