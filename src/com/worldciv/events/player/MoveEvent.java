@@ -1,21 +1,31 @@
 package com.worldciv.events.player;
 
-import com.worldciv.dungeons.Dungeon;
-import com.worldciv.parties.Party;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import static com.worldciv.the60th.Main.getDungeonManager;
-import static com.worldciv.utility.utilityArrays.lighttutorial;
+import static com.worldciv.the60th.Main.getWorldGuard;
+import static com.worldciv.the60th.Main.vision_bypass;
+import static com.worldciv.utility.utilityArrays.visionregion;
 
 public class MoveEvent implements Listener {
     @EventHandler
     public void onMoveEvent(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        ApplicableRegionSet set = getWorldGuard().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
 
+        if (!visionregion.contains(p)) {
 
+            for (ProtectedRegion region : set) {
+                if (region.getFlag(vision_bypass) == StateFlag.State.ALLOW) {
+                    visionregion.add(p);
+                }
+            }
+
+        }
     }
 }
