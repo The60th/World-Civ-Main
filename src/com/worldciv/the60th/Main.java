@@ -182,7 +182,6 @@ public class Main extends JavaPlugin {
         getCommand("news").setExecutor(new NewsCommand());
         getCommand("party").setExecutor(new PartyCommand());
         getCommand("p").setExecutor(new PartyCommand());
-        getCommand("t").setExecutor(new ToggleCommand());
         getCommand("worldciv").setExecutor(new WorldCivCommand());
         getCommand("wc").setExecutor(new WorldCivCommand());
 

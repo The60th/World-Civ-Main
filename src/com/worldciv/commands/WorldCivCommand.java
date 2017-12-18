@@ -37,7 +37,7 @@ public class WorldCivCommand implements CommandExecutor {
 
             if (args.length == 0) {
 
-                if (!sender.hasPermission("worldciv.admin")) {
+
                     sender.sendMessage(maintop);
                     sender.sendMessage(ChatColor.GRAY + " These are some of the commands available for you: ");
                     sender.sendMessage(ChatColor.YELLOW + "/party" + ChatColor.GRAY + ": Displays the party commands.");
@@ -45,7 +45,7 @@ public class WorldCivCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "/news" + ChatColor.GRAY + ": Displays the current news.");
                     sender.sendMessage(ChatColor.YELLOW + "/toggle help" + ChatColor.GRAY + ": Displays the toggle commands.");
 
-                } else {
+                if(sender.hasPermission("worldciv.admin")){
                     sender.sendMessage(ChatColor.RED + "Only admins can see the following:");
                     sender.sendMessage(ChatColor.YELLOW + "/wc tutorial light <player>" + ChatColor.GRAY + ": Send a player to the light level tutorial.");
                 }
@@ -78,7 +78,7 @@ public class WorldCivCommand implements CommandExecutor {
 
                             Player tutorialplayer = Bukkit.getPlayer(args[2]);
 
-                            if(!AnvilCreate.isAllFull((HumanEntity) tutorialplayer, new ItemStack(Material.AIR, 1))){ //needs to b checked
+                            if(tutorialplayer.getInventory().getContents().length == 36){ //needs to b checked
                                 sender.sendMessage(worldciv + ChatColor.GRAY + " There is no inventory space for you to enter the light tutorial.");
                                 return true;
                         }

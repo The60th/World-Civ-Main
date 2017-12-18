@@ -21,9 +21,6 @@ commands:
   p:
     description:
     usage:
-  t:
-    description:
-    usage:
   worldciv:
     description:
     usage:
