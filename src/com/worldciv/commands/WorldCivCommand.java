@@ -154,12 +154,18 @@ public class WorldCivCommand implements CommandExecutor {
 
                 ApplicableRegionSet set = getWorldGuard().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
 
+                boolean tutorialcheck = false;
+
                 for(ProtectedRegion region : set){
-                    if(!"tutorial".equalsIgnoreCase(region.toString())){
-                        removeLightTutorial(player);
-                        cancel();
-                        return;
+                    if("tutorial".equalsIgnoreCase(region.toString())){
+                        tutorialcheck = true;
                     }
+                }
+
+                if(!tutorialcheck){
+                    removeLightTutorial(player);
+                    cancel();
+                    return;
                 }
 
                 if(x == 2){
