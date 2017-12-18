@@ -43,6 +43,10 @@ public class RegionEvent implements Listener {
         if (e.getRegion().getFlag(vision_bypass) == StateFlag.State.DENY){
             visionregion.remove(player);
         }
+        
+        if(e.getRegion().getFlag(vision_bypass) == null){
+            visionregion.remove(player);
+        }
 
         if(e.getRegion().getFlag(dungeon_region) == StateFlag.State.ALLOW && e.isCancellable()){
 
