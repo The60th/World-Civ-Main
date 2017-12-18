@@ -7,7 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static com.worldciv.commands.WorldCivCommand.removeLightTutorial;
 import static com.worldciv.the60th.Main.getDungeonManager;
+import static com.worldciv.utility.utilityArrays.lighttutorial;
 
 public class QuitEvent implements Listener {
     @EventHandler
@@ -28,6 +30,10 @@ public class QuitEvent implements Listener {
 
         if(party.hasParty(p)){
             party.remove(p);
+        }
+
+        if(lighttutorial.contains(p)){
+removeLightTutorial(p);
         }
 
 

@@ -24,6 +24,12 @@ commands:
   t:
     description:
     usage:
+  worldciv:
+    description:
+    usage:
+  wc:
+    description:
+    usage:
 permissions:
   worldciv.togglevision:
     description:
@@ -32,4 +38,6 @@ permissions:
   worldciv.news:
     description:
   worldciv.dungeonadmin:
+    description:
+  worldciv.admin:
     description:

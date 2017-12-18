@@ -7,14 +7,9 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.worldciv.commands.DungeonCommand;
-import com.worldciv.commands.NewsCommand;
-import com.worldciv.commands.PartyCommand;
-import com.worldciv.commands.ToggleCommand;
+import com.worldciv.commands.*;
 import com.worldciv.dungeons.DungeonManager;
-import com.worldciv.events.inventory.AnvilCreate;
-import com.worldciv.events.inventory.CraftCreate;
-import com.worldciv.events.inventory.FurnaceCreate;
+import com.worldciv.events.inventory.*;
 import com.worldciv.events.player.*;
 import com.worldciv.scoreboard.scoreboardManager;
 import com.worldciv.utility.CraftingRecipes;
@@ -23,13 +18,11 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.worldciv.events.inventory.CraftEvent;
 import com.worldciv.events.player.ArrowEvents;
 import com.worldciv.events.player.JoinEvent;
 import com.worldciv.events.player.AttackEvent;
@@ -190,6 +183,9 @@ public class Main extends JavaPlugin {
         getCommand("party").setExecutor(new PartyCommand());
         getCommand("p").setExecutor(new PartyCommand());
         getCommand("t").setExecutor(new ToggleCommand());
+        getCommand("worldciv").setExecutor(new WorldCivCommand());
+        getCommand("wc").setExecutor(new WorldCivCommand());
+
     }
 
     public void registerEvents(){
@@ -205,6 +201,9 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new CraftEvent(), this);
         pm.registerEvents(new RegionEvent(), this);
         pm.registerEvents(new ArrowEvents(), this);
+        pm.registerEvents(new MoveEvent(), this);
+        pm.registerEvents(new PickUpItemEvent(), this);
+        pm.registerEvents(new DropItemEvent(), this);
     }
 
 

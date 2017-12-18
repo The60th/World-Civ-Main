@@ -16,7 +16,7 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class ToggleCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("toggle") ||cmd.getName().equalsIgnoreCase("t" )) {
+        if (cmd.getName().equalsIgnoreCase("toggle") ||cmd.getName().equalsIgnoreCase("tg" )) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(ChatColor.RED + "You must be a player to access this command!");
 

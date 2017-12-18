@@ -21,6 +21,8 @@ public final class utilityArrays {
     public final static ArrayList<Player> visionregion = new ArrayList<Player>();
 
     public final static ArrayList<String> dungeonregionlist = new ArrayList();
-    public final static ArrayList<Dungeon> alldungeons = new ArrayList();
+    public final static ArrayList<Dungeon> alldungeons = new ArrayList(); //forgot what this was, dont think i need this?
+
+    public final static ArrayList<Player> lighttutorial = new ArrayList<Player>();
 
 }

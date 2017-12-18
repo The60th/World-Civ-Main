@@ -92,7 +92,9 @@ public class FileSystem {
 
         dungeons_yml.createSection(dungeon_id);
         dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
+        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", "null");
         dungeons_yml.createSection(dungeon_id + ".Player-End-Spawn-Location");
+        dungeons_yml.set(dungeon_id + ".Player-End-Spawn-Location", "null");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
@@ -129,7 +131,9 @@ public class FileSystem {
 
         dungeons_yml.createSection(dungeon_id);
         dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
+        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", "null");
         dungeons_yml.createSection(dungeon_id + ".Player-End-Spawn-Location");
+        dungeons_yml.set(dungeon_id + ".Player-End-Spawn-Location", "null");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
@@ -164,7 +168,16 @@ public class FileSystem {
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return null;
         }
-        return (Location) dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
+
+        Object value = dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
+
+        if(value.toString() == "null"){
+            logger.info(worldciv + ChatColor.DARK_RED + " No intro spawn location found for " + ChatColor.YELLOW + dungeon_id);
+            return null;
+        }
+
+        Location location = (Location) dungeons_yml.get(dungeon_id + ".Player-Spawn-Location");
+        return location;
     }
 
     public void setPlayerEndSpawn(String dungeon_id, Location location ){
@@ -187,7 +200,19 @@ public class FileSystem {
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return null;
         }
-        return (Location) dungeons_yml.get(dungeon_id + ".Player-End-Spawn-Location");
+
+        Object value = dungeons_yml.get(dungeon_id + ".Player-End-Spawn-Location");
+
+
+        if(value.toString() == "null"){
+            logger.info(worldciv + ChatColor.DARK_RED + " No outro spawn location found for " + ChatColor.YELLOW + dungeon_id);
+
+            return null;
+        }
+
+        Location location = (Location) dungeons_yml.get(dungeon_id + ".Player-End-Spawn-Location");
+        return location;
+
     }
 
 
