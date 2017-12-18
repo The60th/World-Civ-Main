@@ -1,6 +1,7 @@
 package com.worldciv.events.inventory;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,9 +15,9 @@ import java.util.List;
 public class PickUpItemEvent implements Listener {
 
     @EventHandler
-    public void  onPickUp(PlayerPickupItemEvent e){
+    public void  onPickUp(PlayerPickupItemEvent e) {
 
-        Player p=  e.getPlayer();
+        Player p = e.getPlayer();
 
         Item item = e.getItem();
         ItemStack is = item.getItemStack();
@@ -24,8 +25,15 @@ public class PickUpItemEvent implements Listener {
 
         List<String> lore = im.getLore();
 
-        if(!lore.get(1).equalsIgnoreCase(ChatColor.AQUA + p.getName())){
-            e.setCancelled(true);
+        if (is.getType() == Material.TORCH) {
+
+            if(lore == null){
+                return;
+            }
+
+            if (!lore.get(1).equalsIgnoreCase(ChatColor.AQUA + p.getName())) {
+                e.setCancelled(true);
+            }
         }
     }
 }
