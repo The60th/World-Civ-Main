@@ -50,7 +50,6 @@ public class ChatEvent implements Listener {
 
                     players.put(possible_player_name, iteration);
 
-                    Bukkit.broadcastMessage("The name provided with @<player> was successfully passed.");
                 } else {
                     //its null
                 }
@@ -80,7 +79,6 @@ public class ChatEvent implements Listener {
 
                 String official_not_alphanumerical = ChatColor.GRAY + not_alphanumeral;
 
-                Bukkit.broadcastMessage(official_not_alphanumerical);
 
                 String alphanumerical = args[index].replaceAll("[^A-Za-z0-9@]", ""); //We are filtering OUT the non-alphanumerical. ABC 0-9 stays whitelisted.
 
@@ -121,9 +119,7 @@ public class ChatEvent implements Listener {
                 String not_alphanumeral = args[index].replaceAll("[A-Za-z0-9@]", ""); //creates a non- alphanumerical name. IE: !.#$.. The punctuation in the end.
 
                 String official_not_alphanumerical = ChatColor.GRAY + not_alphanumeral;
-
-                Bukkit.broadcastMessage(official_not_alphanumerical);
-
+                
                 String alphanumerical = args[index].replaceAll("[^A-Za-z0-9@]", ""); //We are filtering OUT the non-alphanumerical. ABC 0-9 stays whitelisted.
 
                 //Alphanumerical should now be: @PLAYER
