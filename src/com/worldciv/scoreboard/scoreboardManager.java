@@ -41,7 +41,7 @@ public class scoreboardManager {
 
         //STATIC BLANKSCORES. DO NOT CHANGE!!! // also creates static placement of scores.
        // Score blankscore = obj.getScore("                                ");   //EMPTY LINES OF SCORE
-        Score blankscore2 = obj.getScore("                   "); //static 19
+        Score blankscore2 = obj.getScore("                            "); //static 19
         blankscore2.setScore(7);
         Score blankscore3 = obj.getScore("  ");
         blankscore3.setScore(4);

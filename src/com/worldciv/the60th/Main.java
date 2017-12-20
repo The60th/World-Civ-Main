@@ -1,6 +1,7 @@
 package com.worldciv.the60th;
 
 
+import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -48,6 +49,7 @@ public class Main extends JavaPlugin {
     public static Logger logger;
 
 
+
     public static final Flag vision_bypass = new StateFlag("vision-bypass", true);
     public static final Flag dungeon_region = new StateFlag("dungeon-region", true);
 
@@ -68,7 +70,6 @@ public class Main extends JavaPlugin {
         logger = Logger.getLogger("Minecraft");
         plugin = this;
         javaPlugin = this;
-
 
         getConfig().options().copyDefaults(true); //creates data folder for pl
         fileSystem = new FileSystem();
@@ -126,13 +127,15 @@ public class Main extends JavaPlugin {
                                     Random r = new Random();
                                     int chance = r.nextInt(1200000);
 
-                                    if (chance < 150000) {
+                                    if (chance < 130000) { //10.8%
                                         if (currentItem.getAmount() > 1) {
                                             currentItem.setAmount(currentItem.getAmount() - 1);
+                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
                                             players.sendMessage(worldciv + ChatColor.GRAY + " The storm has made one of your torches useless!");
                                         } else {
                                             currentItem.setAmount(-1);
-                                            players.sendMessage(worldciv + ChatColor.GRAY + " Your last torch  in your main hand was used!");
+                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
+                                            players.sendMessage(worldciv + ChatColor.GRAY + " Your last torch in your main hand was used!");
                                         }
 
                                     }
@@ -140,12 +143,14 @@ public class Main extends JavaPlugin {
                                     Random r = new Random();
                                     int chance = r.nextInt(1200000);
 
-                                    if (chance < 150000) {
+                                    if (chance < 130000) {
                                         if (offHandItem.getAmount() > 1) {
                                             offHandItem.setAmount(offHandItem.getAmount() - 1);
+                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
                                             players.sendMessage(worldciv + ChatColor.GRAY + " The storm has made one of your torches useless!");
                                         } else {
                                             offHandItem.setAmount(-1);
+                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
                                             players.sendMessage(worldciv + ChatColor.GRAY + " Your last torch in your offhand was used!");
                                         }
 
@@ -221,6 +226,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new MoveEvent(), this);
         pm.registerEvents(new PickUpItemEvent(), this);
         pm.registerEvents(new DropItemEvent(), this);
+        pm.registerEvents(new ChatEvent(), this);
     }
 
 
@@ -267,6 +273,16 @@ public class Main extends JavaPlugin {
         return (MythicMobs) plugin;
     }
 
+    public static Towny getTowny(){
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("Towny");
+
+        //Towny may not beloaded
+        if(plugin == null || !(plugin instanceof Towny)){
+            return null;
+        }
+
+        return (Towny) plugin;
+    }
 }
 
 

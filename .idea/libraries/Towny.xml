@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="WGCustomFlags">
+  <library name="Towny">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/WGCustomFlags.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Towny.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

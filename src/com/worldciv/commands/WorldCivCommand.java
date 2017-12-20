@@ -1,6 +1,5 @@
 package com.worldciv.commands;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.events.inventory.AnvilCreate;
@@ -8,7 +7,6 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +18,6 @@ import java.util.List;
 import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.the60th.Main.plugin;
 import static com.worldciv.utility.utilityArrays.lighttutorial;
-import static com.worldciv.utility.utilityArrays.setnewsmessage;
 import static com.worldciv.utility.utilityArrays.visionregion;
 import static com.worldciv.utility.utilityStrings.*;
 
@@ -32,36 +29,59 @@ public class WorldCivCommand implements CommandExecutor {
 
 
             if (args.length == 0) {
-
-
-                    sender.sendMessage(maintop);
-                    sender.sendMessage(ChatColor.GRAY + " These are some of the commands available for you: ");
-                    sender.sendMessage(ChatColor.YELLOW + "/party" + ChatColor.GRAY + ": Displays the party commands.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon" + ChatColor.GRAY + ": Displays the dungeon commands.");
-                    sender.sendMessage(ChatColor.YELLOW + "/news" + ChatColor.GRAY + ": Displays the current news.");
-                    sender.sendMessage(ChatColor.YELLOW + "/toggle help" + ChatColor.GRAY + ": Displays the toggle commands.");
-
-                if(sender.hasPermission("worldciv.admin")){
-                    sender.sendMessage(ChatColor.RED + "Only admins can see the following:");
-                    sender.sendMessage(ChatColor.YELLOW + "/wc tutorial light <player>" + ChatColor.GRAY + ": Send a player to the light level tutorial.");
-                }
-
-
-                sender.sendMessage(mainbot);
+                helppage1((Player) sender);
                 return true;
             }
 
 
             switch (args[0].toLowerCase()) {
 
+                case "help":
+                case "h":
+
+                    if (args.length == 1) {
+                        helppage1((Player) sender);
+                        return true;
+                    }
+
+                    if (args.length == 2) {
+
+                        if (!args[1].matches("-?\\d+(\\.\\d+)?")) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a numerical value.");
+return true;
+                        }
+
+                        switch (args[1].toLowerCase()) {
+
+                            case "1":
+                                helppage1((Player) sender);
+                                return true;
+                            case "2":
+                                helppage2((Player) sender);
+                                return true;
+                            default:
+                                sender.sendMessage(worldciv + ChatColor.GRAY + " The help page you requested for was not found.");
+                                return true;
+
+                        }
+
+                    }
+
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments. Use" + ChatColor.YELLOW + " /wc help [page]" + ChatColor.GRAY + ".");
+                    return true;
                 case "t":
                 case "tutorial":
 
                     if(!sender.hasPermission("worldciv.admin")){
                         sender.sendMessage(worldciv + ChatColor.GRAY + "No permission for this command.");
-
                         return true;
                     }
+
+                    if (args.length != 3) {
+                        sender.sendMessage(worldciv + ChatColor.GRAY + " Invalid arguments. Use " + ChatColor.YELLOW + "/wc tutorial <tutorial> <player>");
+                        return true;
+                    }
+
 
                     switch (args[1].toLowerCase()) {
                         case "light":
@@ -94,7 +114,7 @@ public class WorldCivCommand implements CommandExecutor {
 
 
                 default:
-                    sender.sendMessage(worldciv + ChatColor.GRAY + "Did you mean to use" + ChatColor.YELLOW + "/wc" + ChatColor.GRAY + "?");
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Did you mean to use" + ChatColor.YELLOW + " /wc" + ChatColor.GRAY + "?");
                     return true;
             }
         }
@@ -154,7 +174,7 @@ public class WorldCivCommand implements CommandExecutor {
 
                 if(messages.size() == x){
 
-
+                    player.getInventory().remove(is);
                     removeLightTutorial(player);
                     cancel();
                     return;
@@ -202,6 +222,7 @@ public class WorldCivCommand implements CommandExecutor {
         ItemMeta im = is.getItemMeta();
         List<String> templore = Arrays.asList(ChatColor.GRAY + "This torch is designed for:", ChatColor.AQUA + player.getName());
         im.setLore(templore);
+        is.setItemMeta(im);
 
         if(!lighttutorial.contains(player)){
             player.sendMessage(worldciv + ChatColor.GRAY + " You are not in a tutorial.");
@@ -209,10 +230,7 @@ public class WorldCivCommand implements CommandExecutor {
         }
 
 
-        if(!AnvilCreate.isAllFull(player, is)){
-
-            player.getInventory().remove(is);
-        }
+        player.getInventory().remove(is);
 
         Location location = new Location(Bukkit.getWorld("world"), 8125, 153, 6374, (-90), 0);
         player.teleport(location);
@@ -221,6 +239,48 @@ public class WorldCivCommand implements CommandExecutor {
         player.sendMessage(worldciv + ChatColor.GRAY + " You have exited the tutorial.");
         return;
 
+    }
+
+    public void helppage1(Player sender) {
+        sender.sendMessage(maintop);
+        sender.sendMessage(ChatColor.GRAY + " These are some of the commands available for you: ");
+        sender.sendMessage(ChatColor.YELLOW + "/party" + ChatColor.GRAY + ": Displays the party commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/dungeon" + ChatColor.GRAY + ": Displays the dungeon commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/news" + ChatColor.GRAY + ": Displays the current news.");
+        sender.sendMessage(ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ": Displays the toggle commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/polls" + ChatColor.GRAY + ": Displays the polls.");
+
+
+        if (sender.hasPermission("worldciv.admin")) {
+            sender.sendMessage(ChatColor.RED + "Only admins can see the following:");
+            sender.sendMessage(ChatColor.YELLOW + "/wc tutorial light <player>" + ChatColor.GRAY + ": Send a player to the light level tutorial.");
+        }
+
+        sender.sendMessage(" ");
+        sender.sendMessage(ChatColor.YELLOW + "/wc help [page]" + ChatColor.GRAY + ": Select your help page. " +ChatColor.ITALIC + "[Currently on page:1]");
+        sender.sendMessage(mainbot);
+        return;
+    }
+
+    public void helppage2(Player sender) {
+        sender.sendMessage(maintop);
+
+        sender.sendMessage(ChatColor.GRAY + " These are some of the commands available for you: ");
+        sender.sendMessage(ChatColor.YELLOW + "/rules" + ChatColor.GRAY + ": Displays the rules.");
+        sender.sendMessage(ChatColor.YELLOW + "/toggle help" + ChatColor.GRAY + ": Displays the toggle commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/towny" + ChatColor.GRAY + ": Displays the towny commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/brewery" + ChatColor.GRAY + ": Displays the dungeon commands.");
+
+
+        if (sender.hasPermission("worldciv.admin")) {
+            sender.sendMessage(ChatColor.RED + "Only admins can see the following:");
+            // sender.sendMessage(ChatColor.YELLOW + "/wc tutorial light <player>" + ChatColor.GRAY + ": Send a player to the light level tutorial.");
+        }
+
+        sender.sendMessage(" ");
+        sender.sendMessage(ChatColor.YELLOW + "/wc help [page]" + ChatColor.GRAY + ": Select your help page. " +ChatColor.ITALIC + "[Currently on page:2]");
+        sender.sendMessage(mainbot);
+        return;
     }
 
 
