@@ -14,5 +14,8 @@ public final class utilityMultimaps {
 
     public static Multimap<String, String> blockedplayers = HashMultimap.create(); //sender , blockedplayer
 
+    public static Multimap<String, String> chatchannels = HashMultimap.create(); //sender , blockedplayer
+
+
 
 }

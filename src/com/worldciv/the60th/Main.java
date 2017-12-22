@@ -1,6 +1,7 @@
 package com.worldciv.the60th;
 
 
+import com.earth2me.essentials.Essentials;
 import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -12,6 +13,8 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
 import com.worldciv.dungeons.DungeonManager;
+import com.worldciv.events.chat.ChatChannelEvent;
+import com.worldciv.events.chat.ChatEvent;
 import com.worldciv.events.inventory.*;
 import com.worldciv.events.player.*;
 import com.worldciv.scoreboard.scoreboardManager;
@@ -31,11 +34,13 @@ import com.worldciv.events.player.JoinEvent;
 import com.worldciv.events.player.AttackEvent;
 import com.worldciv.filesystem.FileSystem;
 import com.worldciv.filesystem.Gear;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.Random;
 import java.util.logging.Logger;
 
 import static com.worldciv.utility.utilityArrays.visionregion;
+import static com.worldciv.utility.utilityMultimaps.chatchannels;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class Main extends JavaPlugin {
@@ -71,7 +76,10 @@ public class Main extends JavaPlugin {
         plugin = this;
         javaPlugin = this;
 
-        getConfig().options().copyDefaults(true); //creates data folder for pl
+        scoreboardManager = new scoreboardManager();
+        PluginDescriptionFile pdfFile = this.getDescription();
+
+        getConfig().options().copyDefaults(true); //creates data folder for pl ----> move to filesystem some later time, not crucial, just looks messy
         fileSystem = new FileSystem();
         getDungeonManager = new DungeonManager();
 
@@ -81,8 +89,6 @@ public class Main extends JavaPlugin {
         }
         saveConfig();
 
-        scoreboardManager = new scoreboardManager();
-        PluginDescriptionFile pdfFile = this.getDescription();
 
         logger.info(pdfFile.getName()
                 + " has successfully enabled. The current version is: "
@@ -90,6 +96,7 @@ public class Main extends JavaPlugin {
 
         registerEvents();
         registerCommands();
+        registerChatChannels();
 
         //Check time of day!
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -125,9 +132,9 @@ public class Main extends JavaPlugin {
 
                                 if (currentItem.getType() == Material.TORCH) {
                                     Random r = new Random();
-                                    int chance = r.nextInt(1200000);
+                                    int chance = r.nextInt(1200000); //1,200,000
 
-                                    if (chance < 130000) { //10.8%
+                                    if (chance < 109560) { //9.13%
                                         if (currentItem.getAmount() > 1) {
                                             currentItem.setAmount(currentItem.getAmount() - 1);
                                             players.getInventory().addItem(new ItemStack(Material.STICK, 1));
@@ -143,7 +150,7 @@ public class Main extends JavaPlugin {
                                     Random r = new Random();
                                     int chance = r.nextInt(1200000);
 
-                                    if (chance < 130000) {
+                                    if (chance < 109560) {
                                         if (offHandItem.getAmount() > 1) {
                                             offHandItem.setAmount(offHandItem.getAmount() - 1);
                                             players.getInventory().addItem(new ItemStack(Material.STICK, 1));
@@ -200,13 +207,37 @@ public class Main extends JavaPlugin {
 
     public void registerCommands(){
         getCommand("toggle").setExecutor(new ToggleCommand());
+
         getCommand("dungeon").setExecutor(new DungeonCommand());
         getCommand("dg").setExecutor(new DungeonCommand());
+
         getCommand("news").setExecutor(new NewsCommand());
+
         getCommand("party").setExecutor(new PartyCommand());
         getCommand("p").setExecutor(new PartyCommand());
+
         getCommand("worldciv").setExecutor(new WorldCivCommand());
         getCommand("wc").setExecutor(new WorldCivCommand());
+
+        getCommand("ch").setExecutor(new ChatCommand());
+        getCommand("channels").setExecutor(new ChatCommand());
+
+        getCommand("local").setExecutor(new ChatCommand());
+        getCommand("l").setExecutor(new ChatCommand());
+
+        getCommand("global").setExecutor(new ChatCommand());
+        getCommand("g").setExecutor(new ChatCommand());
+
+        getCommand("ooc").setExecutor(new ChatCommand());
+
+        getCommand("nc").setExecutor(new ChatCommand());
+        getCommand("tc").setExecutor(new ChatCommand());
+        getCommand("anc").setExecutor(new ChatCommand());
+
+        getCommand("admin").setExecutor(new ChatCommand());
+        getCommand("mod").setExecutor(new ChatCommand());
+
+
 
     }
 
@@ -223,12 +254,25 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new CraftEvent(), this);
         pm.registerEvents(new RegionEvent(), this);
         pm.registerEvents(new ArrowEvents(), this);
-        pm.registerEvents(new MoveEvent(), this);
+        pm.registerEvents(new BoatFixEvent(), this);
         pm.registerEvents(new PickUpItemEvent(), this);
         pm.registerEvents(new DropItemEvent(), this);
         pm.registerEvents(new ChatEvent(), this);
+        pm.registerEvents(new ChatChannelEvent(), this);
     }
 
+    public void registerChatChannels(){
+        chatchannels.put("local", "dummy_string");
+        chatchannels.put("global", "dummy_string");
+        chatchannels.put("anc", "dummy_string");
+        chatchannels.put("nc", "dummy_string");
+        chatchannels.put("tc", "dummy_string");
+        chatchannels.put("mod", "dummy_string");
+        chatchannels.put("admin", "dummy_string");
+        chatchannels.put("ooc", "dummy_string");
+
+
+    }
 
 
     public static Plugin getPlugin() {
@@ -238,7 +282,6 @@ public class Main extends JavaPlugin {
     public static scoreboardManager getScoreboardManager() {
         return scoreboardManager;
     }
-
 
     public static WorldGuardPlugin getWorldGuard() {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
@@ -282,6 +325,28 @@ public class Main extends JavaPlugin {
         }
 
         return (Towny) plugin;
+    }
+
+    public static Essentials getEssentials(){
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("Essentials");
+
+        //essentials may not beloaded
+        if(plugin == null || !(plugin instanceof Essentials)){
+            return null;
+        }
+
+        return (Essentials) plugin;
+    }
+
+    public static PermissionsEx getPermissionsEx(){
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("PermissionsEx");
+
+        //essentials may not beloaded
+        if(plugin == null || !(plugin instanceof PermissionsEx)){
+            return null;
+        }
+
+        return (PermissionsEx) plugin;
     }
 }
 

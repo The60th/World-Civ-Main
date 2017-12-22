@@ -247,7 +247,7 @@ return true;
         sender.sendMessage(ChatColor.YELLOW + "/party" + ChatColor.GRAY + ": Displays the party commands.");
         sender.sendMessage(ChatColor.YELLOW + "/dungeon" + ChatColor.GRAY + ": Displays the dungeon commands.");
         sender.sendMessage(ChatColor.YELLOW + "/news" + ChatColor.GRAY + ": Displays the current news.");
-        sender.sendMessage(ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ": Displays the toggle commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ": Displays media (discord, website, vote, etc).");
         sender.sendMessage(ChatColor.YELLOW + "/polls" + ChatColor.GRAY + ": Displays the polls.");
 
 
@@ -269,7 +269,8 @@ return true;
         sender.sendMessage(ChatColor.YELLOW + "/rules" + ChatColor.GRAY + ": Displays the rules.");
         sender.sendMessage(ChatColor.YELLOW + "/toggle help" + ChatColor.GRAY + ": Displays the toggle commands.");
         sender.sendMessage(ChatColor.YELLOW + "/towny" + ChatColor.GRAY + ": Displays the towny commands.");
-        sender.sendMessage(ChatColor.YELLOW + "/brewery" + ChatColor.GRAY + ": Displays the dungeon commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/brewery" + ChatColor.GRAY + ": Displays the brewery commands.");
+        sender.sendMessage(ChatColor.YELLOW + "/channels" + ChatColor.GRAY + ": Displays chat channel commands.");
 
 
         if (sender.hasPermission("worldciv.admin")) {

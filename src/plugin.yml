@@ -27,6 +27,42 @@ commands:
   wc:
     description:
     usage:
+  local:
+    description:
+    usage:
+  l:
+    description:
+    usage:
+  global:
+    description:
+    usage:
+  g:
+    description:
+    usage:
+  nc:
+    description:
+    usage:
+  anc:
+    description:
+    usage:
+  tc:
+    description:
+    usage:
+  ooc:
+    description:
+    usage:
+  mod:
+    description:
+    usage:
+  admin:
+    description:
+    usage:
+  channels:
+    description:
+    usage:
+  ch:
+    description:
+    usage:
 permissions:
   worldciv.togglevision:
     description:
@@ -35,6 +71,8 @@ permissions:
   worldciv.news:
     description:
   worldciv.dungeonadmin:
+    description:
+  worldciv.mod:
     description:
   worldciv.admin:
     description:

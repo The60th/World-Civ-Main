@@ -1,4 +1,4 @@
-package com.worldciv.events.player;
+package com.worldciv.events.chat;
 
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -18,7 +18,6 @@ import org.bukkit.util.StringUtil;
 
 import java.util.*;
 
-import static com.worldciv.the60th.Main.getTowny;
 import static com.worldciv.the60th.Main.plugin;
 
 public class ChatEvent implements Listener {
@@ -90,7 +89,7 @@ public class ChatEvent implements Listener {
 
                 String official_msg = msg.replace(args[index], playername);
 
-                String finalmessage = String.format(e.getFormat(), onlineplayer.getDisplayName(), official_msg);
+                String finalmessage = String.format(e.getFormat(), official_sender.getDisplayName(), official_msg);
 
                 onlineplayer.playSound(onlineplayer.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5 , 1);
 
@@ -102,7 +101,7 @@ public class ChatEvent implements Listener {
 
             else if (!players.containsKey(onlineplayer.getName())){
 
-                String finalmessage = String.format(e.getFormat(), onlineplayer.getDisplayName(), e.getMessage());
+                String finalmessage = String.format(e.getFormat(), official_sender.getDisplayName(), e.getMessage());
 
                 executeMessage(onlineplayer, official_sender, finalmessage, e);
 
@@ -119,7 +118,7 @@ public class ChatEvent implements Listener {
                 String not_alphanumeral = args[index].replaceAll("[A-Za-z0-9@]", ""); //creates a non- alphanumerical name. IE: !.#$.. The punctuation in the end.
 
                 String official_not_alphanumerical = ChatColor.GRAY + not_alphanumeral;
-                
+
                 String alphanumerical = args[index].replaceAll("[^A-Za-z0-9@]", ""); //We are filtering OUT the non-alphanumerical. ABC 0-9 stays whitelisted.
 
                 //Alphanumerical should now be: @PLAYER
@@ -130,7 +129,7 @@ public class ChatEvent implements Listener {
 
                 String official_msg = msg.replace(args[index], playername);
 
-                String finalmessage = String.format(e.getFormat(), onlineplayer.getDisplayName(), official_msg);
+                String finalmessage = String.format(e.getFormat(), official_sender.getDisplayName(), official_msg);
 
                 onlineplayer.playSound(onlineplayer.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5 , 1);
 
@@ -145,7 +144,7 @@ public class ChatEvent implements Listener {
 
     @EventHandler
     public void onTabComplete(TabCompleteEvent e) {
-        e.setCompletions(tabCompleteChat((Player) e.getSender(), e.getBuffer()));
+        //e.setCompletions(tabCompleteChat((Player) e.getSender(), e.getBuffer()));
     }
 
     public void executeMessage (Player player, Player sender, String message, AsyncPlayerChatEvent e){
@@ -214,6 +213,8 @@ public class ChatEvent implements Listener {
 
         } else if (strippedcolor.startsWith("[me ->")){
             return;
+        } else {
+            player.sendMessage(message);
         }
 
         e.setCancelled(true);
