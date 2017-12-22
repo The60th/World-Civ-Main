@@ -7,7 +7,6 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.dungeons.Dungeon;
-import com.worldciv.mythicmobs.CustomMobs;
 import com.worldciv.parties.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -432,6 +431,22 @@ public class DungeonCommand implements CommandExecutor {
 
                     if (args.length == 4) {
 
+                        String possible_mythic_mob = "";
+
+                        for (String mob_id : getMythicMobs().getMobManager().getMobNames()) { //GET ALL MOBS IN /mm m list
+                            if (mob_id.equalsIgnoreCase(args[1])) { //if mob_id in mythic mobs is argument 1
+
+                                //arg[1] is a mythic mob
+                                possible_mythic_mob += args[1];
+
+                            }
+                        }
+
+                        if (possible_mythic_mob.isEmpty()) {
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " There was no mob-id with this name. Use " + ChatColor.YELLOW + "/mm mobs list" + ChatColor.GRAY + ".");
+                            return true;
+                        }
+
                         if (!args[2].equalsIgnoreCase("easy") && !args[2].equalsIgnoreCase("medium") && !args[2].equalsIgnoreCase("hard")) {
                             sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a valid difficulty: easy, medium, or hard.");
                             return true;
@@ -443,19 +458,19 @@ public class DungeonCommand implements CommandExecutor {
                         } else if (Integer.parseInt(args[3]) == 0) {
                             sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a value that is not empty.");
                             return true;
-                        } else if (Integer.parseInt(args[3]) > 10 && Integer.parseInt(args[3]) < 0)
-                        for (String mob_id : getMythicMobs().getMobManager().getMobNames()) {
-                            if (mob_id.equalsIgnoreCase(args[1])) {
-
-                                Location loc = sender.getLocation();
-
-                                CustomMobs.spawn(loc);
-                                sender.sendMessage(worldciv + ChatColor.GRAY + " You have spawned a " + ChatColor.YELLOW + "'" + mob_id + "'" + ChatColor.GRAY + " in region " + ChatColor.YELLOW + "'" + dungeonregionname + "'" + ChatColor.GRAY + ".");
-                                return true;
-                            }
                         }
 
-                        sender.sendMessage(worldciv + ChatColor.GRAY + " There was no mob-id with this name. Use " + ChatColor.YELLOW + "/mm mobs list" + ChatColor.GRAY + ".");
+                        //we have diff
+                        //number is > 0
+
+
+
+                        //POSSIBLE_MYTHIC_MOB IS A MOB ID
+                        /**
+                         * args[1] is a mythic mob id ignoring caps case
+                         * args[2] is difficulty [easy, medium, hard] ||| ON PARAMETER DO: args[2].toUpperCase
+                         * args[3] is number higher than zero
+                         */
 
                         return true;
                     }
