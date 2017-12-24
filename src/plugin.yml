@@ -76,3 +76,8 @@ permissions:
     description:
   worldciv.admin:
     description:
+  worldciv.chatcolor:
+    description:
+  worldciv.socialspy:
+    description:
+

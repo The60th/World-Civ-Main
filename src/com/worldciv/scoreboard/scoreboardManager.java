@@ -24,6 +24,11 @@ public class scoreboardManager {
      * @param player
      */
     public void setScoreboard(Player player) {
+
+        if (player == null || !player.isOnline()){
+            return;
+        }
+
         Scoreboard oboard = Bukkit.getScoreboardManager().getNewScoreboard(); //Creates a new scoreboardManager for every player.
 
         final Objective obj = oboard.registerNewObjective("WorldCiv", "dummy"); //Uses FINAL for same objective. Different objective every time will cause flickering
@@ -59,14 +64,13 @@ public class scoreboardManager {
        new BukkitRunnable() {
             @Override
             public void run() {
-                if(!player.isOnline()){
+                if(!player.isOnline() || player == null){
                     cancel();
                 }
-
-                updateScoreboard(player, obj, newsteam, torchteam , blankscoreofficial); //update every tick
+                updateScoreboard(player, obj, newsteam, torchteam , blankscoreofficial); //update  half a second
             }
 
-        }.runTaskTimer(Main.plugin, 5, 10);
+        }.runTaskTimer(Main.plugin, 40, 10);
 
         player.setScoreboard(oboard);
 
@@ -82,6 +86,10 @@ public class scoreboardManager {
      */
     private static void updateScoreboard(Player player, Objective objective, Team newsTeam, Team torchTeam, Team blankScoreOfficial) {
 
+
+        if(player == null || !player.isOnline()){
+            return;
+        }
 
         //Variables that need to init every time to update.
         long health = Math.round(player.getHealth());
@@ -116,7 +124,7 @@ public class scoreboardManager {
 
         // SCORE TO HAVE ✓ OR ✗ MARK
 
-        if (player.getGameMode() == GameMode.CREATIVE || togglevision.contains(player) || visionregion.contains(player)) {
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || togglevision.contains(player) || visionregion.contains(player)) {
             torchTeam.setPrefix(ChatColor.YELLOW + "VISION BYPASS");
             torchTeam.setSuffix(ChatColor.RESET + "");
         } else {

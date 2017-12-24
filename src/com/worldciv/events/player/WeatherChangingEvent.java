@@ -39,6 +39,9 @@ public class WeatherChangingEvent implements Listener {
                     players.sendMessage(worldciv + ChatColor.GRAY + " It is storming! I don't think torches work during this time.");
                 }
 
+            } else {
+                players.sendMessage(worldciv + ChatColor.GRAY + " It stopped storming.");
+
             }
         }
 

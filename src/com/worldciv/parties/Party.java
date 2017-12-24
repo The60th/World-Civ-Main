@@ -94,7 +94,7 @@ public class Party {
     public void add(final Player sender, final Player leader) {
 
 
-        sender.sendMessage(worldciv + ChatColor.GRAY + " You have joined " + ChatColor.AQUA + leader.getName() + "'s" + ChatColor.GRAY
+        sender.sendMessage(worldciv + ChatColor.GRAY + " You have joined " + ChatColor.AQUA + leader.getName() + ChatColor.AQUA + "'s" + ChatColor.GRAY
                 + " party!");
 
 

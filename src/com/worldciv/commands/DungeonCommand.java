@@ -429,7 +429,7 @@ public class DungeonCommand implements CommandExecutor {
                         return true;
                     }
 
-                    if (args.length == 4) {
+                    if (args.length == 5) {
 
                         String possible_mythic_mob = "";
 
@@ -459,6 +459,7 @@ public class DungeonCommand implements CommandExecutor {
                             sender.sendMessage(worldciv + ChatColor.GRAY + " You must provide a value that is not empty.");
                             return true;
                         }
+
 
                         //we have diff
                         //number is > 0
@@ -615,7 +616,7 @@ public class DungeonCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon inspect" + ChatColor.GRAY + ": Inspect the region you're standing on.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon setspawn" + ChatColor.GRAY + ": Set the intro player-spawn in a dungeon.");
                     sender.sendMessage(ChatColor.YELLOW + "/dungeon setendspawn <dungeon-id>" + ChatColor.GRAY + ": Set the outro player-spawn for a dungeon.");
-                    sender.sendMessage(ChatColor.YELLOW + "/dungeon mobspawn <mob-id> <difficulty>" + ChatColor.GRAY + ": Set the mob-spawn(s) in a dungeon.");
+                    sender.sendMessage(ChatColor.YELLOW + "/dungeon mobspawn <mob-id> <difficulty> <amount> <encounter-name>" + ChatColor.GRAY + ": Set the mob-spawn(s) in a dungeon.");
                     //  sender.sendMessage(ChatColor.YELLOW + "/dungeon cp <cp-id>" + ChatColor.GRAY + ": Set dungeon checkpoints.");
                     sender.sendMessage(mainbot);
 

@@ -14,9 +14,9 @@ import static com.worldciv.utility.utilityArrays.lighttutorial;
 public class QuitEvent implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
+
         Player p = e.getPlayer();
         Party party = new Party();
-
 
         if(getDungeonManager.getDungeon(p) != null){ //player is in dungeon
             if(party.size(p) == 1){ //cant be zero hes still in. must be 1 to be last player

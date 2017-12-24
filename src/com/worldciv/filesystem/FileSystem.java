@@ -108,6 +108,20 @@ public class FileSystem {
         }
 
     }
+
+    public void removethislater(String dungeon_id){
+
+        if(!dungeons_folder.exists() || !dungeons_file.exists()){
+            return;
+        }
+
+        Bukkit.broadcastMessage(dungeons_yml.getStringList(dungeon_id).toString());
+        Bukkit.broadcastMessage(dungeons_yml.getList(dungeon_id).toString());
+        //Bukkit.broadcastMessage(dungeons_yml.);
+
+
+
+    }
     public void removeDungeon(String dungeon_id){
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return;

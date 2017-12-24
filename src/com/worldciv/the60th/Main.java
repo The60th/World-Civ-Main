@@ -14,7 +14,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
 import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.chat.ChatChannelEvent;
-import com.worldciv.events.chat.ChatEvent;
+import com.worldciv.events.chat.MentionTagEvent;
 import com.worldciv.events.inventory.*;
 import com.worldciv.events.player.*;
 import com.worldciv.scoreboard.scoreboardManager;
@@ -172,8 +172,13 @@ public class Main extends JavaPlugin {
         }, 0, 40); //every 2s, try not to jam the server!
 
         for (Player p : Bukkit.getOnlinePlayers()){
+
+            if(!chatchannels.containsValue(p.getName())){
+                chatchannels.put("global", p.getName());
+            }
+
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard()); //REMOVES CURRENT SB if at all any.
-            scoreboardManager.setScoreboard(p);
+           scoreboardManager.setScoreboard(p);
         }
 
         CraftingRecipes.registerRecipes();
@@ -257,8 +262,10 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new BoatFixEvent(), this);
         pm.registerEvents(new PickUpItemEvent(), this);
         pm.registerEvents(new DropItemEvent(), this);
-        pm.registerEvents(new ChatEvent(), this);
+        pm.registerEvents(new MentionTagEvent(), this);
         pm.registerEvents(new ChatChannelEvent(), this);
+        pm.registerEvents(new TorchBlockPlaceFixEvent(), this);
+        pm.registerEvents(new TreeCutterEvent(), this);
     }
 
     public void registerChatChannels(){

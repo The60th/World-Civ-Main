@@ -34,7 +34,7 @@ public class ToggleCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms)");
 
                 if (p.hasPermission("worldciv.togglevision")) {
-                    p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v)");
+                    p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v), socialspy (ss)");
                 }
                 p.sendMessage(" " + mainbot);
             } else if (args[0].equalsIgnoreCase("sb") || args[0].equalsIgnoreCase("scoreboard")) {
@@ -64,6 +64,22 @@ public class ToggleCommand implements CommandExecutor {
                 if (togglevision.contains(p)) {
                     togglevision.remove(p);
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "vision bypass.");
+                    return true;
+                }
+            } else if (args[0].equalsIgnoreCase("socialspy") || args[0].equalsIgnoreCase("ss")) {
+                if (!p.hasPermission("worldciv.socialspy")) {
+                    p.sendMessage(worldciv + ChatColor.GRAY + " This command is only allowed for staff. If you believe this is an error, ask staff to provide you the" + ChatColor.AQUA + " worldciv.socialspy" + ChatColor.GRAY + " permission.");
+                    return true;
+                }
+                if (!togglesocialspy.contains(p)) {
+                    togglesocialspy.add(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "social spy.");
+
+                    return true;
+                }
+                if (togglesocialspy.contains(p)) {
+                    togglesocialspy.remove(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "social spy");
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("sbanimation") || args[0].equalsIgnoreCase("anim")) {

@@ -14,14 +14,26 @@ import javax.xml.bind.Marshaller;
 import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.the60th.Main.vision_bypass;
 import static com.worldciv.utility.utilityArrays.visionregion;
+import static com.worldciv.utility.utilityMultimaps.chatchannels;
 
 public class JoinEvent implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event){
+
+
+
+
         Player player = event.getPlayer();
         player.setMaxHealth(40);
+
+        // CHAT CHANNEL CHECKER //
+        if(!chatchannels.containsValue(player.getName())){
+            chatchannels.put("global", player.getName());
+        }
+
         // SCOREBOARD CREATION //
         Main.getScoreboardManager().setScoreboard(player);
+
 
         ApplicableRegionSet set = getWorldGuard().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
 
