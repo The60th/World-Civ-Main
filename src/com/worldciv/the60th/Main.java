@@ -12,10 +12,12 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
+import com.worldciv.dungeons.DungeonChecker;
 import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.chat.ChatChannelEvent;
-import com.worldciv.events.chat.MentionTagEvent;
 import com.worldciv.events.inventory.*;
+import com.worldciv.events.mob.mobAttack;
+import com.worldciv.events.mob.playerAttack;
 import com.worldciv.events.player.*;
 import com.worldciv.scoreboard.scoreboardManager;
 import com.worldciv.utility.CraftingRecipes;
@@ -31,7 +33,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.worldciv.events.player.ArrowEvents;
 import com.worldciv.events.player.JoinEvent;
-import com.worldciv.events.player.AttackEvent;
 import com.worldciv.filesystem.FileSystem;
 import com.worldciv.filesystem.Gear;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -172,13 +173,8 @@ public class Main extends JavaPlugin {
         }, 0, 40); //every 2s, try not to jam the server!
 
         for (Player p : Bukkit.getOnlinePlayers()){
-
-            if(!chatchannels.containsValue(p.getName())){
-                chatchannels.put("global", p.getName());
-            }
-
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard()); //REMOVES CURRENT SB if at all any.
-           scoreboardManager.setScoreboard(p);
+            scoreboardManager.setScoreboard(p);
         }
 
         CraftingRecipes.registerRecipes();
@@ -255,17 +251,18 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new CraftCreate(), this);
         pm.registerEvents(new FurnaceCreate(), this);
         pm.registerEvents(new JoinEvent(), this);
-        pm.registerEvents(new AttackEvent(), this);
         pm.registerEvents(new CraftEvent(), this);
         pm.registerEvents(new RegionEvent(), this);
         pm.registerEvents(new ArrowEvents(), this);
         pm.registerEvents(new BoatFixEvent(), this);
         pm.registerEvents(new PickUpItemEvent(), this);
         pm.registerEvents(new DropItemEvent(), this);
-        pm.registerEvents(new MentionTagEvent(), this);
         pm.registerEvents(new ChatChannelEvent(), this);
-        pm.registerEvents(new TorchBlockPlaceFixEvent(), this);
-        pm.registerEvents(new TreeCutterEvent(), this);
+
+        pm.registerEvents(new mobAttack(), this);
+        pm.registerEvents(new playerAttack(), this);
+        pm.registerEvents(new playerAttack(), this);
+        pm.registerEvents(new DungeonChecker(), this);
     }
 
     public void registerChatChannels(){

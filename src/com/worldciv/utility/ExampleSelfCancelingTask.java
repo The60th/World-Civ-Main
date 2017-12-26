@@ -1,6 +1,6 @@
 package com.worldciv.utility;
 
-import com.worldciv.events.player.AttackEvent;
+import com.worldciv.events.player.PlayerAttackEvents;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,14 +25,14 @@ public class ExampleSelfCancelingTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if(AttackEvent.defenderArmorTracker.containsKey(player)){
+        if(PlayerAttackEvents.defenderArmorTracker.containsKey(player)){
             if(counter >= 30){
-                AttackEvent.defenderArmorTracker.remove(player);
+                PlayerAttackEvents.defenderArmorTracker.remove(player);
             }else{
 
             }
         }
-        else if(!(AttackEvent.defenderArmorTracker.containsKey(player))){
+        else if(!(PlayerAttackEvents.defenderArmorTracker.containsKey(player))){
             this.cancel();
         }
     }

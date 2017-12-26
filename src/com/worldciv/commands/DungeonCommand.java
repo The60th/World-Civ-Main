@@ -471,7 +471,13 @@ public class DungeonCommand implements CommandExecutor {
                          * args[1] is a mythic mob id ignoring caps case
                          * args[2] is difficulty [easy, medium, hard] ||| ON PARAMETER DO: args[2].toUpperCase
                          * args[3] is number higher than zero
+                         * Location = sender.getLocation
+                         * dungeonRegion name = id;
+                         * args[4] encounter name
                          */
+
+
+                        fileSystem.saveMob(dungeonregionname,args[1],args[2],Integer.parseInt(args[3]),sender.getLocation(),args[4]);
 
                         return true;
                     }

@@ -2,6 +2,7 @@ package com.worldciv.filesystem;
 
 import com.sk89q.worldedit.util.YAMLConfiguration;
 import com.worldciv.dungeons.Dungeon;
+import com.worldciv.dungeons.DungeonMob;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
@@ -12,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -89,6 +91,9 @@ public class FileSystem {
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return;
         }
+        List<String> easy = Arrays.asList("easy");
+        List<String> medium = Arrays.asList("medium");
+        List<String> hard = Arrays.asList("hard");
 
         dungeons_yml.createSection(dungeon_id);
         dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
@@ -100,6 +105,12 @@ public class FileSystem {
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
 
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS",easy);
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS",medium);
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS",hard);
         try {
             dungeons_yml.save(dungeons_file);
         } catch (IOException e){
@@ -138,10 +149,11 @@ public class FileSystem {
         }
     }
 
-    public void saveEntity(String dungeon_id){
+    /*public void saveEntity(String dungeon_id){
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return;
         }
+        List<String> blank = Arrays.asList("sup1", "sup2", "sup3");
 
         dungeons_yml.createSection(dungeon_id);
         dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
@@ -150,8 +162,14 @@ public class FileSystem {
         dungeons_yml.set(dungeon_id + ".Player-End-Spawn-Location", "null");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS",blank);
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS",blank);
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS",blank);
 
         try {
             dungeons_yml.save(dungeons_file);
@@ -160,7 +178,50 @@ public class FileSystem {
             e.printStackTrace();
         }
 
+    }*/
+    public void saveMob(String dungeon_id, String mythicMobID,String difficulty, int amount, Location location,String encounterName){
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName);
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs.Name");
+        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs.amount");
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs.amount",amount);
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs.Name",mythicMobID);
+        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Location", location);
+
+        List<String> encounters = dungeons_yml.getStringList(dungeon_id+".Mob-Spawn-Locations."+difficulty+".ENCOUNTERS");
+
+        if (encounters.get(0).equals("easy") ||encounters.get(0).equals("medium") ||encounters.get(0).equals("hard")) {
+            encounters.remove(0);
+            encounters.add(encounterName);
+        }else{
+            encounters.add(encounterName);
+        }
+        dungeons_yml.set(dungeon_id+".Mob-Spawn-Locations."+difficulty+".ENCOUNTERS",encounters);
+
+        try {
+            dungeons_yml.save(dungeons_file);
+        } catch (IOException e){
+            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
+            e.printStackTrace();
+        }
     }
+    public DungeonMob[] loadMobs(String dungeon_id, String difficulty){
+        List<String> encounters = dungeons_yml.getStringList(dungeon_id+".Mob-Spawn-Locations."+difficulty+".ENCOUNTERS");
+        Bukkit.broadcastMessage(encounters.toString());
+        DungeonMob[] mobs = new DungeonMob[encounters.size()];
+        //YamlConfiguration yaml = dungeons_yml.get(dungeon_id + ".Mob-Spawn-Locations."+difficulty);
+        for(int i = 0; i <encounters.size();i++){
+            Location location = (Location) dungeons_yml.get(dungeon_id + ".Mob-Spawn-Locations." +difficulty+"."+ encounters.get(i)+".Location");
+            Bukkit.broadcastMessage(location.toString());
+            mobs[i] = new DungeonMob(location,
+                    dungeons_yml.getInt(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounters.get(i)+".Mobs.amount"),
+                    dungeons_yml.getString(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounters.get(i)+".Mobs.Name"));
+        }
+        return mobs;
+    }
+
+
+
 
     public void setPlayerSpawn(String dungeon_id, Location location ){
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
@@ -228,6 +289,10 @@ public class FileSystem {
         return location;
 
     }
+
+
+
+
 
 
     public boolean saveItem(CustomItem item){

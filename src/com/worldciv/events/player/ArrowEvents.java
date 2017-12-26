@@ -44,9 +44,21 @@ public class ArrowEvents implements Listener {
                 ItemStack arrowFired = getArrowStack(p);
                 Arrow arrow = (Arrow)event.getProjectile();
                 List<String> lore = event.getBow().getItemMeta().getLore();
-                arrow.setMetadata(BOW_META_TAG, new FixedMetadataValue(plugin, CustomItem.unhideItemUUID(lore.get(lore.size()-1))));
+                //Null check here.
+                if(lore != null) {
+                    if (CustomItem.unhideItemUUID(lore.get(lore.size() - 1)) != null && !CustomItem.unhideItemUUID(lore.get(lore.size() - 1)).isEmpty()) {
+                        arrow.setMetadata(BOW_META_TAG, new FixedMetadataValue(plugin, CustomItem.unhideItemUUID(lore.get(lore.size() - 1))));
+                    }
+                }
+
+                //Reuse the lore string so we don't have to create more data.
                 lore = arrowFired.getItemMeta().getLore();
-                arrow.setMetadata(ARROW_META_TAG, new FixedMetadataValue(plugin, CustomItem.unhideItemUUID(lore.get(lore.size()-1))));
+
+                if(lore != null) {
+                    if (CustomItem.unhideItemUUID(lore.get(lore.size() - 1)) != null && !CustomItem.unhideItemUUID(lore.get(lore.size() - 1)).isEmpty()) {
+                        arrow.setMetadata(ARROW_META_TAG, new FixedMetadataValue(plugin, CustomItem.unhideItemUUID(lore.get(lore.size() - 1))));
+                    }
+                }
                 arrow.setMetadata(FORCE_META_TAG, new FixedMetadataValue(plugin,event.getForce())); // max = 1.0f
 
             }
