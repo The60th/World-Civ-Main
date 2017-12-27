@@ -1,3 +1,3 @@
 package com.worldciv.utility;
 
-public enum Tier{I,II,III,IV,V}
+public enum Tier{tempHalfTier, I,tempHalfTier2, II,III,IV,V}

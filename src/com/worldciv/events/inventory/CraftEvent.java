@@ -4,6 +4,8 @@ import com.worldciv.filesystem.*;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,6 +15,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Arrays;
 
 public class CraftEvent implements Listener {
     //TODO
@@ -74,7 +78,12 @@ public class CraftEvent implements Listener {
             meta.addEnchant(Enchantment.DURABILITY,1,true);
             itemStack.setItemMeta(meta);
             event.setCurrentItem(itemStack);
+        }
 
+
+        if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.II, ItemType.SWORD)));
         }
 
 

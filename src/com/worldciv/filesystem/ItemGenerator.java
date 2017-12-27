@@ -12,12 +12,16 @@ import java.util.concurrent.ThreadLocalRandom;
 //TODO Fix word list RNG?
 public class ItemGenerator {
     //Should make different min-max for armor vs weapons.
-    private static final int tierOneMin = 1;
-    private static final int tierOneMax = 6;
+    private static final int tierhalfMin = 4;
+    private static final int tierhalfMax = 8;
+    private static final int tierOneMin = 7;
+    private static final int tierOneMax = 13;
+    private static final int tieronehalfMin = 10;
+    private static final int tieronehalfMax = 15;
+    private static final int tierTwoMin = 14;
+    private static final int tierTwoMax = 19;
 
-    private static final int tierTwoMin = 4;
-    private static final int tierTwoMax = 9;
-
+    //Tiers below this not needed.
     private static final int tierThreeMin = 7;
     private static final int tierThreeMax = 11;
 
@@ -28,14 +32,10 @@ public class ItemGenerator {
     private static final int tierFiveMax = 16;
 
     private static final int commonMod = 0;
-    private static final int uncommonMod = 1;
-    private static final int rareMod = 2;
-    private static final int epicMod = 3;
-    private static final int legendaryMod = 5;
-
-    private static final int SHIELD_ARMOR_FIX_VALUE_BUFF = 5;
-    private static final int CHESTPLATE_ARMOR_FIX_VALUE_BUFF = 3;
-    private static final int LEGGINGS_ARMOR_FIX_VALUE_BUFF = 2;
+    private static final int uncommonMod = 3;
+    private static final int rareMod = 5;
+    private static final int epicMod = 7;
+    private static final int legendaryMod = 10;
 
 
     public static CustomItem generateItem(ItemStack itemStack, Tier tier){
@@ -62,7 +62,6 @@ public class ItemGenerator {
         else if(itemType == ItemType.SHIELD){
             damage = (calculateStat(rarity,tier)/3);
             if(damage < 1) damage = 1;
-            armor = calculateStat(rarity,tier) + SHIELD_ARMOR_FIX_VALUE_BUFF;
         }
         else if(itemType == ItemType.SWORD){
             damage = calculateStat(rarity,tier);
@@ -71,21 +70,19 @@ public class ItemGenerator {
         }else if(itemType == ItemType.PIKE){
             damage = calculateStat(rarity,tier);
         }else if(itemType == ItemType.HELM){
-            armor = (calculateStat(rarity,tier)/4);
+            armor = (calculateStat(rarity,tier));
             if(armor <= 0){armor = 1;}
         }
         else if(itemType == ItemType.CHESTPLATE){
-            armor = (calculateStat(rarity,tier)/4);
+            armor = (calculateStat(rarity,tier));
             if(armor <= 0){armor = 1;}
-            armor = armor+CHESTPLATE_ARMOR_FIX_VALUE_BUFF;
         }
         else if(itemType == ItemType.LEGGINGS){
-            armor = (calculateStat(rarity,tier)/4);
+            armor = (calculateStat(rarity,tier));
             if(armor <= 0){armor = 1;}
-            armor = armor + LEGGINGS_ARMOR_FIX_VALUE_BUFF;
         }
         else if(itemType == ItemType.BOOTS){
-            armor = (calculateStat(rarity,tier)/4);
+            armor = (calculateStat(rarity,tier));
             if(armor <= 0){armor = 1;}
         }
         String name = getItemName(itemType,tier);
@@ -97,10 +94,10 @@ public class ItemGenerator {
         //Add checks for the modifier later on.
         Random random = new Random(System.currentTimeMillis());
         int x = random.nextInt(100)+1;
-        if(isBetween(x,0,40)){ return Rarity.Common; }
-        else if(isBetween(x,41,65)){return Rarity.Uncommon;}
-        else if(isBetween(x,65,85)){return Rarity.Rare;}
-        else if(isBetween(x,85,95)){return Rarity.Epic;}
+        if(isBetween(x,0,75)){ return Rarity.Common; }
+        else if(isBetween(x,75,85)){return Rarity.Uncommon;}
+        else if(isBetween(x,85,90)){return Rarity.Rare;}
+        else if(isBetween(x,90,95)){return Rarity.Epic;}
         else if(isBetween(x,95,100)){return Rarity.Legendary;}
         else{
             Main.logger.info(("Rarity generation error has happened."));
@@ -110,6 +107,12 @@ public class ItemGenerator {
     private static int calculateStat(Rarity rarity,Tier tier){
         int calculatedValue;
         switch (tier){
+            case tempHalfTier:
+                calculatedValue = ThreadLocalRandom.current().nextInt(tierhalfMin, tierhalfMax + 1);
+                break;
+            case tempHalfTier2:
+                calculatedValue = ThreadLocalRandom.current().nextInt(tieronehalfMin, tieronehalfMax + 1);
+                break;
             case I:
                  calculatedValue = ThreadLocalRandom.current().nextInt(tierOneMin, tierOneMax + 1);
                 break;
@@ -168,7 +171,7 @@ public class ItemGenerator {
         }
     }
     private  static String getItemName(ItemType itemType, Tier tier){
-        return createRandomName() + getMaterialByTier(tier) +" "+ checkItemType(itemType).toString().toLowerCase();
+        return /*createRandomName() +*/ getMaterialByTier(tier) +" "+ checkItemType(itemType).toString().toLowerCase();
     }
     private static String createRandomName(){
         Random random = new Random();

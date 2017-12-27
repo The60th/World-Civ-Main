@@ -19,7 +19,6 @@ import com.worldciv.events.player.*;
 import com.worldciv.filesystem.FileSystem;
 import com.worldciv.filesystem.Gear;
 import com.worldciv.scoreboard.scoreboardManager;
-import com.worldciv.utility.CraftingRecipes;
 import com.worldciv.utility.FurnaceRecipes;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.*;
@@ -188,7 +187,7 @@ public class Main extends JavaPlugin {
            scoreboardManager.setScoreboard(p);
         }
 
-        CraftingRecipes.registerRecipes();
+        //CraftingRecipes.registerRecipes();
         FurnaceRecipes.registerFurnaceRecipes();
         Gear.registerRecipes();
 

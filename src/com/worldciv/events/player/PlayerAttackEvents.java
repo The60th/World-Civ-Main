@@ -424,7 +424,7 @@ public class PlayerAttackEvents implements Listener {
         } else if (defender.isInsideVehicle() && !attacker.isInsideVehicle()) {
             //Attacker pike damage
             if (customItemAttacker[0].getItemType() == ItemType.PIKE) {
-                damageModifer = 2.25d;
+                damageModifer = 2.0;
             }
         }
         Bukkit.broadcastMessage("Returning horse scale of: " + damageModifer);

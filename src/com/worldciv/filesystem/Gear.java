@@ -1,5 +1,6 @@
 package com.worldciv.filesystem;
 
+import com.sun.corba.se.spi.ior.IORTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,6 +44,18 @@ public class Gear {
 
     public  static ShapedRecipe customTierOneLance;
 
+    public static ItemStack tierTwoHelm;
+    public static ItemStack tierTwoChest;
+    public static ItemStack tierTwoLegs;
+    public static ItemStack tierTwoBoots;
+    public static ItemStack tierTwoSword;
+    public static ItemStack tierTwoBow;
+    public static ItemStack tierTwoShield;
+    public static ItemStack tierTwoPike;
+    public static ItemStack tierTwoLance;
+    public static ItemStack tierTwoArrow;
+
+
     public static void registerRecipes(){
         customTierOneSword();
         customTierOneHelm();
@@ -54,19 +67,22 @@ public class Gear {
         CustomTierOneArrow();
         CustomTierOnePike();
         CustomTierOneLance();
+
+        registerTierTwo();
     }
     private static void customTierOneHelm(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
         ItemStack item = new ItemStack(Material.IRON_HELMET, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
         customTierOneHelm = new ShapedRecipe(item);
         customTierOneHelm.shape(
                 "@@@",
                 "@ @",
                 "   ");
-        customTierOneHelm.setIngredient('@',Material.GLASS);
+        customTierOneHelm.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneHelm);
 
         customTierOneHelm2 = new ShapedRecipe(item);
@@ -74,7 +90,7 @@ public class Gear {
                 "   ",
                 "@@@",
                 "@ @");
-        customTierOneHelm2.setIngredient('@',Material.GLASS);
+        customTierOneHelm2.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneHelm2);
     }
     private static void customTierOneChest(){
@@ -82,13 +98,14 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_CHESTPLATE, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Chest plate");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
         customTierOneChest = new ShapedRecipe(item);
         customTierOneChest.shape(
                 "@ @",
                 "@@@",
                 "@@@");
-        customTierOneChest.setIngredient('@',Material.GLASS);
+        customTierOneChest.setIngredient('@',Material.IRON_BLOCK);
 
         Bukkit.getServer().addRecipe(customTierOneChest);
     }
@@ -97,13 +114,14 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_LEGGINGS, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Leggings");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
         customTierOneLeg = new ShapedRecipe(item);
         customTierOneLeg.shape(
                 "@@@",
                 "@ @" ,
                 "@ @");
-        customTierOneLeg.setIngredient('@',Material.GLASS);
+        customTierOneLeg.setIngredient('@',Material.IRON_BLOCK);
 
         Bukkit.getServer().addRecipe(customTierOneLeg);
     }
@@ -112,6 +130,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_BOOTS, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Boots");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
 
         customTierOneBoots = new ShapedRecipe(item);
@@ -119,7 +138,7 @@ public class Gear {
                 "   ",
                 "@ @",
                 "@ @");
-        customTierOneBoots.setIngredient('@',Material.GLASS);
+        customTierOneBoots.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneBoots);
 
         customTierOneBoots2 = new ShapedRecipe(item);
@@ -128,7 +147,7 @@ public class Gear {
                 "@ @",
                 "   "
         );
-        customTierOneBoots2.setIngredient('@',Material.GLASS);
+        customTierOneBoots2.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneBoots2);
     }
     private static void customTierOneSword(){
@@ -136,6 +155,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Sword");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
 
         customTierOneSword = new ShapedRecipe(item);
@@ -143,7 +163,7 @@ public class Gear {
                 "@  ",
                 "@  ",
                 "#  ");
-        customTierOneSword.setIngredient('@',Material.GLASS);
+        customTierOneSword.setIngredient('@',Material.IRON_BLOCK);
         customTierOneSword.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneSword);
 
@@ -152,7 +172,7 @@ public class Gear {
                 " @",
                 " @",
                 " #");
-        customTierOneSword2.setIngredient('@',Material.GLASS);
+        customTierOneSword2.setIngredient('@',Material.IRON_BLOCK);
         customTierOneSword2.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneSword2);
 
@@ -161,7 +181,7 @@ public class Gear {
                 " @ ",
                 " @ ",
                 " # ");
-        customTierOneSword3.setIngredient('@',Material.GLASS);
+        customTierOneSword3.setIngredient('@',Material.IRON_BLOCK);
         customTierOneSword3.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneSword3);
     }
@@ -172,6 +192,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.SHIELD, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Shield");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
 
         customTierOneShield = new ShapedRecipe(item);
@@ -180,7 +201,7 @@ public class Gear {
                 "@#@",
                 " @ "
         );
-        customTierOneShield.setIngredient('@',Material.GLASS);
+        customTierOneShield.setIngredient('@',Material.IRON_INGOT);
         customTierOneShield.setIngredient('#',Material.IRON_FENCE);
 
         Bukkit.getServer().addRecipe(customTierOneShield);
@@ -191,6 +212,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.ARROW, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Arrow");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
 
         customTierOneArrow = new ShapedRecipe(item);
@@ -199,7 +221,7 @@ public class Gear {
                 "  #",
                 "   "
         );
-        customTierOneArrow.setIngredient('@',Material.GLASS);
+        customTierOneArrow.setIngredient('@',Material.IRON_INGOT);
         customTierOneArrow.setIngredient('#',Material.STICK);
 
         Bukkit.getServer().addRecipe(customTierOneArrow);
@@ -210,6 +232,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.BOW, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Bow");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
         item.setItemMeta(meta);
 
         customTierOneBow = new ShapedRecipe(item);
@@ -218,7 +241,7 @@ public class Gear {
                 "@ #",
                 " @#"
         );
-        customTierOneBow.setIngredient('@',Material.GLASS);
+        customTierOneBow.setIngredient('@',Material.IRON_INGOT);
         customTierOneBow.setIngredient('#',Material.STRING);
 
         Bukkit.getServer().addRecipe(customTierOneBow);
@@ -241,7 +264,7 @@ public class Gear {
                 " @ ",
                 "  #"
         );
-        customTierOnePike.setIngredient('@',Material.GLASS);
+        customTierOnePike.setIngredient('@',Material.IRON_BLOCK);
         customTierOnePike.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOnePike);
     }
@@ -263,9 +286,77 @@ public class Gear {
                 " # ",
                 "  #"
         );
-        customTierOneLance.setIngredient('@',Material.GLASS);
+        customTierOneLance.setIngredient('@',Material.IRON_BLOCK);
         customTierOneLance.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneLance);
+    }
+
+
+
+
+    public static void registerTierTwo(){
+        ItemMeta meta;
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
+        tierTwoChest = new ItemStack(Material.IRON_CHESTPLATE, 1);
+        meta = tierTwoChest.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Chestplate");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoChest.setItemMeta(meta);
+
+        tierTwoLegs = new ItemStack(Material.IRON_LEGGINGS, 1);
+        meta = tierTwoLegs.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Leggings");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoLegs.setItemMeta(meta);
+
+        tierTwoBoots = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoBoots.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Boots");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoBoots.setItemMeta(meta);
+
+        tierTwoSword = new ItemStack(Material.IRON_SWORD, 1);
+        meta = tierTwoSword.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Sword");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoSword.setItemMeta(meta);
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
+        tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
+        meta = tierTwoHelm.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        tierTwoHelm.setItemMeta(meta);
+
     }
 
 }
