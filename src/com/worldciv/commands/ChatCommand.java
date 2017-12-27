@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
+import static com.worldciv.events.chat.ChatChannelEvent.getRawMessage;
 import static com.worldciv.utility.utilityMultimaps.chatchannels;
 import static com.worldciv.utility.utilityStrings.*;
 
@@ -154,74 +155,6 @@ public class ChatCommand implements CommandExecutor {
         return true;
     }
 
-    public static String getCensoredWord(String argument) {
-        switch (argument.toLowerCase()) {
-            case "fuck":
-            case "shit":
-            case "bullshit":
-            case "motherfucker":
-            case "bitch":
-            case "damn":
-            case "ass":
-            case "asshole":
-            case "vagina":
-            case "penis":
-            case "crap":
-            case "dick":
-            case "pussy":
-            case "fag":
-            case "faggot":
-            case "fagg":
-            case "bastard":
-            case "slut":
-            case "douche":
-            case "cunt":
-            case "hoe":
-            case "whore":
-            case "nigger":
-            case "nigga":
-            case "cum":
-                argument = "****";
-        }
-
-        String ChatColorPrefix = "";
-
-        if (argument.startsWith("&")) {
-            if (argument.substring(1, 2).matches("^[abcdefrlonmk 0-9 a-g]*$")) {
-                argument = argument.substring(2); //message
-                ChatColorPrefix = argument.substring(0, 2); //prefix
-            }
-        }
-
-        argument = ChatCommand.getCensoredWord(argument);
-        argument = ChatColorPrefix + argument;
-
-        return argument;
-    }
-
-    public static String getMessage(String[] args) {
-
-        List<String> listargs = Arrays.asList(args);
-
-        int index = 0;
-
-        String finalmessage = "";
-
-        for (String argument : listargs) {
-
-            argument = getCensoredWord(argument);
-
-            if (index == 0) {
-                finalmessage += argument;
-            } else {
-                finalmessage += " " + argument;
-            }
-            index++;
-        }
-
-        return finalmessage;
-
-    }
 
     public Set<Player> getRecipients() {
 
@@ -293,7 +226,7 @@ public class ChatCommand implements CommandExecutor {
         }
 
         if (found_player) { //If player is found!
-            ((Player) sender).chat(getMessage(args));
+            ((Player) sender).chat(getRawMessage(args));
             return; //Don't do anything! He's already in this parameter's chat.
         }
 
@@ -313,7 +246,7 @@ public class ChatCommand implements CommandExecutor {
         //Conditions already met: Not already in chat mode && removed from (if any) chat channel (which should be removed.. always going to be in one.)
 
         chatchannels.put(channelname, sender.getName());
-        ((Player) sender).chat(getMessage(args));
+        ((Player) sender).chat(getRawMessage(args));
         chatchannels.remove(channelname, sender.getName());
         chatchannels.put(old_channel, sender.getName());
         return;

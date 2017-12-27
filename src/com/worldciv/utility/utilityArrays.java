@@ -12,12 +12,14 @@ public final class utilityArrays {
     public final static ArrayList<Player> dummytoggleboard = new ArrayList<Player>();
     public final static ArrayList<Player> toggledisplay = new ArrayList<Player>();
     public final static ArrayList<Player> togglevisionmessage = new ArrayList<Player>();
+    public final static ArrayList<Player> togglecensor = new ArrayList<Player>(); //the toggle is inversed from the other toggles
 
     public static ArrayList<Player> currentlyBlinded = new ArrayList<Player>();
     public static ArrayList<Player> holdingLight = new ArrayList<Player>();
 
     public static ArrayList<Player> globalMute = new ArrayList<Player>();
     public static ArrayList<Player> townyMute = new ArrayList<Player>();
+
 
     public final static ArrayList<Player> setnewsmessage = new ArrayList<Player>();
     public final static ArrayList<Player> notreadylist = new ArrayList<Player>();

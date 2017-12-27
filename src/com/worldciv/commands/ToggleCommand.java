@@ -31,7 +31,7 @@ public class ToggleCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("help")) {
 
                 p.sendMessage(maintop);
-                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms)");
+                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c)");
 
                 if (p.hasPermission("worldciv.togglevision")) {
                     p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v), socialspy (ss)");
@@ -64,6 +64,19 @@ public class ToggleCommand implements CommandExecutor {
                 if (togglevision.contains(p)) {
                     togglevision.remove(p);
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "vision bypass.");
+                    return true;
+                }
+            } else if (args[0].equalsIgnoreCase("censor") || args[0].equalsIgnoreCase("c")) {
+
+                if (!togglecensor.contains(p)) {
+                    togglecensor.add(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "censorship.");
+
+                    return true;
+                }
+                if (togglecensor.contains(p)) {
+                    togglecensor.remove(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "censorship");
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("socialspy") || args[0].equalsIgnoreCase("ss")) {

@@ -1,11 +1,8 @@
 package com.worldciv.events.player;
 
 import com.worldciv.the60th.Main;
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.PacketPlayOutBlockBreakAnimation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,86 +10,56 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class TreeCutterEvent implements Listener{
 
-    double duration;
 
-    @EventHandler
-    public void onDamagedLog(final BlockDamageEvent e) {
-
-        Block block = e.getBlock();
-        BlockPosition blockpos = new BlockPosition(block.getX(), block.getY(), block.getZ());
-        Player p = e.getPlayer();
-
-        if (e.isCancelled()) {
-            return;
-        }
-
-        if (block.getType() != Material.LOG && block.getType() != Material.LOG_2) {
-            return;
-        }
-
-        if (!this.isAxe(p.getInventory().getItemInMainHand())) {
-            return;
-        }
-
-        if (p.getGameMode() != GameMode.SURVIVAL) {
-            return;
-        }
-
-        //holding axe, is survival, cutting a log
-
-        double animation_per_second = (getDuration() / 9);
-
-
-        PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(0, blockpos, 5);
-
-        for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
-            double radius = block.getLocation().distance(onlineplayer.getLocation());
-            if (radius <= 16) {
-                ((CraftPlayer) onlineplayer).getHandle().playerConnection.sendPacket(packet);
-            }
-
-            e.setCancelled(true);
-
-        }
-    }
+    HashMap<Player, Block> chopping = new HashMap<>();
+    HashMap<Player, Block> chopping_records = new HashMap<>();
 
 
     @EventHandler
-    public void onHitLog(final PlayerInteractEvent e) {
+    public void onHitLog(PlayerInteractEvent e) { //Final event anything passed by e is FINAL
 
-        Block block = e.getClickedBlock();
-        Player p = e.getPlayer();
+        Block block = e.getClickedBlock(); //block we are trying to interact with
 
-        if (e.isCancelled()) {
+        if (e.getClickedBlock() == null || block.getLocation() == null) {
             return;
         }
 
-        if (block.getType() != Material.LOG && block.getType() != Material.LOG_2) {
+        Location loc = block.getLocation();
+        Player p = e.getPlayer(); // player
+
+
+        if (e.isCancelled()) { //other plugins can interfere so lets cancel this nentire thing ifother events wish it to be canceled
             return;
         }
 
-        if (!this.isAxe(p.getInventory().getItemInMainHand())) {
+        if (block.getType() != Material.LOG && block.getType() != Material.LOG_2) { //if its log
             return;
         }
 
-        if (p.getGameMode() != GameMode.SURVIVAL) {
+        if (!this.isAxe(p.getInventory().getItemInMainHand())) { //has an axe
             return;
         }
 
-        if (e.getAction() != Action.LEFT_CLICK_BLOCK) {
+        if (p.getGameMode() != GameMode.SURVIVAL) { //no creative glitchs
             return;
         }
+
+        if (e.getAction() != Action.LEFT_CLICK_BLOCK) { //if ur left clicking
+            return;
+        }
+
+
 
         ItemStack axe = p.getInventory().getItemInMainHand(); //Item in main hand
         Material axetype = axe.getType(); //Material Type
@@ -125,20 +92,66 @@ public class TreeCutterEvent implements Listener{
             //Don't do anything, it's default.
         } else {
             double efflevel = getEffEnchLevel(axe); //returns int of efficiency
-            double eff_calc = Math.pow(efflevel, 2) + 1;
-            multiplier = eff_calc + multiplier;
+            double eff_calc = Math.pow(efflevel, 2) + 1; //wiki calculation for eff calculation
+            multiplier = eff_calc + multiplier; //add it to the multiplier
         }
 
-        setDuration(base * (1 / multiplier) * amount_of_logs);
+        double duration = base * (1 / multiplier) * amount_of_logs; //effectively tells you the duration of cutting down so called tree
+
+        if (!chopping_records.containsKey(p)) { //If you haven't been recorded yet. Add.
+            p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            chopping_records.put(p, block);//Add a record of player cutting down a block. First time cutting down a log. take is easy :C
+        } else if (!chopping_records.get(p).equals(block)) { //this is a new block. replace it.
+            p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            chopping_records.replace(p, block);
+        } else if(chopping.get(p) == null) { //not  finished. we'll let block break event handle this part.
+        } else if(chopping.get(p).equals(block)) { //It's ready! :D
+            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            chopping.replace(p, block);
+            return;
+        } else if (chopping_records.get(p).equals(block)) {
+            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            return;
+            //im not sure if anything can be added here
+        }
+
+        new BukkitRunnable() {
+            int iteration = 0;
+
+            @Override
+            public void run() {
+
+                if(chopping_records.get(p) == null){
+                    cancel();
+                    return;
+                }
+
+                if(!chopping_records.get(p).equals(block)){
+                    chopping.remove(p);
+                    chopping_records.replace(p, block);
+                    cancel();
+                    return;
+                }
+
+                if (Math.floor(duration) <= iteration) {
+                    chopping.put(p, block);
+                    cancel();
+                    return;
+                }
+                iteration++;
+            }
+        }.runTaskTimer(Main.plugin, 0, 20);
 
 
-        setHardness(block, amount_of_logs);
-
-        p.sendMessage(worldciv + ChatColor.GRAY + " Logs Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(getDuration()) + ChatColor.GRAY + ".");
-
+        // setHardness(block, amount_of_logs); This changes all blocks. Can't use this.. :C
 
     }
 
+    /**
+     * Checks event canceled, if block is a log, if axe, if survival => if chopping then break -> if not cancel event
+     *
+     * @param e
+     */
     @EventHandler
     public void onBreakingBlock(final BlockBreakEvent e) {
 
@@ -158,7 +171,21 @@ public class TreeCutterEvent implements Listener{
             return;
         }
 
-        this.breakBlock(e.getBlock(), e.getPlayer());
+        if(chopping.get(p) == null){
+            e.setCancelled(true);
+            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            return;
+        }
+
+        if (chopping.get(p).equals(e.getBlock())) {
+            this.breakBlock(e.getBlock(), e.getPlayer());
+            chopping_records.remove(p);
+            chopping.remove(p);
+
+        } else {
+            Bukkit.broadcastMessage("no");
+            e.setCancelled(true);
+        }
     }
 
     public int getAllLogs(final Block b, final Player p) {
@@ -175,14 +202,6 @@ public class TreeCutterEvent implements Listener{
             }
         }
         return amount_of_logs;
-    }
-
-    public double getDuration() {
-        return this.duration;
-    }
-
-    public void setDuration(double duration) {
-        this.duration = duration;
     }
 
     public int getEffEnchLevel(ItemStack axe) {
@@ -224,8 +243,6 @@ public class TreeCutterEvent implements Listener{
             Field field = net.minecraft.server.v1_12_R1.Block.class.getDeclaredField("strength");
             field.setAccessible(true);
             field.setFloat(CraftMagicNumbers.getBlock(material), 2 * amount_of_logs);
-
-            BlockPosition blockpos = new BlockPosition(block.getX(), block.getY(), block.getZ());
 
             //add a timer for the duration. once duration runs out send packets to ALL players and players who are abotu to quuit to "2".
 

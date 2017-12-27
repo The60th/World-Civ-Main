@@ -12,13 +12,12 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
-import com.worldciv.dungeons.DungeonChecker;
 import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.chat.ChatChannelEvent;
 import com.worldciv.events.inventory.*;
-import com.worldciv.events.mob.mobAttack;
-import com.worldciv.events.mob.playerAttack;
 import com.worldciv.events.player.*;
+import com.worldciv.filesystem.FileSystem;
+import com.worldciv.filesystem.Gear;
 import com.worldciv.scoreboard.scoreboardManager;
 import com.worldciv.utility.CraftingRecipes;
 import com.worldciv.utility.FurnaceRecipes;
@@ -31,10 +30,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.worldciv.events.player.ArrowEvents;
-import com.worldciv.events.player.JoinEvent;
-import com.worldciv.filesystem.FileSystem;
-import com.worldciv.filesystem.Gear;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.Random;
@@ -138,8 +133,14 @@ public class Main extends JavaPlugin {
                                     if (chance < 109560) { //9.13%
                                         if (currentItem.getAmount() > 1) {
                                             currentItem.setAmount(currentItem.getAmount() - 1);
-                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
-                                            players.sendMessage(worldciv + ChatColor.GRAY + " The storm has made one of your torches useless!");
+
+                                            if (chance < 27390) {  // 1/4th chance of drop
+                                                players.getInventory().addItem(new ItemStack(Material.STICK, 1));
+                                                players.sendMessage(worldciv + ChatColor.GRAY + " The storm extinguished your torch.");
+
+                                            } else {
+                                                players.sendMessage(worldciv + ChatColor.GRAY + " The storm made your torch useless!");
+                                            }
                                         } else {
                                             currentItem.setAmount(-1);
                                             players.getInventory().addItem(new ItemStack(Material.STICK, 1));
@@ -154,8 +155,13 @@ public class Main extends JavaPlugin {
                                     if (chance < 109560) {
                                         if (offHandItem.getAmount() > 1) {
                                             offHandItem.setAmount(offHandItem.getAmount() - 1);
-                                            players.getInventory().addItem(new ItemStack(Material.STICK, 1));
-                                            players.sendMessage(worldciv + ChatColor.GRAY + " The storm has made one of your torches useless!");
+                                            if (chance < 27390) {  // 1/4th chance of drop
+                                                players.getInventory().addItem(new ItemStack(Material.STICK, 1));
+                                                players.sendMessage(worldciv + ChatColor.GRAY + " The storm extinguished your torch.");
+
+                                            } else {
+                                                players.sendMessage(worldciv + ChatColor.GRAY + " The storm made your torch useless!");
+                                            }
                                         } else {
                                             offHandItem.setAmount(-1);
                                             players.getInventory().addItem(new ItemStack(Material.STICK, 1));
@@ -173,8 +179,13 @@ public class Main extends JavaPlugin {
         }, 0, 40); //every 2s, try not to jam the server!
 
         for (Player p : Bukkit.getOnlinePlayers()){
+
+            if(!chatchannels.containsValue(p.getName())){
+                chatchannels.put("global", p.getName());
+            }
+
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard()); //REMOVES CURRENT SB if at all any.
-            scoreboardManager.setScoreboard(p);
+           scoreboardManager.setScoreboard(p);
         }
 
         CraftingRecipes.registerRecipes();
@@ -258,11 +269,8 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new PickUpItemEvent(), this);
         pm.registerEvents(new DropItemEvent(), this);
         pm.registerEvents(new ChatChannelEvent(), this);
-
-        pm.registerEvents(new mobAttack(), this);
-        pm.registerEvents(new playerAttack(), this);
-        pm.registerEvents(new playerAttack(), this);
-        pm.registerEvents(new DungeonChecker(), this);
+        pm.registerEvents(new TorchBlockPlaceFixEvent(), this);
+        pm.registerEvents(new TreeCutterEvent(), this);
     }
 
     public void registerChatChannels(){

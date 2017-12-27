@@ -75,7 +75,7 @@ public class WorldCivCommand implements CommandExecutor {
                         Player player_muted = Bukkit.getPlayer(args[2]);
 
                         if (player_muted == null) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " The player you requested for was not found in the server");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " The player you requested for was not found in the server.");
                             return true;
                         }
                         /**
@@ -145,7 +145,7 @@ public class WorldCivCommand implements CommandExecutor {
 
                     if(!sender.hasPermission("worldciv.mod") && !sender.hasPermission("worldciv.admin")){
                         sender.sendMessage(worldciv + ChatColor.GRAY + " You aren't allowed to server mute players. Permission node: " +ChatColor.YELLOW + "worldciv.mod" +ChatColor.GRAY
-                        + "OR" +ChatColor.YELLOW + "worldciv.admin" + ChatColor.GRAY + ".");
+                        + " OR " +ChatColor.YELLOW + "worldciv.admin" + ChatColor.GRAY + ".");
                         return true;
                     }
 
@@ -188,7 +188,7 @@ public class WorldCivCommand implements CommandExecutor {
 
                         if (globalMute.contains(player_muted)) {
                             for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
-                                onlineplayer.sendMessage(worldciv + " " + ChatColor.YELLOW + player_muted.getName() + ChatColor.RED + " is now muted from all chat.");
+                                onlineplayer.sendMessage(worldciv + " " + ChatColor.YELLOW + player_muted.getName() + ChatColor.RED + " is now able to participate in chat.");
                             }
                             globalMute.remove(player_muted);
                             return true;
@@ -202,7 +202,7 @@ public class WorldCivCommand implements CommandExecutor {
                     }
 
 
-                        sender.sendMessage(worldciv + ChatColor.GRAY + " You are missing arguments. Use: " + ChatColor.YELLOW + "/wc towny mute <player>" + ChatColor.GRAY + ".");
+                        sender.sendMessage(worldciv + ChatColor.GRAY + " You are missing arguments. Use: " + ChatColor.YELLOW + "/wc mute <player>" + ChatColor.GRAY + ".");
                     return true;
 
                 case "help":
