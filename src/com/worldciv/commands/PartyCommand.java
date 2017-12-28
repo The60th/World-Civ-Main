@@ -68,12 +68,12 @@ public class PartyCommand implements CommandExecutor {
                         long radius = Math.round(sender.getLocation().distance(receiver.getLocation()));
 
                         if(!party.isLeader(sender)) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are the not the leader of this party.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are not the leader of this party.");
                             return true;
                         }
 
                         if (party.size(sender) >= 4) {
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You have reached the max party size! You can't invite more challengers!");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You have reached max party size! You can't invite more challengers!");
                             return true;
                         }
 
@@ -110,7 +110,7 @@ public class PartyCommand implements CommandExecutor {
 
 
                         if (!(radius <= 6)){
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must nearby " +ChatColor.AQUA + receiver.getName() + ChatColor.GRAY +" to invite them.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You must be nearby " +ChatColor.AQUA + receiver.getName() + ChatColor.GRAY +" to invite them.");
                             return true;
                         }
 
@@ -329,7 +329,7 @@ public class PartyCommand implements CommandExecutor {
                     }
 
                     if(!party.isLeader(sender)){
-                        sender.sendMessage(worldciv + ChatColor.GRAY + " You are the not the leader of this party.");
+                        sender.sendMessage(worldciv + ChatColor.GRAY + " You are not the leader of this party.");
                         return true;
                     }
 
@@ -352,7 +352,7 @@ public class PartyCommand implements CommandExecutor {
                         }
 
                         if(!party.isLeader(sender)){
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are the not the leader of this party.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are not the leader of this party.");
                             return true;
                         }
 
@@ -403,7 +403,7 @@ public class PartyCommand implements CommandExecutor {
                         }
 
                         if(!party.isLeader(sender)){
-                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are the not the leader of this party.");
+                            sender.sendMessage(worldciv + ChatColor.GRAY + " You are not the leader of this party.");
                             return true;
                         }
                         if (newleader == null || !newleader.isOnline()) {

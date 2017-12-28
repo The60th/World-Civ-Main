@@ -18,7 +18,7 @@ public class TorchBlockPlaceFixEvent implements Listener {
         Block blockplaced = e.getBlock();
 
         if (blockplaced.getType() == Material.TORCH) { //torch is being placed
-            if (p.getInventory().getItemInMainHand().getType().isBlock()){ //item in main hand is a block
+            if (p.getInventory().getItemInMainHand().getType().isBlock() && p.getInventory().getItemInMainHand().getType() != Material.TORCH){ //item in main hand is a block
                 e.setCancelled(true);
                 return;
             }

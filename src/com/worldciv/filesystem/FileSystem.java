@@ -1,7 +1,6 @@
 package com.worldciv.filesystem;
 
-import com.sk89q.worldedit.util.YAMLConfiguration;
-import com.worldciv.dungeons.Dungeon;
+import com.worldciv.commands.PollCommand;
 import com.worldciv.dungeons.DungeonMob;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ItemType;
@@ -10,10 +9,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -25,6 +29,12 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class FileSystem {
     File dungeons_folder;
     File dungeons_file;
+
+    File polls_folder;
+    File pollsdata_folder;
+    File polls_banlist;
+    File polls_reportlist;
+
     YamlConfiguration dungeons_yml;
 
     public FileSystem(){
@@ -33,12 +43,41 @@ public class FileSystem {
         dungeons_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/dungeons");
         dungeons_file = new File(dungeons_folder, "dungeons.yml");
 
+        polls_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder() + "/polls");
+        pollsdata_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder() + "/polls/pollsdata");
+        polls_banlist = new File(polls_folder, "banlist.yml");
+        polls_reportlist = new File(polls_folder, "reportlist.yml");
+
         if(!custom_items_folder.exists()) {
             custom_items_folder.mkdir();
         }
 
+        if (!polls_folder.exists()) {
+            polls_folder.mkdir();
+        }
+
+        if(!pollsdata_folder.exists()){
+            pollsdata_folder.mkdir();
+        }
+
         if(!dungeons_folder.exists()){
             dungeons_folder.mkdir();
+        }
+
+        if(!polls_banlist.exists()){
+            try {
+                polls_banlist.createNewFile();
+            } catch(Exception e){
+
+            }
+        }
+
+        if(!polls_reportlist.exists()){
+            try {
+                polls_reportlist.createNewFile();
+            } catch(Exception e){
+
+            }
         }
 
         if(!dungeons_file.exists()){
@@ -87,6 +126,67 @@ public class FileSystem {
         }
     }
 
+    public void createPoll(Player p, String msg) {
+        if (!polls_folder.exists() && !pollsdata_folder.exists()) {
+            return;
+        }
+        int id;
+
+        for (id = 0; id < 200; id++) {
+
+            File file = new File(pollsdata_folder, "ID" + String.valueOf(id) + "-" + p.getUniqueId() + "-" + p.getName() + ".yml");
+
+
+
+
+            if (allFileNames(pollsdata_folder) == null || !file.exists()) { //no list
+
+                YamlConfiguration file_yml = YamlConfiguration.loadConfiguration(file);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+
+                file_yml.createSection(String.valueOf(id));
+                file_yml.createSection(String.valueOf(id) + ".Upload Date");
+                file_yml.set(String.valueOf(id) + ".Upload Date", dateFormat.format(date));
+                file_yml.createSection(String.valueOf(id) + ".Author");
+                file_yml.set(String.valueOf(id) + ".Author", p.getName());
+                file_yml.createSection(String.valueOf(id) + ".Subject");
+                file_yml.set(String.valueOf(id) + ".Subject", msg);
+                file_yml.createSection(String.valueOf(id) + ".Votes");
+
+                try{
+                    file_yml.save(file);
+                }catch(Exception e){
+
+                }
+                break;
+            }
+        }
+
+    }
+
+    public List<String> allFileNames(File folder) {
+        File[] listOfFiles = folder.listFiles();
+        List<String> list = new ArrayList<>();
+
+        for (File file : listOfFiles) {
+            String file_name = file.getName();
+            list.add(file_name);
+        }
+
+        if (list.isEmpty() || list == null) {
+
+            return null;
+        }
+        return list;
+    }
+
+    public File[] allFiles(File folder) {
+        File[] listOfFiles = folder.listFiles();
+
+        return listOfFiles;
+    }
+
     public void createDungeon(String dungeon_id){
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return;
@@ -119,6 +219,7 @@ public class FileSystem {
         }
 
     }
+
 
     public void removethislater(String dungeon_id){
 

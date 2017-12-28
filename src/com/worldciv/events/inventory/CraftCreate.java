@@ -30,7 +30,7 @@ public class CraftCreate implements Listener {
     }
 
     private void dummyItemCraft(ItemStack[] itemsInTable, PrepareItemCraftEvent e) {
-        //Disable crafting of new diamond tools.
+        //Disable crafting of new diamond tools. I love jessi
         if (e.getInventory().getResult() == null) return;
         Material mat = e.getInventory().getResult().getType();
         if (mat == null) return;

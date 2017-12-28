@@ -11,12 +11,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
+import static com.worldciv.utility.utilityArrays.toggletimber;
+import static com.worldciv.utility.utilityArrays.toggletimbermessages;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class TreeCutterEvent implements Listener{
@@ -24,12 +28,37 @@ public class TreeCutterEvent implements Listener{
 
     HashMap<Player, Block> chopping = new HashMap<>();
     HashMap<Player, Block> chopping_records = new HashMap<>();
+    HashMap<Player, Double> chopping_time = new HashMap<>();
 
+
+    @EventHandler
+    public void onAbandonTree(PlayerMoveEvent e){
+        Player p = e.getPlayer();
+
+        if(toggletimber.contains(p)){
+            return;
+        }
+
+        if(!chopping_records.containsKey(p)){
+         return;
+        } else {
+            if(p.getLocation().distance(chopping_records.get(p).getLocation()) > 5 ){
+                if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
+                chopping.remove(p);
+                chopping_records.remove(p);
+                return;
+            }
+        }
+
+
+    }
 
     @EventHandler
     public void onHitLog(PlayerInteractEvent e) { //Final event anything passed by e is FINAL
 
         Block block = e.getClickedBlock(); //block we are trying to interact with
+
+
 
         if (e.getClickedBlock() == null || block.getLocation() == null) {
             return;
@@ -38,6 +67,9 @@ public class TreeCutterEvent implements Listener{
         Location loc = block.getLocation();
         Player p = e.getPlayer(); // player
 
+        if(toggletimber.contains(p)){
+            return;
+        }
 
         if (e.isCancelled()) { //other plugins can interfere so lets cancel this nentire thing ifother events wish it to be canceled
             return;
@@ -47,7 +79,11 @@ public class TreeCutterEvent implements Listener{
             return;
         }
 
-        if (!this.isAxe(p.getInventory().getItemInMainHand())) { //has an axe
+        if(!isTree(block)){
+            return;
+        }
+
+        if (!this.isEffectiveAxe(p.getInventory().getItemInMainHand())) { //has an effective axe
             return;
         }
 
@@ -58,8 +94,6 @@ public class TreeCutterEvent implements Listener{
         if (e.getAction() != Action.LEFT_CLICK_BLOCK) { //if ur left clicking
             return;
         }
-
-
 
         ItemStack axe = p.getInventory().getItemInMainHand(); //Item in main hand
         Material axetype = axe.getType(); //Material Type
@@ -89,28 +123,49 @@ public class TreeCutterEvent implements Listener{
         }
 
         if (getEffEnchLevel(axe) == 0) {
-            //Don't do anything, it's default.
         } else {
             double efflevel = getEffEnchLevel(axe); //returns int of efficiency
             double eff_calc = Math.pow(efflevel, 2) + 1; //wiki calculation for eff calculation
-            multiplier = eff_calc + multiplier; //add it to the multiplier
+            multiplier += eff_calc; //add it to the multiplier
         }
 
-        double duration = base * (1 / multiplier) * amount_of_logs; //effectively tells you the duration of cutting down so called tree
+        DecimalFormat df = new DecimalFormat("##.##");
+        double duration = Double.valueOf(df.format(base * (1 / multiplier) * amount_of_logs)); //effectively tells you the duration of cutting down so called tree
+
+
+
+
 
         if (!chopping_records.containsKey(p)) { //If you haven't been recorded yet. Add.
-            p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.put(p, block);//Add a record of player cutting down a block. First time cutting down a log. take is easy :C
+            chopping_time.put(p, duration);
+            chopping.remove(p);
         } else if (!chopping_records.get(p).equals(block)) { //this is a new block. replace it.
-            p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            if (!toggletimbermessages.contains(p))  p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.replace(p, block);
-        } else if(chopping.get(p) == null) { //not  finished. we'll let block break event handle this part.
+            chopping_time.replace(p, duration);
+            chopping.remove(p);
+        } else if(chopping.get(p) == null) {
+            if (!toggletimbermessages.contains(p))    p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            return;
         } else if(chopping.get(p).equals(block)) { //It's ready! :D
-            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+
+            if(duration != chopping_time.get(p)){
+                if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.RED + " This isn't the axe you first used...");
+
+                chopping.remove(p);
+                chopping_time.remove(p);
+                chopping_records.remove(p);
+
+                return;
+            }
+
             chopping.replace(p, block);
             return;
         } else if (chopping_records.get(p).equals(block)) {
-            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!toggletimbermessages.contains(p)) p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
             return;
             //im not sure if anything can be added here
         }
@@ -126,15 +181,26 @@ public class TreeCutterEvent implements Listener{
                     return;
                 }
 
+                if (p.getLocation().distance(block.getLocation()) > 5) {
+                    if (!toggletimbermessages.contains(p))  p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
+                    chopping.remove(p);
+                    chopping_records.remove(p);
+                    chopping_time.remove(p);
+                    cancel();
+                    return;
+                }
+
                 if(!chopping_records.get(p).equals(block)){
                     chopping.remove(p);
                     chopping_records.replace(p, block);
+                    chopping_time.replace(p, duration);
                     cancel();
                     return;
                 }
 
                 if (Math.floor(duration) <= iteration) {
                     chopping.put(p, block);
+                    if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
                     cancel();
                     return;
                 }
@@ -156,6 +222,11 @@ public class TreeCutterEvent implements Listener{
     public void onBreakingBlock(final BlockBreakEvent e) {
 
         Player p = e.getPlayer();
+        Block block = e.getBlock();
+
+        if(toggletimber.contains(p)){
+            return;
+        }
 
         if (e.isCancelled()) {
             return;
@@ -163,7 +234,12 @@ public class TreeCutterEvent implements Listener{
         if (e.getBlock().getType() != Material.LOG && e.getBlock().getType() != Material.LOG_2) {
             return;
         }
-        if (!this.isAxe(p.getInventory().getItemInMainHand())){
+
+        if(!isTree(block)){
+            return;
+        }
+
+        if (!this.isEffectiveAxe(p.getInventory().getItemInMainHand())) {
             return;
         }
 
@@ -171,9 +247,10 @@ public class TreeCutterEvent implements Listener{
             return;
         }
 
+
         if(chopping.get(p) == null){
             e.setCancelled(true);
-            p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
             return;
         }
 
@@ -181,9 +258,9 @@ public class TreeCutterEvent implements Listener{
             this.breakBlock(e.getBlock(), e.getPlayer());
             chopping_records.remove(p);
             chopping.remove(p);
+            chopping_time.remove(p);
 
         } else {
-            Bukkit.broadcastMessage("no");
             e.setCancelled(true);
         }
     }
@@ -204,9 +281,35 @@ public class TreeCutterEvent implements Listener{
         return amount_of_logs;
     }
 
+    public boolean isTree(Block b){
+
+        final Location below = new Location(b.getWorld(), (double) b.getLocation().getBlockX(), (double) (b.getLocation().getBlockY() - 1), (double) b.getLocation().getBlockZ());
+        final Block blockBelow = below.getBlock();
+
+        if(blockBelow.getType() != Material.DIRT && blockBelow.getType() != Material.GRASS && blockBelow.getType() != Material.LOG &&  blockBelow.getType() != Material.LOG_2){
+            return false;
+        }
+
+        for (int x = 1; x < 256; x++) {
+            final Location above = new Location(b.getWorld(), (double) b.getLocation().getBlockX(), (double) (b.getLocation().getBlockY() + x), (double) b.getLocation().getBlockZ());
+            final Block blockAbove = above.getBlock();
+
+            if (blockAbove.getType() != Material.LOG && blockAbove.getType() != Material.LOG_2) {
+                if(blockAbove.getType() ==Material.LEAVES || blockAbove.getType() == Material.LEAVES_2){
+                    return true;
+                }
+
+            } else {
+                //there is more logs
+            }
+        }
+        return false;
+    }
+
     public int getEffEnchLevel(ItemStack axe) {
         for (Enchantment ench : axe.getEnchantments().keySet()) {
-            if (ench == Enchantment.DIG_SPEED) {
+
+            if (ench.equals(Enchantment.DIG_SPEED)) {
                 return axe.getEnchantments().get(ench);
             }
         }
@@ -227,8 +330,8 @@ public class TreeCutterEvent implements Listener{
         }
     }
 
-    public boolean isAxe(final ItemStack item) {
-        return item.getType().equals((Object)Material.WOOD_AXE) || item.getType().equals((Object)Material.STONE_AXE) || item.getType().equals((Object)Material.IRON_AXE) || item.getType().equals((Object)Material.GOLD_AXE) || item.getType().equals((Object)Material.DIAMOND_AXE);
+    public boolean isEffectiveAxe(final ItemStack item) {
+        return item.getType().equals((Object) Material.IRON_AXE) || item.getType().equals((Object) Material.GOLD_AXE) || item.getType().equals((Object) Material.DIAMOND_AXE);
     }
 
     /**

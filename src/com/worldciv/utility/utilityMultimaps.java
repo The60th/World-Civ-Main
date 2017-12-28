@@ -1,6 +1,7 @@
 package com.worldciv.utility;
 
 import com.google.common.collect.*;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -15,6 +16,8 @@ public final class utilityMultimaps {
     public static Multimap<String, String> blockedplayers = HashMultimap.create(); //sender , blockedplayer
 
     public static Multimap<String, String> chatchannels = HashMultimap.create(); //sender , blockedplayer
+
+   public static HashMap<Player, String> playerandsubject = new HashMap<>();
 
 
 

@@ -4,6 +4,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.events.chat.ChatChannelEvent;
+import com.worldciv.utility.Fanciful.mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +37,19 @@ public class WorldCivCommand implements CommandExecutor {
 
             switch (args[0].toLowerCase()) {
 
-                //TODO TOWNY MUTES || GLOBAL MUTES || USE HELPPAGE FOR TOWNY //JSON // GO TO DC DEVELOPMENT TO CHECK FOR MORE // THEN CHECK FOR MORE
+                case "links":
+                    if(args.length == 1){
+                        sender.sendMessage(maintop);
+                        new FancyMessage(ChatColor.BLUE+ "Discord:").tooltip(ChatColor.BLUE + "Voice/Text Communication").then(" ").then(ChatColor.BOLD+ "" + ChatColor.BLUE +"Link").tooltip(ChatColor.BLUE + "Click me to be redirected!").link("https://discord.gg/2WXyCNc").send(sender);
+                        new FancyMessage(ChatColor.GOLD+ "Website:").tooltip(ChatColor.GOLD + "Forums/Applications/Shop").then(" ").then(ChatColor.BOLD+ "" + ChatColor.GOLD +"Link").tooltip(ChatColor.BLUE + "Click me to be redirected!").link("http://www.rcommunitymc.com").send(sender);
+                        new FancyMessage(ChatColor.GOLD+ "Dynmap:").tooltip(ChatColor.GOLD + "Live Map").then(" ").then(ChatColor.BOLD+ "" + ChatColor.GOLD +"Link").tooltip(ChatColor.BLUE + "Click me to be redirected!").link(
+                                "http://www.rcommunitymc.com/dynmap").send(sender);
+                        new FancyMessage(ChatColor.GOLD+ "Server IP:").tooltip(ChatColor.GOLD + "The server IP address").then(" ").then(ChatColor.BOLD+ "" + ChatColor.GOLD +"Hover me").tooltip(ChatColor.BLUE + "IP: world-civ.com").send(sender);
+
+                        sender.sendMessage(mainbot);
+                    }
+                    sender.sendMessage(worldciv + ChatColor.GRAY + " Did you mean to use " + ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ".");
+                    return true;
 
                 case "towny":
                     if (args.length == 1) {
@@ -417,7 +430,7 @@ public class WorldCivCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.YELLOW + "/party" + ChatColor.GRAY + ": Displays the party commands.");
         sender.sendMessage(ChatColor.YELLOW + "/dungeon" + ChatColor.GRAY + ": Displays the dungeon commands.");
         sender.sendMessage(ChatColor.YELLOW + "/news" + ChatColor.GRAY + ": Displays the current news.");
-        sender.sendMessage(ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ": Displays media (discord, website, vote, etc).");
+        sender.sendMessage(ChatColor.YELLOW + "/wc links" + ChatColor.GRAY + ": Displays media (discord, website, etc).");
         sender.sendMessage(ChatColor.YELLOW + "/polls" + ChatColor.GRAY + ": Displays the polls.");
 
 

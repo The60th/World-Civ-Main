@@ -31,7 +31,7 @@ public class ToggleCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("help")) {
 
                 p.sendMessage(maintop);
-                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c)");
+                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c), timber (t), timbermessages (tm/tms)");
 
                 if (p.hasPermission("worldciv.togglevision")) {
                     p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v), socialspy (ss)");
@@ -93,6 +93,30 @@ public class ToggleCommand implements CommandExecutor {
                 if (togglesocialspy.contains(p)) {
                     togglesocialspy.remove(p);
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "social spy");
+                    return true;
+                }
+            } else if (args[0].equalsIgnoreCase("timbermessages") || args[0].equalsIgnoreCase("tm") || args[0].equalsIgnoreCase("tms")) {
+                if (toggletimbermessages.contains(p)) {
+                    toggletimbermessages.remove(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "timber messages" + ChatColor.GRAY + ".");
+                    return true;
+
+                } else if (!toggletimbermessages.contains(p)) {
+                    toggletimbermessages.add(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "timber messages" + ChatColor.GRAY + ".");
+
+                    return true;
+                }
+            }else if (args[0].equalsIgnoreCase("timber") || args[0].equalsIgnoreCase("t")) {
+                if (toggletimber.contains(p)) {
+                    toggletimber.remove(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "timber" + ChatColor.GRAY + ".");
+                    return true;
+
+                } else if (!toggletimber.contains(p)) {
+                    toggletimber.add(p);
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "timber" + ChatColor.GRAY + ".");
+
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("sbanimation") || args[0].equalsIgnoreCase("anim")) {
