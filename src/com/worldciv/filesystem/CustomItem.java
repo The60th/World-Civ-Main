@@ -48,9 +48,28 @@ public class CustomItem extends  FileSystem{
     public static ItemStack getItemFromCustomItem(CustomItem customItem){
         ItemStack item = new ItemStack(customItem.getItemStack().getType(), 1);
         ItemMeta meta = item.getItemMeta();
-
+        String tierDisplayNameBugFix = "X";
+        switch (customItem.tier){
+            case tempHalfTier:
+            case I:
+                tierDisplayNameBugFix = "I";
+                break;
+            case tempHalfTier2:
+            case II:
+                tierDisplayNameBugFix = "II";
+                break;
+            case III:
+                tierDisplayNameBugFix = "III";
+                break;
+            case IV:
+                tierDisplayNameBugFix = "IV";
+                break;
+            case V:
+                tierDisplayNameBugFix = "V";
+                break;
+        }
         meta.setDisplayName(ItemGenerator.getColorFromRarity(customItem.getRarity()) + customItem.getName());
-        meta.setLore(Arrays.asList(ChatColor.GRAY+"Item Tier: " + ChatColor.WHITE + customItem.tier,
+        meta.setLore(Arrays.asList(ChatColor.GRAY+"Item Tier: " + ChatColor.WHITE + tierDisplayNameBugFix,
                 ChatColor.GRAY+"Item Rarity: " +ItemGenerator.getColorFromRarity(customItem.getRarity())+ customItem.rarity ,
                 ChatColor.GRAY+"Damage: " + ChatColor.WHITE + customItem.damage, ChatColor.GRAY+"Armor: " + ChatColor.WHITE + customItem.getArmor(),
                 ChatColor.GRAY+"UUID: " + unhideItemUUID(customItem.getId())));

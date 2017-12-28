@@ -20,7 +20,11 @@ public class FurnaceRecipes {
 
         ItemStack resultitem = new ItemStack(Material.IRON_INGOT, 1);
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY+"Steel",ChatColor.GRAY +
+                "Steel is an core ingredient",ChatColor.GRAY +"to create equipment.",
+                ChatColor.GRAY + "It is also the base material to create higher ", ChatColor.GRAY+"tier crafting materials.", "",
+                ChatColor.YELLOW + "Follow the guide on the /website"));
+
         resultitemmeta.setDisplayName(ChatColor.GRAY + "" +  ChatColor.BOLD + "Steel");
         resultitem.setItemMeta(resultitemmeta);
 

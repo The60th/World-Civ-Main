@@ -32,38 +32,38 @@ public class CraftEvent implements Listener {
                 result.equals(Gear.customTierOneSword2.getResult().toString()) ||
                 result.equals(Gear.customTierOneSword3.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.I, ItemType.SWORD)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.tempHalfTier, ItemType.SWORD)));
         }
         else if(result.equals(Gear.customTierOneHelm.getResult().toString()) || result.equals(Gear.customTierOneHelm2.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.I, ItemType.HELM)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.tempHalfTier, ItemType.HELM)));
         }
         else if(result.equals(Gear.customTierOneChest.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.I, ItemType.CHESTPLATE)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.tempHalfTier, ItemType.CHESTPLATE)));
         }
         else if(result.equals(Gear.customTierOneLeg.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.I, ItemType.LEGGINGS)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.tempHalfTier, ItemType.LEGGINGS)));
         }
         else if(result.equals(Gear.customTierOneBoots.getResult().toString()) || result.equals(Gear.customTierOneBoots2.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.I, ItemType.BOOTS)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.tempHalfTier, ItemType.BOOTS)));
         }
         else if(result.equals(Gear.customTierOneShield.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.SHIELD,1),Tier.I, ItemType.SHIELD)));
+                    (Main.fileSystem.createItem(new ItemStack(Material.SHIELD,1),Tier.tempHalfTier, ItemType.SHIELD)));
         }
         else if(result.equals(Gear.customTierOneBow.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.I, ItemType.BOW)));
+                    (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.tempHalfTier, ItemType.BOW)));
         }
         else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.I, ItemType.ARROW)));
+                    (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.tempHalfTier, ItemType.ARROW)));
         }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
             ItemStack itemStack = CustomItem.getItemFromCustomItem
-                            (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, ItemType.PIKE));
+                            (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.PIKE));
             ItemMeta meta = itemStack.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.DURABILITY,1,true);
@@ -72,7 +72,7 @@ public class CraftEvent implements Listener {
         }
         else if(result.equals(Gear.customTierOneLance.getResult().toString())){
             ItemStack itemStack = CustomItem.getItemFromCustomItem
-                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.I, ItemType.LANCE));
+                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.LANCE));
             ItemMeta meta = itemStack.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.DURABILITY,1,true);
@@ -81,10 +81,51 @@ public class CraftEvent implements Listener {
         }
 
 
-        if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
+        if(event.getCurrentItem().toString().equals(Gear.tierOneSword.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.I, ItemType.SWORD)));
+        }
+        else if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.II, ItemType.SWORD)));
+
+        }else if(event.getCurrentItem().toString().equals(Gear.tierOneHelm.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.I, ItemType.HELM)));
+
+        }else if(event.getCurrentItem().toString().equals(Gear.tierOneChest.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.I, ItemType.CHESTPLATE)));
+
+        }else if(event.getCurrentItem().toString().equals(Gear.tierOneLegs.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.I, ItemType.LEGGINGS)));
+
+        }else if(event.getCurrentItem().toString().equals(Gear.tierOneBoots.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.I, ItemType.BOOTS)));
         }
+
+    else if(event.getCurrentItem().toString().equals(Gear.tierTwoHelm.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.II, ItemType.HELM)));
+
+    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoChest.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.II, ItemType.CHESTPLATE)));
+
+    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLegs.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.II, ItemType.LEGGINGS)));
+
+    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBoots.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.II, ItemType.BOOTS)));
+    }
+
+
+
+
 
 
     }

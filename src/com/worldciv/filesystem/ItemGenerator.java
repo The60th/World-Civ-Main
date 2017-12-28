@@ -266,8 +266,12 @@ public class ItemGenerator {
 
     private static String getMaterialByTier(Tier tier){
         switch (tier){
-            case I:
+            case tempHalfTier:
                 return "Iron";
+            case I:
+                return "Refined Iron";
+            case tempHalfTier2:
+                return "Refined Iron";
             case II:
                 return "Steel";
             case III:

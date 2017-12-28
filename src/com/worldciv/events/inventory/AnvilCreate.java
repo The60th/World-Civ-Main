@@ -154,13 +154,13 @@ public class AnvilCreate implements Listener {
 
         ItemStack resultitem = new ItemStack(Material.IRON_INGOT, 1); //dummy item
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY+"Refined Iron Ingot.",ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
         resultitemmeta.setDisplayName(ChatColor.GRAY + "Refined Iron Ingot");
         resultitem.setItemMeta(resultitemmeta);
 
         ItemStack resultitem5 = new ItemStack(Material.IRON_INGOT, 5); //dummy item as 5, don't change 5, some stuff with 5 is hardcoded. i'd keep as 5 since multiples of 5 are really nice.
         ItemMeta resultitem5meta = resultitem5.getItemMeta();
-        resultitem5meta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitem5meta.setLore(Arrays.asList(ChatColor.GRAY+"Refined Iron Ingot.",ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
         resultitem5meta.setDisplayName(ChatColor.GRAY + "Refined Iron Ingot");
         resultitem5.setItemMeta(resultitem5meta);
 
