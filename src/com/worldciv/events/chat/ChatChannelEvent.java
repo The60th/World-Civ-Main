@@ -146,7 +146,7 @@ public class ChatChannelEvent implements Listener {
                 rawmessage = getCensoredMessage(args);
             }
 
-            Fprefix.then(" ").then(nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(ChatColor.GRAY + rawmessage).send(receiver);
+            Fprefix.then(" ").then(nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(rawmessage).color(ChatColor.GRAY).send(receiver);
             //Should send: [RP] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -227,7 +227,7 @@ public class ChatChannelEvent implements Listener {
 
             Fprefix.then(nation_name).tooltip(ChatColor.GRAY + "View nation info").command("/nation " + getNationName(sender)).
                     then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then(ChatColor.GRAY + sender.getName()).
-                    tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(ChatColor.GRAY + officialmsg).send(receiver);
+                    tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(ChatColor.GRAY).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -310,7 +310,7 @@ public class ChatChannelEvent implements Listener {
             }
 
             Fprefix.then(formatted_town_name).tooltip(ChatColor.GRAY + "View town info").command("/town " + town_name).then(" ").then
-                    (raw_king_title).tooltip(ChatColor.GRAY + "King's Title").then(ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(ChatColor.GOLD + rawmessage).send(receiver);
+                    (raw_king_title).tooltip(ChatColor.GRAY + "King's Title").then(ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(rawmessage).color(ChatColor.GOLD).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -406,7 +406,7 @@ public class ChatChannelEvent implements Listener {
             Fprefix.then(formatted_nation_name).tooltip(ChatColor.GRAY + "View nation info").command("/nation " + nation_name).then(" ").then
                     (king_title).tooltip(ChatColor.GRAY + "King's Title").then(town_rank).tooltip(ChatColor.GRAY + "Town Title").then
                     (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (ChatColor.YELLOW + rawmessage).send(receiver);
+                    (rawmessage).color(ChatColor.YELLOW).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -481,7 +481,7 @@ public class ChatChannelEvent implements Listener {
 
             Fprefix.then(" ").then(formatted_town_title).tooltip(ChatColor.GRAY + "Town Title").then(" ").then
                     (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (ChatColor.DARK_AQUA + rawmessage).send(receiver);
+                    (rawmessage).color(ChatColor.DARK_AQUA).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -547,7 +547,7 @@ public class ChatChannelEvent implements Listener {
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
                     (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (ChatColor.GRAY + rawmessage).send(receiver);
+                    (rawmessage).color(ChatColor.GRAY).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -615,7 +615,7 @@ public class ChatChannelEvent implements Listener {
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
                     (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (ChatColor.BLUE + rawmessage).send(receiver);
+                    (rawmessage).color(ChatColor.BLUE).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -678,7 +678,7 @@ public class ChatChannelEvent implements Listener {
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
                     (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (ChatColor.RED + rawmessage).send(receiver);
+                    (rawmessage).color(ChatColor.RED).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
@@ -1080,6 +1080,7 @@ public class ChatChannelEvent implements Listener {
             case "bitchass":
             case "motherfucking":
             case "douchebag":
+            case "bih":
 
                 argument = "****";
         }
