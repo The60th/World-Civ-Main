@@ -67,6 +67,9 @@ public class FileSystem {
         if(!polls_banlist.exists()){
             try {
                 polls_banlist.createNewFile();
+                YamlConfiguration yaml = YamlConfiguration.loadConfiguration(polls_banlist);
+                yaml.createSection("banlist");
+                yaml.save(polls_banlist);
             } catch(Exception e){
 
             }
@@ -152,7 +155,8 @@ public class FileSystem {
                 file_yml.set(String.valueOf(id) + ".Author", p.getName());
                 file_yml.createSection(String.valueOf(id) + ".Subject");
                 file_yml.set(String.valueOf(id) + ".Subject", msg);
-                file_yml.createSection(String.valueOf(id) + ".Votes");
+                file_yml.createSection(String.valueOf(id) + ".VotesYes");
+                file_yml.createSection(String.valueOf(id) + ".VotesNo");
 
                 try{
                     file_yml.save(file);
@@ -164,6 +168,134 @@ public class FileSystem {
         }
 
     }
+
+    public boolean votePoll(Player p, String id, String yes_no) {
+        if (!polls_folder.exists() && !pollsdata_folder.exists()) {
+            return false;
+        }
+
+        File file = PollCommand.getPollByID(pollsdata_folder, id);
+        YamlConfiguration file_yml = YamlConfiguration.loadConfiguration(file);
+
+        if (file_yml.get(String.valueOf(id) + ".VotesYes") == null) {
+
+            Bukkit.broadcastMessage("y1");
+
+            if (yes_no.equalsIgnoreCase("yes") || yes_no.equalsIgnoreCase("y")) {
+                Bukkit.broadcastMessage("y2");
+                List<String> list = new ArrayList<>();
+                list.add(p.getName());
+                file_yml.set(String.valueOf(id) + ".VotesYes", list);
+                try {
+                    file_yml.save(file);
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        if (file_yml.get(String.valueOf(id) + ".VotesNo") == null) {
+            if (yes_no.equalsIgnoreCase("no") || yes_no.equalsIgnoreCase("n")) {
+                List<String> list = new ArrayList<>();
+                list.add(p.getName());
+                file_yml.set(String.valueOf(id) + ".VotesNo", list);
+
+                try {
+                    file_yml.save(file);
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+
+
+        List<String> voteyes = file_yml.getStringList(String.valueOf(id) + ".VotesYes");
+        List<String> voteno = file_yml.getStringList(String.valueOf(id) + ".VotesNo");
+
+        if (yes_no.equalsIgnoreCase("yes") || yes_no.equalsIgnoreCase("y")) {
+            voteyes.add(p.getName());
+            file_yml.set(String.valueOf(id) + ".VotesYes", voteyes);
+        } else if (yes_no.equalsIgnoreCase("no") ||yes_no.equalsIgnoreCase("n")) {
+            voteno.add(p.getName());
+            file_yml.set(String.valueOf(id) + ".VotesNo", voteno);
+        }
+
+        try {
+            file_yml.save(file);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    public List<String> getPlayersInYes(String id) {
+        File file = PollCommand.getPollByID(pollsdata_folder, id);
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+        return yaml.getStringList(String.valueOf(id) + ".VotesYes");
+    }
+
+    public List<String> getPlayersInNo(String id) {
+        File file = PollCommand.getPollByID(pollsdata_folder, id);
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+        return yaml.getStringList(String.valueOf(id) + ".VotesNo");
+    }
+
+    public void transferVoteNoToYes(Player p, String id) {
+        File file = PollCommand.getPollByID(pollsdata_folder, id);
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+
+        List<String> list = getPlayersInNo(id); //get voting no and remove player and update
+        list.remove(p.getName());
+        yaml.set(String.valueOf(id) + ".VotesNo", list);
+
+        List<String> list2 = getPlayersInYes(id); //get voting yes and add player and update
+        list2.add(p.getName());
+        yaml.set(String.valueOf(id) + ".VotesYes", list2);
+
+        try {
+            yaml.save(file);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    public void transferVoteYesToNo(Player p, String id) {
+        File file = PollCommand.getPollByID(pollsdata_folder, id);
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+
+        List<String> list = getPlayersInNo(id); //get voting no and add player and update
+        list.add(p.getName());
+        yaml.set(String.valueOf(id) + ".VotesNo", list);
+
+        List<String> list2 = getPlayersInYes(id); //get voting yes and remove player and update
+        list2.remove(p.getName());
+        yaml.set(String.valueOf(id) + ".VotesYes", list2);
+
+        try {
+            yaml.save(file);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+
+    public boolean hasVoted(Player p, String id) {
+        if (getPlayersInYes(id).contains(p.getName())) {
+            return true;
+        }
+
+        if (getPlayersInNo(id).contains(p.getName())) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     public List<String> allFileNames(File folder) {
         File[] listOfFiles = folder.listFiles();

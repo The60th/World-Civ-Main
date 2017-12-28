@@ -1147,20 +1147,22 @@ public class ChatChannelEvent implements Listener {
         for (String argument : args) {
 
             if (!argument.startsWith("@")) {
-                return false;
+                continue;
             }
 
             if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
                 argument = argument.substring(0, argument.length() - 1);
             }
 
+            if (argument.substring(1).equalsIgnoreCase("all")) {
+                return true;
+            }
+
             if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
                 return true;
             }
 
-            if (argument.substring(1).equalsIgnoreCase("all")) {
-                return true;
-            }
+
         }
         return false;
 
@@ -1180,6 +1182,7 @@ public class ChatChannelEvent implements Listener {
 
         for (String argument : listargs) {
 
+
             String possible_punctuation = "";
 
             if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
@@ -1189,14 +1192,14 @@ public class ChatChannelEvent implements Listener {
 
 
             if (argument.startsWith("@")) {
-                if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-                    argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
-                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
-                } else if (argument.substring(1).equalsIgnoreCase("all")) {
+                if (argument.substring(1).equalsIgnoreCase("all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
                     for (Player onlineplayers : Bukkit.getOnlinePlayers()) {
                         p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                     }
+                } else if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
+                    argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
+                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                 }
 
             }

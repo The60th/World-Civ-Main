@@ -249,6 +249,7 @@ public class Main extends JavaPlugin {
         getCommand("mod").setExecutor(new ChatCommand());
 
         getCommand("polls").setExecutor(new PollCommand());
+        getCommand("poll").setExecutor(new PollCommand());
 
 
 

@@ -66,6 +66,9 @@ commands:
   polls:
     description:
     usage:
+  poll:
+    description:
+    usage:
 permissions:
   worldciv.togglevision:
     description:
