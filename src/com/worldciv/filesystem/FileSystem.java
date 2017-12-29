@@ -359,8 +359,8 @@ public class FileSystem {
             return;
         }
 
-        Bukkit.broadcastMessage(dungeons_yml.getStringList(dungeon_id).toString());
-        Bukkit.broadcastMessage(dungeons_yml.getList(dungeon_id).toString());
+       // Bukkit.broadcastMessage(dungeons_yml.getStringList(dungeon_id).toString());
+        //Bukkit.broadcastMessage(dungeons_yml.getList(dungeon_id).toString());
         //Bukkit.broadcastMessage(dungeons_yml.);
 
 
@@ -440,12 +440,12 @@ public class FileSystem {
     }
     public DungeonMob[] loadMobs(String dungeon_id, String difficulty){
         List<String> encounters = dungeons_yml.getStringList(dungeon_id+".Mob-Spawn-Locations."+difficulty+".ENCOUNTERS");
-        Bukkit.broadcastMessage(encounters.toString());
+        //Bukkit.broadcastMessage(encounters.toString());
         DungeonMob[] mobs = new DungeonMob[encounters.size()];
         //YamlConfiguration yaml = dungeons_yml.get(dungeon_id + ".Mob-Spawn-Locations."+difficulty);
         for(int i = 0; i <encounters.size();i++){
             Location location = (Location) dungeons_yml.get(dungeon_id + ".Mob-Spawn-Locations." +difficulty+"."+ encounters.get(i)+".Location");
-            Bukkit.broadcastMessage(location.toString());
+            //Bukkit.broadcastMessage(location.toString());
             mobs[i] = new DungeonMob(location,
                     dungeons_yml.getInt(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounters.get(i)+".Mobs.amount"),
                     dungeons_yml.getString(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounters.get(i)+".Mobs.Name"));

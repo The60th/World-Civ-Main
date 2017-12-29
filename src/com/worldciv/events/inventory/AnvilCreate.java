@@ -79,21 +79,21 @@ public class AnvilCreate implements Listener {
         int x = r.nextInt(100);
 
         if (anvil.getData() < Byte.valueOf("6")) {
-            if (x <= 3) {
+            if (x <= 10) {
                 anvil.setData(Byte.valueOf("6"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
             }
         } else if (anvil.getData() < Byte.valueOf("10")) {
 
-            if (x <= 5) {
+            if (x <= 20) {
                 anvil.setData(Byte.valueOf("10"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
             }
         } else if (anvil.getData() == Byte.valueOf("10")) {
 
-            if (x <= 10) {
+            if (x <= 25) {
                 anvil.setType(Material.AIR);
                 ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");

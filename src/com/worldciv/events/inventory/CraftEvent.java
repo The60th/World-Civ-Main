@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,6 +62,7 @@ public class CraftEvent implements Listener {
         else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.tempHalfTier, ItemType.ARROW)));
+            //Bukkit.broadcastMessage("sadsdas222s");
         }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
             ItemStack itemStack = CustomItem.getItemFromCustomItem
                             (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.PIKE));
@@ -121,13 +123,56 @@ public class CraftEvent implements Listener {
     }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBoots.toString())){
         event.setCurrentItem(CustomItem.getItemFromCustomItem
                 (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.II, ItemType.BOOTS)));
+
+    }else if(event.getCurrentItem().toString().equals(Gear.tierOneShield.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)),Tier.I, ItemType.SHIELD)));
+    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoShield.toString())) {
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)), Tier.II, ItemType.SHIELD)));
     }
 
+    else if(event.getCurrentItem().toString().equals(Gear.tierOneBow.toString())){
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.BOW)),Tier.I, ItemType.BOW)));
+    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBow.toString())) {
+        event.setCurrentItem(CustomItem.getItemFromCustomItem
+                (Main.fileSystem.createItem((new ItemStack(Material.BOW)), Tier.II, ItemType.BOW)));
+    }
 
+        else if(event.getCurrentItem().toString().equals(Gear.tierOnePike.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.PIKE)));
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoPike.toString())) {
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.PIKE)));
+        }
 
+        else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLance.toString())) {
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.LANCE)));
+        }
 
+        else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLance.toString())) {
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.LANCE)));
+        }
 
-
+        else if(event.getCurrentItem().toString().equals(Gear.tierOneArrow.toString())){
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+            (Main.fileSystem.createItem((new ItemStack(Material.ARROW)),Tier.I, ItemType.ARROW)));
+            //Bukkit.broadcastMessage("sadsdass");
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoArrow.toString())) {
+           // Bukkit.broadcastMessage("sads");
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.ARROW)), Tier.II, ItemType.ARROW)));
+        }
     }
 
 

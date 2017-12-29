@@ -14,7 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 public class CraftCreate implements Listener {
-
+    final String RII = "iron ingot";
+    final String Steel = "Steel";
     @EventHandler
     public void onCraftingPrepare(PrepareItemCraftEvent e) {
 
@@ -53,8 +54,7 @@ public class CraftCreate implements Listener {
             e.getInventory().setResult(new ItemStack(Material.AIR));
 
             //Now do lore checks for refined iron items.
-            final String RII = "refined iron ingot";
-            final String Steel = "Steel";
+
             //Bukkit.broadcastMessage("dem6");
             //Check each crafting spot for all patterns.
             //Sword check one:
@@ -292,6 +292,201 @@ public class CraftCreate implements Listener {
                 }
             //else if()
         }*/
+        }
+        else if(mat == Material.ARROW){
+            if (itemsInTable[2].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    ) {
+                //Bukkit.broadcastMessage("test2");
+                if (itemsInTable[2].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getType() == Material.STICK)
+                {
+                  //  Bukkit.broadcastMessage("arrow2");
+                    e.getInventory().setResult(Gear.tierTwoArrow);
+                    return;
+                }
+            }
+            if (itemsInTable[2].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    ) {
+                //Bukkit.broadcastMessage("test2");
+                if (itemsInTable[2].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getType() == Material.STICK)
+                {
+                  //  Bukkit.broadcastMessage("arrow1");
+                    e.getInventory().setResult(Gear.tierOneArrow);
+                    return;
+                }
+            }
+        }
+        else if(mat == Material.IRON_SPADE){
+            //Steel lances:
+            //Bukkit.broadcastMessage("test");
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR
+                    ) {
+               // Bukkit.broadcastMessage("test2");
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getType() == Material.STICK
+                        && itemsInTable[9].getType() == Material.STICK)
+                        {
+                        //    Bukkit.broadcastMessage("te3st");
+                            e.getInventory().setResult(Gear.tierTwoLance);
+                    return;
+                }
+            }
+            if (itemsInTable[3].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[7].getType() != Material.AIR
+                    ) { //Does not always have lore.
+                if (itemsInTable[3].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getType() == Material.STICK
+                        && itemsInTable[7].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierTwoLance);
+                    return;
+                }
+            }
+            //iron lances
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getType() == Material.STICK
+                        && itemsInTable[9].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierOneLance);
+                    return;
+                }
+            }
+            if (itemsInTable[3].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[7].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[3].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getType() == Material.STICK
+                        && itemsInTable[7].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierOneLance);
+                    return;
+                }
+            }
+            //Pikes
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[9].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierTwoPike);
+                    return;
+                }
+            }
+            if (itemsInTable[3].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[7].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[3].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[7].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierTwoPike);
+                    return;
+                }
+            }
+            //iron lances
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[9].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierOnePike);
+                    return;
+                }
+            }
+            if (itemsInTable[3].getType() != Material.AIR && itemsInTable[5].getType() != Material.AIR
+                    && itemsInTable[7].getType() != Material.AIR
+                    ) {
+                if (itemsInTable[3].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[7].getType() == Material.STICK)
+                {
+                    e.getInventory().setResult(Gear.tierOnePike);
+                    return;
+                }
+            }
+
+
+        }
+        else if(mat == Material.BOW){
+            if (itemsInTable[2].getType() != Material.AIR && itemsInTable[3].getType() != Material.AIR
+                    && itemsInTable[4].getType() != Material.AIR
+                    && itemsInTable[6].getType() != Material.AIR //Iron bars
+                    && itemsInTable[8].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR //Iron bars
+                    ) {
+                if (itemsInTable[2].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[3].getType() == Material.STRING
+                        && itemsInTable[4].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[6].getType() == Material.STRING
+                        && itemsInTable[8].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[9].getType() == Material.STRING){
+                    e.getInventory().setResult(Gear.tierTwoBow);
+                    return;
+                }
+            }
+
+            if (itemsInTable[2].getType() != Material.AIR && itemsInTable[3].getType() != Material.AIR
+                    && itemsInTable[4].getType() != Material.AIR
+                    && itemsInTable[6].getType() != Material.AIR //Iron bars
+                    && itemsInTable[8].getType() != Material.AIR
+                    && itemsInTable[9].getType() != Material.AIR //Iron bars
+                    ) {
+                if (itemsInTable[2].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[3].getType() == Material.STRING
+                        && itemsInTable[4].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[6].getType() == Material.STRING
+                        && itemsInTable[8].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[9].getType() == Material.STRING){
+                    e.getInventory().setResult(Gear.tierOneBow);
+                    return;
+                }
+            }
+        }
+        //Custom Shields.
+        else if(mat == Material.SHIELD){
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[2].getType() != Material.AIR
+                    && itemsInTable[3].getType() != Material.AIR
+                    && itemsInTable[4].getType() != Material.AIR
+                    && itemsInTable[5].getType() != Material.AIR //Iron bars
+                    && itemsInTable[6].getType() != Material.AIR
+                    && itemsInTable[8].getType() != Material.AIR) {
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[2].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[3].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[4].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[5].getType() == Material.IRON_FENCE
+                        && itemsInTable[6].getItemMeta().getLore().get(0).contains(Steel)
+                        && itemsInTable[8].getItemMeta().getLore().get(0).contains(Steel)){
+                    e.getInventory().setResult(Gear.tierTwoShield);
+                    return;
+                }
+            }
+            if (itemsInTable[1].getType() != Material.AIR && itemsInTable[2].getType() != Material.AIR
+                    && itemsInTable[3].getType() != Material.AIR
+                    && itemsInTable[4].getType() != Material.AIR
+                    && itemsInTable[5].getType() != Material.AIR //Iron bars
+                    && itemsInTable[6].getType() != Material.AIR
+                    && itemsInTable[8].getType() != Material.AIR) {
+                if (itemsInTable[1].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[2].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[3].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[4].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[5].getType() == Material.IRON_FENCE
+                        && itemsInTable[6].getItemMeta().getLore().get(0).contains(RII)
+                        && itemsInTable[8].getItemMeta().getLore().get(0).contains(RII)){
+                    e.getInventory().setResult(Gear.tierOneShield);
+                    return;
+                }
+            }
         }
     }
 

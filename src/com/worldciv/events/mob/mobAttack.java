@@ -29,12 +29,18 @@ public class mobAttack  implements Listener {
         double damage = event.getDamage();
         double damagePostArmor = damage - armor;
         if (damagePostArmor <= 0) {
-            Bukkit.broadcastMessage("damage did not pass armor,");
+           // Bukkit.broadcastMessage("damage did not pass armor,");
             if (defenderArmorTracker.containsKey(pDefender)) {
-                Bukkit.broadcastMessage("contains If -> armor" + armor + " defenderStored damage " + defenderArmorTracker.get(pDefender));
-                damagePostArmor = armor - (damage + defenderArmorTracker.get(pDefender));
-                if (damagePostArmor < 0) return;
-                if (pDefender.getHealth() - damagePostArmor < 0) {
+                //Bukkit.broadcastMessage("contains If -> armor" + armor + " defenderStored damage " + defenderArmorTracker.get(pDefender));
+                damagePostArmor =(damage + defenderArmorTracker.get(pDefender)) - armor ;
+
+                if (damagePostArmor < 0){
+                    event.setDamage(0);
+                    double storedDamage = defenderArmorTracker.get(pDefender);
+                    defenderArmorTracker.put(pDefender,storedDamage+damage);
+                    return;
+                }
+                if ((pDefender.getHealth() - damagePostArmor) < 0) {
                     //Lets the player die normally.
                     event.setDamage(999); //Make sure the player dies
                     defenderArmorTracker.remove(pDefender);

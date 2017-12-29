@@ -12,9 +12,12 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
+import com.worldciv.dungeons.DungeonChecker;
 import com.worldciv.dungeons.DungeonManager;
 import com.worldciv.events.chat.ChatChannelEvent;
 import com.worldciv.events.inventory.*;
+import com.worldciv.events.mob.mobAttack;
+import com.worldciv.events.mob.playerAttack;
 import com.worldciv.events.player.*;
 import com.worldciv.filesystem.FileSystem;
 import com.worldciv.filesystem.Gear;
@@ -273,6 +276,10 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new ChatChannelEvent(), this);
         pm.registerEvents(new TorchBlockPlaceFixEvent(), this);
         pm.registerEvents(new TreeCutterEvent(), this);
+        pm.registerEvents(new DungeonChecker(), this);
+        pm.registerEvents(new playerAttack(), this);
+        pm.registerEvents(new mobAttack(), this);
+        pm.registerEvents(new PlayerAttackEvents(), this);
     }
 
     public void registerChatChannels(){

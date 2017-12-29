@@ -1,9 +1,7 @@
 package com.worldciv.events.mob;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,20 +23,22 @@ public class playerAttack implements Listener {
         Entity eDefender = defender;
         pAttacker = (Player) attacker;
 
-        float customDamage =0;
+        float customDamage = (float)event.getDamage();
         float damageScaler = 1;
         customDamage = getDamageFromArray(getDamageItems(pAttacker));
         customDamage = (float) (customDamage * getHorseAttackModifer(pAttacker, eDefender));
         damageScaler = (float) getDamageScale(pAttacker, event.getDamage());
         customDamage = customDamage * damageScaler;
 
-        if(eDefender instanceof Monster){
-            Monster mob = (Monster) eDefender;
-            Bukkit.broadcastMessage("Old health: " + mob.getHealth() + " new health " + (mob.getHealth()-customDamage));
+        if(customDamage <= 1) customDamage = (float) event.getDamage();
+        
+        if(eDefender instanceof LivingEntity ){
+            LivingEntity mob = (LivingEntity) eDefender;
+            //Bukkit.broadcastMessage("Old health: " + mob.getHealth() + " new health " + (mob.getHealth()-customDamage));
             event.setDamage(customDamage);
-            Bukkit.broadcastMessage("did damage to entity");
+            //Bukkit.broadcastMessage("did damage to entity");
         }else{
-            Bukkit.broadcastMessage("Do something else.");
+          // Bukkit.broadcastMessage("Do something else.");
         }
 
     }
