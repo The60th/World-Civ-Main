@@ -333,7 +333,7 @@ public class WorldCivCommand implements CommandExecutor {
         String justincasestealing = ChatColor.YELLOW + " Just in case, we won't let you steal. We made it steal-proof.";
         String holdinglight = ChatColor.GRAY + " Can you feel the energy of the light run through you? This is the power light has. Without it, you're vulnerable.";
         String playersholdinglight = ChatColor.YELLOW + " If there are other players nearby holding a torch, you are also illuminated. This will be crucial for dungeons!";
-        String placinglight = ChatColor.GRAY + " Place that torch! You will also be given light. Any sort of lighting on the block you're standing on will provide you vision.";
+        String placinglight = ChatColor.GRAY + " Any sort of lighting on the block you're standing on will provide you vision.";
         String lightingen = ChatColor.YELLOW + " With that said: the sun, lava, glowstone, and anything that provides light will provide you with vision.";
         String weather = ChatColor.GRAY + " In conclusion, be careful of the weather, if you're caught outside in a storm, your torches will cease to provide light.";
         String thx = ChatColor.YELLOW + " If you have any other questions or comments, feel free to ask staff!";

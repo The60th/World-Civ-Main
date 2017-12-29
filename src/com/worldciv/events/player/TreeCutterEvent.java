@@ -239,6 +239,10 @@ public class TreeCutterEvent implements Listener{
             return;
         }
 
+        if(getAllLogs(block , p) == 1){
+            return;
+        }
+
         if (!this.isEffectiveAxe(p.getInventory().getItemInMainHand())) {
             return;
         }

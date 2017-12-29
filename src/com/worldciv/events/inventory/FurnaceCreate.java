@@ -74,6 +74,7 @@ public class FurnaceCreate implements Listener {
 
                         } else if (itemsInFurnace[0].getItemMeta().getLore().get(0).contains("refined iron ingot") && itemsInFurnace[1].getItemMeta().getLore().get(0).contains("Coke is a fuel")) {
                             if (itemsInFurnace[1].getDurability() != 1) {
+
                                 ((Player) players).updateInventory(); //it glitches with non-vanilla items, thts why we update
                                 PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.VILLAGER_HAPPY, true, furnace.getLocation().getBlockX(), furnace.getLocation().getBlockY(), furnace.getLocation().getBlockZ(), 1, 1, 1, 10, 50, null);
                                 ((CraftPlayer) players).getHandle().playerConnection.sendPacket(packet);
@@ -87,6 +88,7 @@ public class FurnaceCreate implements Listener {
 
                         } else if (itemsInFurnace[0].getItemMeta().getLore().get(0).contains("refined iron ingot") && itemsInFurnace[1].getItemMeta().getLore().get(0).contains("Activated Carbon is a fuel")) {
                             if (itemsInFurnace[1].getDurability() == 1) { //charcoal
+
                                 ((Player) players).updateInventory(); //it glitches with non-vanilla items, thts why we update
                                 PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.VILLAGER_HAPPY, true, furnace.getLocation().getBlockX(), furnace.getLocation().getBlockY(), furnace.getLocation().getBlockZ(), 1, 1, 1, 10, 50, null);
                                 ((CraftPlayer) players).getHandle().playerConnection.sendPacket(packet);
@@ -125,12 +127,12 @@ public class FurnaceCreate implements Listener {
 
         if (itemsInFurnace[1].getType() == Material.COAL && itemsInFurnace[1].getDurability() != 1 && itemsInFurnace[1].getItemMeta().getLore().get(0).contains("Coke is a fuel")) {
             for (Entity p : furnaceInv.getViewers()) {
-                p.sendMessage(worldciv + ChatColor.GRAY + " You added coke (fuel) to the furnace!");
+               // p.sendMessage(worldciv + ChatColor.GRAY + " You added coke (fuel) to the furnace!");
             }
             e.setBurnTime(100); //5s of smelting time/burn time |||| This means you need two of these to smelt one steel
         } else if (itemsInFurnace[1].getType() == Material.COAL && itemsInFurnace[1].getDurability() == 1 && itemsInFurnace[1].getItemMeta().getLore().get(0).contains("Activated Carbon")) {
             for (Entity p : furnaceInv.getViewers()) {
-                p.sendMessage(worldciv + ChatColor.GRAY + " You added activated carbon to the furnace!");
+               // p.sendMessage(worldciv + ChatColor.GRAY + " You added activated carbon to the furnace!");
             }
             e.setBurnTime(50); //2.5s || You need 4 of these to smelt one steel
         }

@@ -85,7 +85,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_HELMET, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
         customTierOneHelm = new ShapedRecipe(item);
         customTierOneHelm.shape(
@@ -108,7 +108,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_CHESTPLATE, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Chest plate");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
         customTierOneChest = new ShapedRecipe(item);
         customTierOneChest.shape(
@@ -124,7 +124,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_LEGGINGS, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Leggings");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
         customTierOneLeg = new ShapedRecipe(item);
         customTierOneLeg.shape(
@@ -140,7 +140,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_BOOTS, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Boots");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
 
         customTierOneBoots = new ShapedRecipe(item);
@@ -165,7 +165,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Sword");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
 
         customTierOneSword = new ShapedRecipe(item);
@@ -202,7 +202,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.SHIELD, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Shield");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
 
         customTierOneShield = new ShapedRecipe(item);
@@ -222,7 +222,7 @@ public class Gear {
         ItemStack item = new ItemStack(Material.ARROW, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Arrow");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier one Gear."));
         item.setItemMeta(meta);
 
         customTierOneArrow = new ShapedRecipe(item);
@@ -301,70 +301,67 @@ public class Gear {
         Bukkit.getServer().addRecipe(customTierOneLance);
     }
 
-
-
-
     public static void registerTierTwo(){
         ItemMeta meta;
 
         tierTwoHelm = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoHelm.setItemMeta(meta);
 
         tierTwoChest = new ItemStack(Material.IRON_CHESTPLATE, 1);
         meta = tierTwoChest.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Chestplate");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoChest.setItemMeta(meta);
 
         tierTwoLegs = new ItemStack(Material.IRON_LEGGINGS, 1);
         meta = tierTwoLegs.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Leggings");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoLegs.setItemMeta(meta);
 
         tierTwoBoots = new ItemStack(Material.IRON_BOOTS, 1);
         meta = tierTwoBoots.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Boots");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoBoots.setItemMeta(meta);
 
         tierTwoSword = new ItemStack(Material.IRON_SWORD, 1);
         meta = tierTwoSword.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Sword");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoSword.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier Two Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier Two Gear."));
         tierTwoPike.setItemMeta(meta);
     }
 
@@ -374,61 +371,61 @@ public class Gear {
         tierOneHelm = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierOneHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierOneHelm.setItemMeta(meta);
 
         tierOneChest = new ItemStack(Material.IRON_CHESTPLATE, 1);
         meta = tierOneChest.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Chestplate");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierOneChest.setItemMeta(meta);
 
         tierOneLegs = new ItemStack(Material.IRON_LEGGINGS, 1);
         meta = tierOneLegs.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Leggings");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierOneLegs.setItemMeta(meta);
 
         tierOneBoots = new ItemStack(Material.IRON_BOOTS, 1);
         meta = tierOneBoots.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Boots");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierOneBoots.setItemMeta(meta);
 
         tierOneSword = new ItemStack(Material.IRON_SWORD, 1);
         meta = tierOneSword.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Sword");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierOneSword.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierTwoPike.setItemMeta(meta);
 
         tierTwoPike = new ItemStack(Material.IRON_HELMET, 1);
         meta = tierTwoHelm.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Tier One Helm");
-        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One gear."));
+        meta.setLore(Arrays.asList(ChatColor.WHITE + "Tier One Gear."));
         tierTwoPike.setItemMeta(meta);
     }
 

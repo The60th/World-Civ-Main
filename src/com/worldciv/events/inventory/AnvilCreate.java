@@ -154,13 +154,13 @@ public class AnvilCreate implements Listener {
 
         ItemStack resultitem = new ItemStack(Material.IRON_INGOT, 1); //dummy item
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY+"Refined Iron Ingot.",ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.GRAY + "Refined Iron Ingot");
         resultitem.setItemMeta(resultitemmeta);
 
         ItemStack resultitem5 = new ItemStack(Material.IRON_INGOT, 5); //dummy item as 5, don't change 5, some stuff with 5 is hardcoded. i'd keep as 5 since multiples of 5 are really nice.
         ItemMeta resultitem5meta = resultitem5.getItemMeta();
-        resultitem5meta.setLore(Arrays.asList(ChatColor.GRAY+"Refined Iron Ingot.",ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitem5meta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitem5meta.setDisplayName(ChatColor.GRAY + "Refined Iron Ingot");
         resultitem5.setItemMeta(resultitem5meta);
 
@@ -238,13 +238,13 @@ public class AnvilCreate implements Listener {
 
         ItemStack resultitem = new ItemStack(Material.COAL, 1); //dummy item
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.DARK_GRAY + "Coke (fuel)");
         resultitem.setItemMeta(resultitemmeta);
 
         ItemStack resultitem5 = new ItemStack(Material.COAL, 5); //dummy item as 5, don't change 5, some stuff with 5 is hardcoded. i'd keep as 5 since multiples of 5 are really nice.
         ItemMeta resultitem5meta = resultitem5.getItemMeta();
-        resultitem5meta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitem5meta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitem5meta.setDisplayName(ChatColor.DARK_GRAY + "Coke (fuel)");
         resultitem5.setItemMeta(resultitem5meta);
 
@@ -326,14 +326,14 @@ public class AnvilCreate implements Listener {
         ItemStack resultitem = new ItemStack(Material.COAL, 1); //dummy item
         resultitem.setDurability((short) 1);
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.DARK_GRAY + "Activated Carbon");
         resultitem.setItemMeta(resultitemmeta);
 
         ItemStack resultitem5 = new ItemStack(Material.COAL, 5); //dummy item as 5, don't change 5, some stuff with 5 is hardcoded. i'd keep as 5 since multiples of 5 are really nice.
         resultitem5.setDurability((short) 1);
         ItemMeta resultitem5meta = resultitem5.getItemMeta();
-        resultitem5meta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitem5meta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitem5meta.setDisplayName(ChatColor.DARK_GRAY + "Activated Carbon");
         resultitem5.setItemMeta(resultitem5meta);
 
@@ -414,7 +414,7 @@ public class AnvilCreate implements Listener {
 
         ItemStack resultitem = new ItemStack(Material.IRON_INGOT, 1); //dummy item
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.GRAY + "The refined iron ingot is the", ChatColor.GRAY + "core ingredient to create equipment.", ChatColor.GRAY + "It is also the base material to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.GRAY + "Refined Iron Ingot");
         resultitem.setItemMeta(resultitemmeta);
 
@@ -433,7 +433,7 @@ public class AnvilCreate implements Listener {
 
         ItemStack resultitem = new ItemStack(Material.COAL, 1); //dummy item
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Coke is a fuel with no", ChatColor.DARK_GRAY + "impurities and high burn time.", ChatColor.DARK_GRAY + "It is also the best fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.DARK_GRAY + "Coke (fuel)");
         resultitem.setItemMeta(resultitemmeta);
 
@@ -456,7 +456,7 @@ public class AnvilCreate implements Listener {
         ItemStack resultitem = new ItemStack(Material.COAL, 1); //dummy item
         resultitem.setDurability((short) 1);
         ItemMeta resultitemmeta = resultitem.getItemMeta();
-        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /website"));
+        resultitemmeta.setLore(Arrays.asList(ChatColor.DARK_GRAY + "Activated Carbon is a fuel", ChatColor.DARK_GRAY + "with medium-high burn time.", ChatColor.DARK_GRAY + "It is cheap fuel to create steel.", "", ChatColor.YELLOW + "Follow the guide on the /wc links"));
         resultitemmeta.setDisplayName(ChatColor.DARK_GRAY + "Activated Carbon");
         resultitem.setItemMeta(resultitemmeta);
 

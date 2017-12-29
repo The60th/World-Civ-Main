@@ -171,7 +171,12 @@ public class ItemGenerator {
         }
     }
     private  static String getItemName(ItemType itemType, Tier tier){
-        return /*createRandomName() +*/ getMaterialByTier(tier) +" "+ checkItemType(itemType).toString().toLowerCase();
+        String x =  checkItemType(itemType).toString().toLowerCase();
+        String capitalletter = x.substring(0,1).toUpperCase();
+        String rest_of_words = x.substring(1);
+        String material_name = capitalletter + rest_of_words;
+
+        return /*createRandomName() +*/ getMaterialByTier(tier) +" "+ material_name;
     }
     private static String createRandomName(){
         Random random = new Random();
