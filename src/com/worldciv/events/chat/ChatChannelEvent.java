@@ -1046,6 +1046,9 @@ public class ChatChannelEvent implements Listener {
                 argument = argument.substring(2); //message
             }
         }
+
+        argument = argument.replaceAll("[^A-Za-z]+", "");
+
         switch (argument.toLowerCase()) {
             case "fuck":
             case "shit":

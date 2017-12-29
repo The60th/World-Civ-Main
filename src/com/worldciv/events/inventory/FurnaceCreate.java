@@ -9,6 +9,7 @@ import org.bukkit.block.Furnace;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -152,12 +153,64 @@ public class FurnaceCreate implements Listener {
     @EventHandler
     public void onFurnaceClickEvent(InventoryClickEvent e) {
         HumanEntity p = e.getWhoClicked();
+        ItemStack item = e.getCurrentItem();
         if (e.getView().getType() == InventoryType.FURNACE) { //We are looking at a furnace inventory.
             FurnaceInventory furnaceInv = (FurnaceInventory) e.getInventory();
             ItemStack[] itemsInFurnace = furnaceInv.getContents();
             int slot = e.getRawSlot();
 
             if (furnaceInv.getHolder().getBurnTime() > 0) { //It is currently smelting.
+
+
+                if(item.getItemMeta() == null || item.getItemMeta().getLore() == null){
+                    return;
+                }
+
+                if(e.isShiftClick()) {
+                    Block furnaceblock = furnaceInv.getLocation().getBlock();
+                    Location furnaceloc = furnaceblock.getLocation();
+
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have stopped the smelting process! Refunding resources!");
+
+                    if(itemsInFurnace[0] != null && itemsInFurnace[0].getType() != Material.AIR) {
+                        Bukkit.getWorld("world").dropItem(furnaceloc, itemsInFurnace[0]);
+                        itemsInFurnace[0].setAmount(-1);
+                    }
+                    if(itemsInFurnace[1] != null && itemsInFurnace[1].getType() != Material.AIR) {
+                        Bukkit.getWorld("world").dropItemNaturally(furnaceloc, itemsInFurnace[1]);
+                        itemsInFurnace[1].setAmount(-1);
+                    }
+
+                    if(itemsInFurnace[2] != null && itemsInFurnace[1].getType() != Material.AIR) {
+                        Bukkit.getWorld("world").dropItemNaturally(furnaceloc, itemsInFurnace[2]);
+                        itemsInFurnace[2].setAmount(-1);
+                    }
+
+                    List<Entity> AllEntities = furnaceblock.getWorld().getEntities();
+
+                    for (Entity players : AllEntities) {
+                        if (players instanceof Player) {
+                            if (players.getLocation().distance(furnaceblock.getLocation()) <= 10) {
+
+                                ((Player) players).playSound(furnaceblock.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 5L, 0);
+                            }
+                        }
+                    }
+                }
+
+
+                if(item.getType() == Material.IRON_INGOT && item.getItemMeta().getLore().get(0).contains("refined iron ingot")){
+                    p.sendMessage(worldciv + ChatColor.GRAY + " It is too dangerous to pick this item while smelting!");
+                    p.sendMessage(ChatColor.YELLOW + "Shift click to stop the smelting process!"); //TIPS
+                    e.setCancelled(true);
+                }
+
+                if(item.getType() == Material.COAL && (item.getItemMeta().getLore().get(0).contains("Coke is a fuel") || item.getItemMeta().getLore().get(0).contains("Activated Carbon"))){
+                    p.sendMessage(worldciv + ChatColor.GRAY + " It is too dangerous to pick this item while smelting!");
+                    p.sendMessage(ChatColor.YELLOW + "Shift click to stop the smelting process!"); //TIPS
+                    e.setCancelled(true);
+                }
+
                 if (slot == 0 || slot == 1) { //If clicked on slot 0 or slot 1
 
                     if (itemsInFurnace[0] == null || itemsInFurnace[1] == null) { //prvent null errors
@@ -167,41 +220,7 @@ public class FurnaceCreate implements Listener {
 
                     if ((itemsInFurnace[0].getType() == Material.IRON_INGOT && itemsInFurnace[1].getType() == Material.COAL)) {
 
-                        if (e.isShiftClick()) {
-
-                            e.setCancelled(true);
-
-                            Block furnaceblock = furnaceInv.getLocation().getBlock();
-                            Location furnaceloc = furnaceblock.getLocation();
-
-                            p.sendMessage(worldciv + ChatColor.GRAY + " You have stopped the smelting process! Refunding resources!");
-
-                            Bukkit.getWorld("world").dropItem(furnaceloc, itemsInFurnace[0]);
-                            Bukkit.getWorld("world").dropItemNaturally(furnaceloc, itemsInFurnace[1]);
-
-                            if (itemsInFurnace[2] != null) {
-                                Bukkit.getWorld("world").dropItemNaturally(furnaceloc, itemsInFurnace[2]);
-                                itemsInFurnace[2].setAmount(-1);
-                            }
-
-
-                            itemsInFurnace[0].setAmount(-1);
-                            itemsInFurnace[1].setAmount(-1);
-
-
-                            List<Entity> AllEntities = furnaceblock.getWorld().getEntities();
-
-                            for (Entity players : AllEntities) {
-                                if (players instanceof Player) {
-                                    if (players.getLocation().distance(furnaceblock.getLocation()) <= 10) {
-
-                                        ((Player) players).playSound(furnaceblock.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 5L, 0);
-                                    }
-                                }
-                            }
-
-
-                        } else if (e.isLeftClick() || e.isRightClick()) {
+                       if (e.isLeftClick() || e.isRightClick()) {
 
                             p.sendMessage(worldciv + ChatColor.GRAY + " It is too dangerous to pick this item while smelting!");
                             p.sendMessage(ChatColor.YELLOW + "Shift click to stop the smelting process!"); //TIPS

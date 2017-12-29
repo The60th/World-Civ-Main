@@ -176,7 +176,7 @@ public class ItemGenerator {
         String rest_of_words = x.substring(1);
         String material_name = capitalletter + rest_of_words;
 
-        return /*createRandomName() +*/ getMaterialByTier(tier) +" "+ material_name;
+        return /*createRandomName() +*/ getMaterialByTier(tier) +" "+ x;
     }
     private static String createRandomName(){
         Random random = new Random();

@@ -147,7 +147,7 @@ public class ChatCommand implements CommandExecutor {
                 return true;
             }
 
-            executeHiddenChatTransfer(sender, "local", args);
+            executeHiddenChatTransfer(sender, "admin", args);
             return true;
 
         }

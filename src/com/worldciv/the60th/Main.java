@@ -100,9 +100,9 @@ public class Main extends JavaPlugin {
                 long time = server.getWorld("world").getTime();
 
                 if(time >= 13200 && time <=13239 ){
-                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " It's getting dark...");
+                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is setting.");
                 } else if (time >= 22390 && time <= 22429){ //2399 is last tick or 2400? use 2399 for safety
-                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " It appears morning is arising.");
+                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is rising.");
 
                 }
 

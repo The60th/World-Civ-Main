@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Random;
 
 import static com.worldciv.utility.utilityArrays.toggletimber;
 import static com.worldciv.utility.utilityArrays.toggletimbermessages;
@@ -320,18 +321,57 @@ public class TreeCutterEvent implements Listener{
         return 0;
     }
 
+    public int getUnbreakingEnchLevel(ItemStack axe) {
+        for (Enchantment ench : axe.getEnchantments().keySet()) {
+
+            if (ench.equals(Enchantment.DURABILITY)) {
+                return axe.getEnchantments().get(ench);
+            }
+        }
+        return 0;
+    }
+
     public void breakBlock(final Block b, final Player p) {
         b.breakNaturally();
         final Location above = new Location(b.getWorld(), (double)b.getLocation().getBlockX(), (double)(b.getLocation().getBlockY() + 1), (double)b.getLocation().getBlockZ());
         final Block blockAbove = above.getBlock();
         if (blockAbove.getType() == Material.LOG || blockAbove.getType() == Material.LOG_2) {
             this.breakBlock(blockAbove, p);
-            p.getItemInHand().setDurability((short)(p.getItemInHand().getDurability() + 1));
+            short current_durability_number = p.getInventory().getItemInMainHand().getDurability();
+            Bukkit.broadcastMessage(Short.toString(current_durability_number));
+//todo remove ^^
+            if (current_durability_number > 0) {
+                if (getUnbreakingEnchLevel(p.getInventory().getItemInMainHand()) > 0) {
+
+                    float durability_chance = 1 / (1 + getUnbreakingEnchLevel(p.getInventory().getItemInMainHand()));
+                    Random r = new Random();
+                    float random = r.nextFloat(); //returns value 0 < x < 1
+                    if(random <= durability_chance ){
+                        if(current_durability_number - 1 != 0){
+
+                        }
+                    }
+
+                } else { //0 or null?
+                    if (current_durability_number - 1 != 0) {
+                        current_durability_number = Short.valueOf(String.valueOf(current_durability_number - 1));
+                        p.getInventory().getItemInMainHand().setDurability(current_durability_number);
+                    } else {
+                        p.getInventory().remove(p.getItemInHand());
+                        p.playSound(p.getLocation(), Sound.BLOCK_WOOD_BREAK, 3.0f, 4.0f);
+                    }
+
+                }
+            }
+
             if (p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability()) {
-                p.getInventory().remove(p.getItemInHand());
-                p.playSound(p.getLocation(), Sound.BLOCK_WOOD_HIT, 1.0f, 1.0f);
+
             }
         }
+    }
+
+    public void destroyDurability(Player p, float durability){
+
     }
 
     public boolean isEffectiveAxe(final ItemStack item) {
