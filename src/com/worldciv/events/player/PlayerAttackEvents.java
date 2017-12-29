@@ -98,12 +98,17 @@ public class PlayerAttackEvents implements Listener {
         double damagePostArmor = customDamage - armor;
 
         if (damagePostArmor <= 0) {
-            Bukkit.broadcastMessage("damage did not pass armor,");
+           // Bukkit.broadcastMessage("damage did not pass armor,");
             if (defenderArmorTracker.containsKey(pDefender)) {
-                Bukkit.broadcastMessage("contains If -> armor" + armor + " defenderStored damage " + defenderArmorTracker.get(pDefender));
-                damagePostArmor = armor - (customDamage + defenderArmorTracker.get(pDefender));
-                if (damagePostArmor < 0) return;
-                if (pDefender.getHealth() - damagePostArmor < 0) {
+               // Bukkit.broadcastMessage("contains If -> armor" + armor + " defenderStored damage " + defenderArmorTracker.get(pDefender));
+                damagePostArmor =(customDamage + defenderArmorTracker.get(pDefender)) - armor ;
+                if (damagePostArmor < 0){
+                    event.setDamage(0);
+                    double storedDamage = defenderArmorTracker.get(pDefender);
+                    defenderArmorTracker.put(pDefender,storedDamage+customDamage);
+                    return;
+                }
+                else if (pDefender.getHealth() - damagePostArmor < 0) {
                     //Lets the player die normally.
                     event.setDamage(999); //Make sure the player dies
                     defenderArmorTracker.remove(pDefender);
@@ -400,7 +405,7 @@ public class PlayerAttackEvents implements Listener {
 
     public static double getDamageScalerBow(Double damage) {
         final double bowDamage = 9.5;
-        System.out.println("Bow scale factor: " + (damage / bowDamage));
+       // System.out.println("Bow scale factor: " + (damage / bowDamage));
         return damage / bowDamage;
     }
 
@@ -427,7 +432,7 @@ public class PlayerAttackEvents implements Listener {
                 damageModifer = 2.0;
             }
         }
-        Bukkit.broadcastMessage("Returning horse scale of: " + damageModifer);
+        //Bukkit.broadcastMessage("Returning horse scale of: " + damageModifer);
         return damageModifer;
     }
 

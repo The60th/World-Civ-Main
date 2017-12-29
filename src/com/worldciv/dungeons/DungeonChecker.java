@@ -1,11 +1,14 @@
 package com.worldciv.dungeons;
 
+import com.worldciv.the60th.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import static com.worldciv.the60th.Main.getDungeonManager;
 
@@ -48,5 +51,26 @@ public class DungeonChecker implements Listener {
             return;
         }
         return;
+    }
+
+    @EventHandler
+    public void deathHandler(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        if (getDungeonManager.getDungeon(player) != null) {
+            event.setKeepInventory(true);
+        }
+    }
+    @EventHandler
+    public void respawnHandler(PlayerRespawnEvent event){
+        Player player = event.getPlayer();
+        if (getDungeonManager.getDungeon(player) != null) {
+            Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(player).getDungeonID()); //Location is dungeon respawn point.
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    player.teleport(location);
+                }
+            }, 10);
+        }
     }
 }

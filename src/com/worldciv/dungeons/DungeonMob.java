@@ -21,7 +21,7 @@ public class DungeonMob {
         if(this.notSpawned){
         for(int i =0; i <this.amount; i++){
             getMythicMobs().getMobManager().spawnMob(this.mobID, this.location);
-            Bukkit.broadcastMessage("Value of notSpawned  "+ i + " " +notSpawned );
+            //Bukkit.broadcastMessage("Value of notSpawned  "+ i + " " +notSpawned );
         }
             this.notSpawned = false;
         }
