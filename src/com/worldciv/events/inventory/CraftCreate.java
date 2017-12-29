@@ -53,7 +53,7 @@ public class CraftCreate implements Listener {
             e.getInventory().setResult(new ItemStack(Material.AIR));
 
             //Now do lore checks for refined iron items.
-            final String RII = "Refined Iron Ingot";
+            final String RII = "refined iron ingot";
             final String Steel = "Steel";
             //Bukkit.broadcastMessage("dem6");
             //Check each crafting spot for all patterns.

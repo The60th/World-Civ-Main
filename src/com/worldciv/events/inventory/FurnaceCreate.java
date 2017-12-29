@@ -40,7 +40,12 @@ public class FurnaceCreate implements Listener {
             return;
         }
 
-        if (itemsInFurnace[1] == null) {  // No fuel
+        if (itemsInFurnace[1] == null) {
+
+            if(itemsInFurnace[0].getType() != source){
+                return;
+            }
+            // No fuel
             List<Entity> near = furnace.getWorld().getEntities();
             for (Entity players : near) {
                 if (players instanceof Player) {
