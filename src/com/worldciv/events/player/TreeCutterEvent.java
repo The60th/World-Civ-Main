@@ -336,42 +336,31 @@ public class TreeCutterEvent implements Listener{
         final Location above = new Location(b.getWorld(), (double)b.getLocation().getBlockX(), (double)(b.getLocation().getBlockY() + 1), (double)b.getLocation().getBlockZ());
         final Block blockAbove = above.getBlock();
         if (blockAbove.getType() == Material.LOG || blockAbove.getType() == Material.LOG_2) {
-            this.breakBlock(blockAbove, p);
             short current_durability_number = p.getInventory().getItemInMainHand().getDurability();
-            Bukkit.broadcastMessage(Short.toString(current_durability_number));
-//todo remove ^^
-            if (current_durability_number > 0) {
-                if (getUnbreakingEnchLevel(p.getInventory().getItemInMainHand()) > 0) {
+            if (getUnbreakingEnchLevel(p.getInventory().getItemInMainHand()) > 0) {
 
                     float durability_chance = 1 / (1 + getUnbreakingEnchLevel(p.getInventory().getItemInMainHand()));
                     Random r = new Random();
                     float random = r.nextFloat(); //returns value 0 < x < 1
                     if(random <= durability_chance ){
-                        if(current_durability_number - 1 != 0){
-
-                        }
+                        destroyDurability(p, current_durability_number);
                     }
-
                 } else { //0 or null?
-                    if (current_durability_number - 1 != 0) {
-                        current_durability_number = Short.valueOf(String.valueOf(current_durability_number - 1));
-                        p.getInventory().getItemInMainHand().setDurability(current_durability_number);
-                    } else {
-                        p.getInventory().remove(p.getItemInHand());
-                        p.playSound(p.getLocation(), Sound.BLOCK_WOOD_BREAK, 3.0f, 4.0f);
-                    }
-
-                }
+                destroyDurability(p, current_durability_number);
             }
-
-            if (p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability()) {
-
-            }
+            this.breakBlock(blockAbove, p);
         }
     }
 
-    public void destroyDurability(Player p, float durability){
-
+    public void destroyDurability(Player p, short durability) {
+        if (durability + 1 != p.getInventory().getItemInMainHand().getType().getMaxDurability()) {
+            durability = Short.valueOf(String.valueOf(durability + 1));
+            p.getInventory().getItemInMainHand().setDurability(durability);
+        } else {
+            p.getInventory().getItemInMainHand().setAmount(-1);
+            p.sendMessage(worldciv + ChatColor.RED + " Your axe splintered from chopping down the tree.");
+            p.playSound(p.getLocation(), Sound.BLOCK_WOOD_BREAK, 3.0f, 4.0f);
+        }
     }
 
     public boolean isEffectiveAxe(final ItemStack item) {
