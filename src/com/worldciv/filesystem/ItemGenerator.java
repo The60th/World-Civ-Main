@@ -96,8 +96,8 @@ public class ItemGenerator {
         int x = random.nextInt(100)+1;
         if(isBetween(x,0,75)){ return Rarity.Common; }
         else if(isBetween(x,75,85)){return Rarity.Uncommon;}
-        else if(isBetween(x,85,90)){return Rarity.Rare;}
-        else if(isBetween(x,90,97)){return Rarity.Epic;}
+        else if(isBetween(x,85,94)){return Rarity.Rare;}
+        else if(isBetween(x,94,98)){return Rarity.Epic;}
         else if(isBetween(x,98,100)){return Rarity.Legendary;}
         else{
             Main.logger.info(("Rarity generation error has happened."));
