@@ -48,30 +48,37 @@ public class AnvilCreate implements Listener {
     }
 
     public void anvilBreakShiftLeft(Block anvil, HumanEntity p){
-        Random r = new Random();
-        int x = r.nextInt(100);
 
-        if (anvil.getData() < Byte.valueOf("6")) {
-            if (x <= 15) {
-                anvil.setData(Byte.valueOf("6"));
-                anvil.getState().update();
-                p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
-            }
-        } else if (anvil.getData() < Byte.valueOf("10")) {
 
-            if (x <= 25) {
-                anvil.setData(Byte.valueOf("10"));
-                anvil.getState().update();
-                p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
-            }
-        } else if (anvil.getData() == Byte.valueOf("10")) {
+        for(int y=0; y < 5; y++) {
+            Random r = new Random();
+            int x = r.nextInt(100);
+            if (anvil.getData() < Byte.valueOf("6")) {
+                if (x <= 2) {
+                    anvil.setData(Byte.valueOf("6"));
+                    anvil.getState().update();
+                    p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
+                }
+            } else if (anvil.getData() < Byte.valueOf("10")) {
 
-            if (x <= 50) {
-                anvil.setType(Material.AIR);
-                ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
-                p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");
+                if (x <= 3) {
+                    anvil.setData(Byte.valueOf("11"));
+                    anvil.getState().update();
+                    p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
+
+                }
+            } else if (anvil.getData() <= Byte.valueOf("11")) {
+
+                if (x <= 5) {
+                    anvil.setType(Material.AIR);
+                    p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");
+                    ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
+                }
             }
         }
+
+
+
     }
 
     public void anvilBreakSingleClick(Block anvil, HumanEntity p){
@@ -79,26 +86,27 @@ public class AnvilCreate implements Listener {
         int x = r.nextInt(100);
 
         if (anvil.getData() < Byte.valueOf("6")) {
-            if (x <= 10) {
+            if (x <= 2) {
                 anvil.setData(Byte.valueOf("6"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
             }
         } else if (anvil.getData() < Byte.valueOf("10")) {
 
-            if (x <= 20) {
-                anvil.setData(Byte.valueOf("10"));
+            if (x <= 3) {
+                anvil.setData(Byte.valueOf("11"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
             }
-        } else if (anvil.getData() == Byte.valueOf("10")) {
+        } else if (anvil.getData() <= Byte.valueOf("11")) {
 
-            if (x <= 25) {
+            if (x <= 5) {
                 anvil.setType(Material.AIR);
                 ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");
             }
         }
+
     }
 
     @EventHandler
@@ -117,7 +125,6 @@ public class AnvilCreate implements Listener {
         dummyLoreRecipeItem(itemsInAnvil, e);
 
     }
-
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {

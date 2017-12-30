@@ -103,9 +103,9 @@ public class Main extends JavaPlugin {
                 long time = server.getWorld("world").getTime();
 
                 if(time >= 13200 && time <=13239 ){
-                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " It's getting dark...");
+                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is setting.");
                 } else if (time >= 22390 && time <= 22429){ //2399 is last tick or 2400? use 2399 for safety
-                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " It appears morning is arising.");
+                    Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is rising.");
 
                 }
 
@@ -194,6 +194,10 @@ public class Main extends JavaPlugin {
         FurnaceRecipes.registerFurnaceRecipes();
         Gear.registerRecipes();
 
+/*
+            If you really plan to add this feature. Which should not be important during a live server.....
+            In /rl servers, this will give null error since WorldGuard has not been enabled yet. You will have to wait until WorldGuard as loaded.
+
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             ApplicableRegionSet set = getWorldGuard().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
@@ -207,7 +211,7 @@ public class Main extends JavaPlugin {
                 }
 
             }
-        }
+        } */
 
         Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " Refreshing plugin data.");
     }
