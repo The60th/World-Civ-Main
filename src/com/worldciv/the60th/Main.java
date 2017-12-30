@@ -194,6 +194,10 @@ public class Main extends JavaPlugin {
         FurnaceRecipes.registerFurnaceRecipes();
         Gear.registerRecipes();
 
+/*
+            If you really plan to add this feature. Which should not be important during a live server.....
+            In /rl servers, this will give null error since WorldGuard has not been enabled yet. You will have to wait until WorldGuard as loaded.
+
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             ApplicableRegionSet set = getWorldGuard().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
@@ -207,7 +211,7 @@ public class Main extends JavaPlugin {
                 }
 
             }
-        }
+        } */
 
         Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " Refreshing plugin data.");
     }

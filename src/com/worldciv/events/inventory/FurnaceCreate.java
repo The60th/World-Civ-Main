@@ -168,7 +168,10 @@ public class FurnaceCreate implements Listener {
 
                 if(e.isShiftClick()) {
                     Block furnaceblock = furnaceInv.getLocation().getBlock();
+                    Block playerblock = p.getLocation().getBlock();
                     Location furnaceloc = furnaceblock.getLocation();
+                    Bukkit.broadcastMessage(furnaceblock.getFace(playerblock).toString());
+                    Bukkit.broadcastMessage(String.valueOf(furnaceblock.getFace(playerblock).getModX()));
 
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have stopped the smelting process! Refunding resources!");
 
@@ -196,6 +199,9 @@ public class FurnaceCreate implements Listener {
                             }
                         }
                     }
+
+                    e.setCancelled(true);
+                    e.getView().close();
                 }
 
 
@@ -203,12 +209,14 @@ public class FurnaceCreate implements Listener {
                     p.sendMessage(worldciv + ChatColor.GRAY + " It is too dangerous to pick this item while smelting!");
                     p.sendMessage(ChatColor.YELLOW + "Shift click to stop the smelting process!"); //TIPS
                     e.setCancelled(true);
+                    return;
                 }
 
                 if(item.getType() == Material.COAL && (item.getItemMeta().getLore().get(0).contains("Coke is a fuel") || item.getItemMeta().getLore().get(0).contains("Activated Carbon"))){
                     p.sendMessage(worldciv + ChatColor.GRAY + " It is too dangerous to pick this item while smelting!");
                     p.sendMessage(ChatColor.YELLOW + "Shift click to stop the smelting process!"); //TIPS
                     e.setCancelled(true);
+                    return;
                 }
 
                 if (slot == 0 || slot == 1) { //If clicked on slot 0 or slot 1

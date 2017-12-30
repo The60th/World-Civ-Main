@@ -1034,22 +1034,31 @@ public class ChatChannelEvent implements Listener {
 
     public static String getCensoredWord(String argument) {
 
-        if(!argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")){
-            argument = ChatColor.stripColor(argument);
+        // argument = argument.replaceAll("[^A-Za-z]+", "");
+
+        String possible_at = "";
+        String temp = argument;
+
+        if (!argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")) { //If the argument does not start with a tag mention
+            temp = ChatColor.stripColor(argument); //Strip the color to &4thismessage
+            temp = argument.replaceAll("[^A-Za-z0-9_]", "");
+
+        } else {
+            if(isTagMentioned(argument)){
+                return argument;
+            }
         }
 
         String ChatColorPrefix = "";
 
-        if (argument.startsWith("&")) {
-            if (argument.substring(1, 2).matches("^[abcdefrlonmk 0-9 a-g]*$")) {
-                ChatColorPrefix = argument.substring(0, 2); //prefix
-                argument = argument.substring(2); //message
+        if (temp.startsWith("&")) {
+            if (temp.substring(1, 2).matches("^[abcdefrlonmk 0-9 a-g]*$")) {
+                ChatColorPrefix = temp.substring(0, 2); //prefix
+                temp = temp.substring(2); //message
             }
         }
 
-        argument = argument.replaceAll("[^A-Za-z]+", "");
-
-        switch (argument.toLowerCase()) {
+        switch (temp.toLowerCase()) {
             case "fuck":
             case "shit":
             case "bullshit":
@@ -1060,7 +1069,6 @@ public class ChatChannelEvent implements Listener {
             case "asshole":
             case "vagina":
             case "penis":
-            case "crap":
             case "dick":
             case "pussy":
             case "fag":
@@ -1088,7 +1096,7 @@ public class ChatChannelEvent implements Listener {
                 argument = "****";
         }
 
-        return ChatColorPrefix + argument;
+        return ChatColorPrefix + possible_at + argument;
     }
 
     public static String getCensoredMessage(String[] args) {
@@ -1145,6 +1153,67 @@ public class ChatChannelEvent implements Listener {
         return ChatColorPrefix + finalmessage;
     }
 
+    public static boolean isTagMentioned(String argument) {
+
+
+        if (!argument.startsWith("@")) {
+            return false;
+        }
+
+        if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
+            argument = argument.substring(0, argument.length() - 1);
+        }
+
+        if (argument.substring(1).equalsIgnoreCase("all")) {
+            return true;
+        }
+
+        if (Bukkit.getPlayer(argument.substring(1)) == null) {
+            return false;
+        }
+
+
+        if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
+    public static boolean isTagMentioned(String argument, Player p) {
+
+
+        if (!argument.startsWith("@")) {
+            return false;
+        }
+
+        if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
+            argument = argument.substring(0, argument.length() - 1);
+        }
+
+        if (argument.substring(1).equalsIgnoreCase("all")) {
+            return true;
+        }
+
+        if (Bukkit.getPlayer(argument.substring(1)) == null) {
+            return false;
+        }
+
+        if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
+            if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        return false;
+
+    }
+
     public static boolean isTagMentioned(String[] args, Player p) {
 
         for (String argument : args) {
@@ -1161,8 +1230,16 @@ public class ChatChannelEvent implements Listener {
                 return true;
             }
 
+            if (Bukkit.getPlayer(argument.substring(1)) == null) {
+                continue;
+            }
+
             if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-                return true;
+                if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
+                    return true;
+                } else {
+                    continue;
+                }
             }
 
 
@@ -1197,12 +1274,14 @@ public class ChatChannelEvent implements Listener {
             if (argument.startsWith("@")) {
                 if (argument.substring(1).equalsIgnoreCase("all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
-                    for (Player onlineplayers : Bukkit.getOnlinePlayers()) {
+                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                } else if (Bukkit.getPlayer(argument.substring(1)) == null) {
+
+                } else if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
+                    if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
+                        argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
                         p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                     }
-                } else if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-                    argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
-                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                 }
 
             }
