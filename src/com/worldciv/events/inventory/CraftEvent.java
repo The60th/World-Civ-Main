@@ -31,17 +31,18 @@ public class CraftEvent implements Listener {
         Player clicked = (Player)event.getWhoClicked();
         if(clicked == null) return;
 
-        if(clicked.getInventory().firstEmpty() < 0){
-            clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
-            event.setCancelled(true);
-            return;
-        }
+
         String result = event.getRecipe().getResult().toString();
         if(result.equals(Gear.customTierOneSword.getResult().toString()) ||
                 result.equals(Gear.customTierOneSword2.getResult().toString()) ||
                 result.equals(Gear.customTierOneSword3.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }
+            if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }
@@ -53,12 +54,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem((CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.tempHalfTier, ItemType.HELM))));
         }
         else if(result.equals(Gear.customTierOneChest.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -69,12 +78,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.tempHalfTier, ItemType.LEGGINGS)));
         }
         else if(result.equals(Gear.customTierOneBoots.getResult().toString()) || result.equals(Gear.customTierOneBoots2.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -85,12 +102,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.SHIELD,1),Tier.tempHalfTier, ItemType.SHIELD)));
         }
         else if(result.equals(Gear.customTierOneBow.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -101,12 +126,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.tempHalfTier, ItemType.ARROW)));
             //Bukkit.broadcastMessage("sadsdas222s");
         }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }
@@ -121,6 +154,10 @@ public class CraftEvent implements Listener {
         else if(result.equals(Gear.customTierOneLance.getResult().toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }
@@ -139,12 +176,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.I, ItemType.SWORD)));
         }
         else if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -155,12 +200,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.I, ItemType.HELM)));
 
         }else if(event.getCurrentItem().toString().equals(Gear.tierOneChest.toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -171,12 +224,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.I, ItemType.LEGGINGS)));
 
         }else if(event.getCurrentItem().toString().equals(Gear.tierOneBoots.toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -188,12 +249,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }  event.setCurrentItem(CustomItem.getItemFromCustomItem
                 (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.II, ItemType.HELM)));
 
     }else if(event.getCurrentItem().toString().equals(Gear.tierTwoChest.toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -204,12 +273,20 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
                 (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.II, ItemType.LEGGINGS)));
 
     }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBoots.toString())){
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -220,11 +297,19 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
                 (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)),Tier.I, ItemType.SHIELD)));
     }else if(event.getCurrentItem().toString().equals(Gear.tierTwoShield.toString())) {
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -236,11 +321,19 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                 (Main.fileSystem.createItem((new ItemStack(Material.BOW)),Tier.I, ItemType.BOW)));
     }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBow.toString())) {
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -252,11 +345,19 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }  event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.PIKE)));
         }else if(event.getCurrentItem().toString().equals(Gear.tierTwoPike.toString())) {
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -268,11 +369,19 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             }event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
         }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLance.toString())) {
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -284,11 +393,19 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
         }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLance.toString())) {
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
@@ -300,6 +417,10 @@ public class CraftEvent implements Listener {
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
                 event.setCancelled(true);
                 return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
+                event.setCancelled(true);
+                return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
             (Main.fileSystem.createItem((new ItemStack(Material.ARROW)),Tier.I, ItemType.ARROW)));
 
@@ -308,6 +429,10 @@ public class CraftEvent implements Listener {
            // Bukkit.broadcastMessage("sads");
             if(event.isShiftClick()){
                 clicked.sendMessage(worldciv + ChatColor.GRAY + "Please click normally to craft, don't shift click.");
+                event.setCancelled(true);
+                return;
+            }        if(clicked.getInventory().firstEmpty() < 0){
+                clicked.sendMessage(worldciv + ChatColor.GRAY + "Please make room in your inventory before crafting.");
                 event.setCancelled(true);
                 return;
             } event.setCurrentItem(CustomItem.getItemFromCustomItem
