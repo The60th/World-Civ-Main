@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.worldciv.dungeons.DungeonManager.activedungeons;
 import static com.worldciv.the60th.Main.logger;
@@ -32,8 +33,16 @@ public class FileSystem {
 
     File polls_folder;
     File pollsdata_folder;
+
     File polls_banlist;
     File polls_reportlist;
+
+    File toggle_folder;
+    File toggle_file;
+
+    File muted_folder;
+    File muted_file;
+
 
     YamlConfiguration dungeons_yml;
 
@@ -47,6 +56,9 @@ public class FileSystem {
         pollsdata_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder() + "/polls/pollsdata");
         polls_banlist = new File(polls_folder, "banlist.yml");
         polls_reportlist = new File(polls_folder, "reportlist.yml");
+
+        toggle_folder = new File(Main.plugin.getDataFolder() + "/toggle");
+        toggle_file = new File(toggle_folder, "toggle.yml");
 
         if(!custom_items_folder.exists()) {
             custom_items_folder.mkdir();
@@ -82,6 +94,19 @@ public class FileSystem {
 
             }
         }
+
+        if (!toggle_folder.exists()) {
+            toggle_folder.mkdir();
+        }
+
+        if (!toggle_file.exists()) {
+            try {
+                toggle_file.createNewFile();
+                toggleSetup(toggle_file);
+            } catch (Exception e) {
+            }
+        }
+
 
         if(!dungeons_file.exists()){
             saveResource("dungeons.yml", dungeons_folder, false);
@@ -282,7 +307,6 @@ public class FileSystem {
 
     }
 
-
     public boolean hasVoted(Player p, String id) {
         if (getPlayersInYes(id).contains(p.getName())) {
             return true;
@@ -294,8 +318,6 @@ public class FileSystem {
 
         return false;
     }
-
-
 
     public List<String> allFileNames(File folder) {
         File[] listOfFiles = folder.listFiles();
@@ -352,20 +374,6 @@ public class FileSystem {
 
     }
 
-
-    public void removethislater(String dungeon_id){
-
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return;
-        }
-
-       // Bukkit.broadcastMessage(dungeons_yml.getStringList(dungeon_id).toString());
-        //Bukkit.broadcastMessage(dungeons_yml.getList(dungeon_id).toString());
-        //Bukkit.broadcastMessage(dungeons_yml.);
-
-
-
-    }
     public void removeDungeon(String dungeon_id){
         if(!dungeons_folder.exists() || !dungeons_file.exists()){
             return;
@@ -382,36 +390,137 @@ public class FileSystem {
         }
     }
 
-    /*public void saveEntity(String dungeon_id){
-        if(!dungeons_folder.exists() || !dungeons_file.exists()){
-            return;
-        }
-        List<String> blank = Arrays.asList("sup1", "sup2", "sup3");
-
-        dungeons_yml.createSection(dungeon_id);
-        dungeons_yml.createSection(dungeon_id + ".Player-Spawn-Location");
-        dungeons_yml.set(dungeon_id + ".Player-Spawn-Location", "null");
-        dungeons_yml.createSection(dungeon_id + ".Player-End-Spawn-Location");
-        dungeons_yml.set(dungeon_id + ".Player-End-Spawn-Location", "null");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS");
-        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.EASY.ENCOUNTERS",blank);
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS");
-        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.MEDIUM.ENCOUNTERS",blank);
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD");
-        dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS");
-        dungeons_yml.set(dungeon_id + ".Mob-Spawn-Locations.HARD.ENCOUNTERS",blank);
+    public void toggleSetup(File file) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
+        yml.createSection("toggle");
+        yml.createSection("toggle.Scoreboard");
+        yml.createSection("toggle.ScoreboardAnimation");
+        yml.createSection("toggle.VisionMessages");
+        yml.createSection("toggle.Censorship");
+        yml.createSection("toggle.Timber");
+        yml.createSection("toggle.TimberMessages");
+        yml.createSection("toggle.VisionBypass");
+        yml.createSection("toggle.SocialSpy");
 
         try {
-            dungeons_yml.save(dungeons_file);
-        } catch (IOException e){
-            logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
-            e.printStackTrace();
+            yml.save(file);
+        } catch (Exception e) {
         }
 
-    }*/
+    }
+
+    public void addToggle(Player p, String toggle_name){
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(toggle_file);
+
+        switch(toggle_name.toLowerCase()){
+            case "scoreboard":
+            case "sb":
+                yml.set("toggle.Scoreboard", getToggleList("sb").add(p.getName()));
+                return;
+            case "sbanimation":
+            case "anim":
+                yml.set("toggle.ScoreboardAnimation", getToggleList("anim").add(p.getName()));
+                return;
+            case "visionmessages":
+            case "vms":
+            case "vm":
+                yml.set("toggle.VisionMessages", getToggleList("vms").add(p.getName()));
+                return;
+            case "censorship":
+            case "c":
+                yml.set("toggle.Censorship", getToggleList("c").add(p.getName()));
+                return;
+            case "timber":
+            case "t":
+                yml.set("toggle.Timber", getToggleList("t").add(p.getName()));
+                return;
+            case "timbermessages":
+            case "tms":
+            case "tm":
+                yml.set("toggle.TimberMessages", getToggleList("tms").add(p.getName()));
+                return;
+            case "vision":
+            case "v":
+                yml.set("toggle.VisionBypass", getToggleList("anim").add(p.getName()));
+                return;
+        }
+    }
+
+    public List<String> getToggleList(String toggle_name){
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(toggle_file);
+
+        switch(toggle_name.toLowerCase()){
+            case "scoreboard":
+            case "sb":
+                if(yml.getStringList("toggle.Scoreboard").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.Scoreboard");
+                }
+            case "sbanimation":
+            case "anim":
+                if(yml.getStringList("toggle.ScoreboardAnimation").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.ScoreboardAnimation");
+                }
+            case "visionmessages":
+            case "vms":
+            case "vm":
+                if(yml.getStringList("toggle.VisionMessages").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.VisionMessages");
+                }
+            case "censorship":
+            case "c":
+                if(yml.getStringList("toggle.Censorship").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.Censorship");
+                }
+            case "timber":
+            case "t":
+                if(yml.getStringList("toggle.Timber").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.Timber");
+                }
+            case "timbermessages":
+            case "tms":
+            case "tm":
+                if(yml.getStringList("toggle.TimberMessages").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.TimberMessages");
+                }
+            case "vision":
+            case "v":
+                if(yml.getStringList("toggle.VisionBypass").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.VisionBypass");
+                }
+            case "socialspy":
+            case "ss":
+                if(yml.getStringList("toggle.SocialSpy").isEmpty()){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.SocialSpy");
+                }
+            default:
+                return null;
+        }
+    }
+
     public void saveMob(String dungeon_id, String mythicMobID,String difficulty, int amount, Location location,String encounterName){
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName);
         dungeons_yml.createSection(dungeon_id + ".Mob-Spawn-Locations."+difficulty+"."+encounterName+".Mobs");

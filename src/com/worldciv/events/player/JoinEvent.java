@@ -20,12 +20,6 @@ public class JoinEvent implements Listener {
 
         //FIXIMG
 
-
-        String name = getEssentials().getUser(event.getPlayer().getUniqueId()).getNick(true);
-        String stripped = ChatColor.stripColor(name);
-        getEssentials().getUser(event.getPlayer().getUniqueId()).setNickname(stripped);
-
-
         Player player = event.getPlayer();
         player.setMaxHealth(40);
 
