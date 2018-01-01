@@ -43,16 +43,16 @@ public class Dungeon implements Listener {
     String PartyID;
     String DungeonID;
     String difficulty;
-    final int EASY_RANGE = 16;
-    final int HARD_RANGE =16;
-    final int MED_RANGE = 16;
+    final int EASY_RANGE = 6;
+    final int HARD_RANGE =6;
+    final int MED_RANGE = 6;
 
     public Dungeon(String party_id, String dungeon_id, String difficulty) {
         PartyID = party_id;
         DungeonID = dungeon_id;
         this.difficulty = difficulty;
         mobLocations =  fileSystem.loadMobs(dungeon_id,difficulty);
-        Bukkit.broadcastMessage(mobLocations.toString());
+        //Bukkit.broadcastMessage(mobLocations.toString());
 
         //Get all locations function from file system save to HashMap.
 

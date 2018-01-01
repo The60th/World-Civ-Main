@@ -170,8 +170,8 @@ public class FurnaceCreate implements Listener {
                     Block furnaceblock = furnaceInv.getLocation().getBlock();
                     Block playerblock = p.getLocation().getBlock();
                     Location furnaceloc = furnaceblock.getLocation();
-                    Bukkit.broadcastMessage(furnaceblock.getFace(playerblock).toString());
-                    Bukkit.broadcastMessage(String.valueOf(furnaceblock.getFace(playerblock).getModX()));
+                    //Bukkit.broadcastMessage(furnaceblock.getFace(playerblock).toString());
+                    //Bukkit.broadcastMessage(String.valueOf(furnaceblock.getFace(playerblock).getModX()));
 
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have stopped the smelting process! Refunding resources!");
 

@@ -478,7 +478,6 @@ public class DungeonCommand implements CommandExecutor {
 
 
                         fileSystem.saveMob(dungeonregionname,args[1],args[2],Integer.parseInt(args[3]),sender.getLocation(),args[4]);
-
                         return true;
                     }
 

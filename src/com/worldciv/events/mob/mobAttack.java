@@ -33,7 +33,7 @@ public class mobAttack  implements Listener {
             if (defenderArmorTracker.containsKey(pDefender)) {
                 //Bukkit.broadcastMessage("contains If -> armor" + armor + " defenderStored damage " + defenderArmorTracker.get(pDefender));
                 damagePostArmor =(damage + defenderArmorTracker.get(pDefender)) - armor ;
-
+                if(damagePostArmor >= 6) damagePostArmor = 6;
                 if (damagePostArmor < 0){
                     event.setDamage(0);
                     double storedDamage = defenderArmorTracker.get(pDefender);
@@ -61,6 +61,7 @@ public class mobAttack  implements Listener {
 
 
         } else {
+            if(damagePostArmor >= 6) damagePostArmor = 6;
             if (pDefender.getHealth() - damagePostArmor < 0) {
                 //Lets the player die normally.
                 event.setDamage(999); //Make sure the player dies
