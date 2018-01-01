@@ -284,6 +284,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new playerAttack(), this);
         pm.registerEvents(new mobAttack(), this);
         pm.registerEvents(new PlayerAttackEvents(), this);
+        pm.registerEvents(new CancelEnderpearlEvent(), this);
     }
 
     public void registerChatChannels(){
@@ -295,7 +296,6 @@ public class Main extends JavaPlugin {
         chatchannels.put("mod", "dummy_string");
         chatchannels.put("admin", "dummy_string");
         chatchannels.put("ooc", "dummy_string");
-
 
     }
 

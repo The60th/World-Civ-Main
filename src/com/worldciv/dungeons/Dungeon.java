@@ -7,6 +7,7 @@ import com.worldciv.parties.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -71,6 +72,7 @@ public class Dungeon implements Listener {
             }
 
             player.teleport(fileSystem.getPlayerSpawn(this.getDungeonID()));
+            player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, 5, 1);
 
         }
 

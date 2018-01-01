@@ -9,6 +9,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.worldciv.utility.Fanciful.mkremins.fanciful.FancyMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -35,10 +36,24 @@ public class ChatChannelEvent implements Listener {
     public void onChatTabComplete(PlayerChatTabCompleteEvent e) {
         String token = e.getLastToken();
         if (token.startsWith("@")) {
-            for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
-                e.getTabCompletions().add("@" + onlineplayer.getName());
+
+            if (token.length() == 1) {
+                e.getTabCompletions().add("@all");
+                for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
+                    e.getTabCompletions().add("@" + onlineplayer.getName());
+                }
+            } else {
+
+                if (Bukkit.getPlayer(token.substring(1)) == null) {
+                    e.getTabCompletions().add("@all");
+                }
+
+                for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
+                    if (onlineplayer.equals(Bukkit.getPlayer(token.substring(1)))) {
+                        e.getTabCompletions().add("@" + onlineplayer.getName());
+                    }
+                }
             }
-            e.getTabCompletions().add("@all");
         }
     }
 
@@ -116,7 +131,6 @@ public class ChatChannelEvent implements Listener {
         /**
          * This is the prefix_local formatting
          */
-        String[] args = rawmessage.split(" "); //Split the message into args
         String prefix_local = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "RP" + ChatColor.DARK_GRAY + "]"; //The prefix that is already formatted
 
         /**
@@ -135,29 +149,34 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
+
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_local, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
+
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
-            Fprefix.then(" ").then(nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(rawmessage).color(ChatColor.GRAY).send(receiver);
-            //Should send: [RP] Nickname: MyRawMessage
+            Fprefix.then(" ").then(getPexRankColor(sender) + nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(ChatColor.WHITE).send(receiver);
+            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
         return;
+
     }
 
     public static void pushGlobalMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
-
-        /**
-         * Custom mute for GLOBAL ONLY
-         */
 
 
         /**
@@ -170,7 +189,7 @@ public class ChatChannelEvent implements Listener {
         /**
          * Get priority group
          */
-        PermissionGroup priority_group = getPriorityGroup(sender);
+        PermissionGroup priority_group = getPriorityGroup(sender); //
         //Get best rank from PEX
 
         /**
@@ -212,21 +231,17 @@ public class ChatChannelEvent implements Listener {
 
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_global, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                mentionmsg = getTagMentionMessage(args, receiver);
-                args = mentionmsg.split(" ");
-            } else {
-                args = rawmessage.split(" ");
-            }
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                officialmsg = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
             }
 
             Fprefix.then(nation_name).tooltip(ChatColor.GRAY + "View nation info").command("/nation " + getNationName(sender)).
-                    then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then(ChatColor.GRAY + sender.getName()).
+                    then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then(getPexRankColor(sender) + sender.getName()).
                     tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(ChatColor.GRAY).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
@@ -247,7 +262,6 @@ public class ChatChannelEvent implements Listener {
         }
 
         // [NC] townName userName
-        String[] args = rawmessage.split(" "); //Split the message into args
         /**
          * This is Nation prefix formatted.
          */
@@ -296,25 +310,31 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_NC, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then(formatted_town_name).tooltip(ChatColor.GRAY + "View town info").command("/town " + town_name).then(" ").then
-                    (raw_king_title).tooltip(ChatColor.GRAY + "King's Title").then(ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(rawmessage).color(ChatColor.GOLD).send(receiver);
+                    (raw_king_title).tooltip(ChatColor.GRAY + "King's Title").then(getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(ChatColor.GOLD).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
         return;
+
 
         /**
          * String Builder
@@ -333,7 +353,6 @@ public class ChatChannelEvent implements Listener {
         /**
          * This is prefix_global formatted.
          */
-        String[] args = rawmessage.split(" "); //Split the message into args
         String prefix_ANC = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "ANC" + ChatColor.DARK_GRAY + "]";
 
         /**
@@ -353,6 +372,8 @@ public class ChatChannelEvent implements Listener {
 
         String king_title = getKingTitle(sender); //Will get TITLE first. if no title: Mayor Assistant Resident
         String nation_name = getNationName(sender); //get nation name
+        String town_title = getTownTitle(sender);
+
 
         String formatted_nation_name = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + nation_name + ChatColor.DARK_GRAY + "]"; //Make it colored
 
@@ -363,7 +384,8 @@ public class ChatChannelEvent implements Listener {
          */
 
         if (!king_title.isEmpty() && king_title != null) { //if king is present
-            king_title = ChatColor.GRAY + king_title + " "; //make formatting
+
+                king_title = ChatColor.GRAY + king_title + " "; //make formatting
         } else {
             String poss_town_rank = getTownRank(sender);
             if (!poss_town_rank.equalsIgnoreCase("Resident") && poss_town_rank != null) {
@@ -390,24 +412,28 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_ANC, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then(formatted_nation_name).tooltip(ChatColor.GRAY + "View nation info").command("/nation " + nation_name).then(" ").then
                     (king_title).tooltip(ChatColor.GRAY + "King's Title").then(town_rank).tooltip(ChatColor.GRAY + "Town Title").then
-                    (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (rawmessage).color(ChatColor.YELLOW).send(receiver);
-            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
+                    (getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
+                    (officialmsg).color(ChatColor.YELLOW).send(receiver); //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);
         return;
@@ -422,7 +448,6 @@ public class ChatChannelEvent implements Listener {
     }
 
     public static void pushTCMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
-        String[] args = rawmessage.split(" "); //Split the message into args
 
         if (townyMute.contains(sender)) {
             sender.sendMessage(worldciv + ChatColor.RED + " You are towny-chat muted.");
@@ -466,23 +491,27 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_TC, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then(" ").then(formatted_town_title).tooltip(ChatColor.GRAY + "Town Title").then(" ").then
-                    (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (rawmessage).color(ChatColor.DARK_AQUA).send(receiver);
-            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
+                    (getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
+                    (officialmsg).color(ChatColor.DARK_AQUA).send(receiver);
         }
         e.setCancelled(true);
         return;
@@ -497,7 +526,7 @@ public class ChatChannelEvent implements Listener {
     }
 
     public static void pushOOCMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
-        String[] args = e.getMessage().split(" "); //Split the message into args
+
         /**
          * This is prefix_OOC formatted.
          */
@@ -532,34 +561,36 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_ooc, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
-                    (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (rawmessage).color(ChatColor.GRAY).send(receiver);
-            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
+                    (getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
+                    (officialmsg).color(ChatColor.GRAY).send(receiver);
         }
         e.setCancelled(true);
         return;
-
 
         // e.setFormat(prefix_ooc + "" + formatted_group_prefix + ChatColor.GRAY + sender.getName() + ChatColor.GRAY + ": " + rawmessage);
 
     }
 
     public static void pushModMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
-        String[] args = rawmessage.split(" "); //Split the message into args
         if (!sender.hasPermission("worldciv.mod") && !sender.hasPermission("worldciv.admin")) {
             sender.sendMessage(worldciv + ChatColor.GRAY + " You have no access to chat here.");
             e.setCancelled(true);
@@ -600,23 +631,27 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_mod, sender);
 
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
 
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
-                    (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (rawmessage).color(ChatColor.BLUE).send(receiver);
-            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
+                    (getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
+                    (officialmsg).color(ChatColor.BLUE).send(receiver);
         }
         e.setCancelled(true);
         return;
@@ -631,7 +666,6 @@ public class ChatChannelEvent implements Listener {
             sender.sendMessage(worldciv + ChatColor.GRAY + " You have no access to chat here.");
             e.setCancelled(true);
         }
-        String[] args = rawmessage.split(" "); //Split the message into args
         /**
          * This is prefix_global formatted.
          */
@@ -665,26 +699,30 @@ public class ChatChannelEvent implements Listener {
             }
         }
 
-
+        String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
+
+            String mentionmsg = "";
+            String officialmsg = "";
+
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_admin, sender);
-            if (isTagMentioned(args, receiver)) {
-                rawmessage = getTagMentionMessage(args, receiver);
-            }
-            args = rawmessage.split(" ");
+
+
+            mentionmsg = getTagMentionMessage(args, receiver);
+            args = mentionmsg.split(" ");
+
             if (!togglecensor.contains(receiver)) {
-                rawmessage = getCensoredMessage(args);
+                officialmsg = getCensoredMessage(args, getChannelColor(sender));
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then("").then(formatted_group_prefix).tooltip(ChatColor.GRAY + "Tier").then("").then
-                    (ChatColor.GRAY + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
-                    (rawmessage).color(ChatColor.RED).send(receiver);
-            //Should send: [G][Nation][Pex] Nickname: MyRawMessage
+                    (getPexRankColor(sender) + sender.getName()).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then
+                    (officialmsg).color(ChatColor.RED).send(receiver);
         }
         e.setCancelled(true);
         return;
-
-
         // e.setFormat(prefix_admin + "" + formatted_group_prefix + ChatColor.GRAY + sender.getName() + ": " + ChatColor.RED + rawmessage);
 
 
@@ -840,6 +878,7 @@ public class ChatChannelEvent implements Listener {
 
             if (nation.isKing(resident)) {
                 king = "King";
+
             }
 
 
@@ -986,6 +1025,15 @@ public class ChatChannelEvent implements Listener {
 
     }
 
+    public static String getPexRankColor(Player p) {
+        PermissionGroup group = getPriorityGroup(p);
+        String prefix = group.getPrefix();
+        String rankinrawcolor = StringUtils.substringBetween(prefix, "[", "]");
+        String colorprefix = rankinrawcolor.substring(0, 2);
+        return ChatColor.translateAlternateColorCodes("&".charAt(0), colorprefix) + "";
+
+    }
+
     public static String getChannel(Player player) {
         Multimap<String, String> inversecc = Multimaps.invertFrom(chatchannels, ArrayListMultimap.<String, String>create()); //Inverse to find the channelname
         Collection<String> chat_channel = inversecc.get(player.getName()); //Find the channelname
@@ -1002,6 +1050,32 @@ public class ChatChannelEvent implements Listener {
         }
 
         return official_chat_channel;
+    }
+
+    public static String getChannelColor(Player player) {
+        String channelname = getChannel(player);
+
+        if (channelname.equalsIgnoreCase("local")) {
+            return ChatColor.WHITE + "";
+        } else if (channelname.equalsIgnoreCase("global")) {
+            return ChatColor.GRAY + "";
+        } else if (channelname.equalsIgnoreCase("ooc")) {
+            return ChatColor.GRAY + "";
+        } else if (channelname.equalsIgnoreCase("nc")) {
+            return ChatColor.GOLD + "";
+        } else if (channelname.equalsIgnoreCase("anc")) {
+            return ChatColor.YELLOW + "";
+        } else if (channelname.equalsIgnoreCase("tc")) {
+            return ChatColor.DARK_AQUA + "";
+        } else if (channelname.equalsIgnoreCase("mod")) {
+            return ChatColor.BLUE + "";
+        } else if (channelname.equalsIgnoreCase("admin")) {
+            return ChatColor.RED + "";
+        } else {
+            return null;
+        }
+
+
     }
 
     public static FancyMessage getFancyChannelPrefix(String channel_prefix, Player player) {
@@ -1032,7 +1106,7 @@ public class ChatChannelEvent implements Listener {
         return null;
     }
 
-    public static String getCensoredWord(String argument) {
+    public static String getCensoredWord(String argument, String channelcolor) {
 
         // argument = argument.replaceAll("[^A-Za-z]+", "");
 
@@ -1096,10 +1170,10 @@ public class ChatChannelEvent implements Listener {
                 argument = "****";
         }
 
-        return ChatColorPrefix + possible_at + argument;
+        return ChatColorPrefix + possible_at + argument + channelcolor;
     }
 
-    public static String getCensoredMessage(String[] args) {
+    public static String getCensoredMessage(String[] args, String channelcolor) {
 
         List<String> listargs = Arrays.asList(args);
 
@@ -1109,7 +1183,7 @@ public class ChatChannelEvent implements Listener {
 
         for (String argument : listargs) {
 
-            argument = getCensoredWord(argument);
+            argument = getCensoredWord(argument, channelcolor);
 
             if (index == 0) {
                 finalmessage += argument;
@@ -1153,6 +1227,21 @@ public class ChatChannelEvent implements Listener {
         return ChatColorPrefix + finalmessage;
     }
 
+    /**
+     * This function checks whether the argument provided is targetting the player via a mention.
+     *
+     * @param args : This is the message being passed by chat.
+     * @param p    : This is the player that COULD be targetted
+     *             <p>
+     *             Possible checks: @PlayerIGN or @all
+     * @return
+     */
+
+    public static boolean isTagMentioned(String[] args, Player p) {
+        //remove this
+        return true;
+    }
+
     public static boolean isTagMentioned(String argument) {
 
 
@@ -1178,119 +1267,70 @@ public class ChatChannelEvent implements Listener {
         } else {
             return false;
         }
-
-
-    }
-
-    public static boolean isTagMentioned(String argument, Player p) {
-
-
-        if (!argument.startsWith("@")) {
-            return false;
-        }
-
-        if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
-            argument = argument.substring(0, argument.length() - 1);
-        }
-
-        if (argument.substring(1).equalsIgnoreCase("all")) {
-            return true;
-        }
-
-        if (Bukkit.getPlayer(argument.substring(1)) == null) {
-            return false;
-        }
-
-        if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-            if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-
-        return false;
-
-    }
-
-    public static boolean isTagMentioned(String[] args, Player p) {
-
-        for (String argument : args) {
-
-            if (!argument.startsWith("@")) {
-                continue;
-            }
-
-            if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
-                argument = argument.substring(0, argument.length() - 1);
-            }
-
-            if (argument.substring(1).equalsIgnoreCase("all")) {
-                return true;
-            }
-
-            if (Bukkit.getPlayer(argument.substring(1)) == null) {
-                continue;
-            }
-
-            if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-                if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
-                    return true;
-                } else {
-                    continue;
-                }
-            }
-
-
-        }
-        return false;
-
     }
 
     public static String getTagMentionMessage(String[] args, Player p) {
 
-        if (!isTagMentioned(args, p)) {
-            return getRawMessage(args);
-        }
+        List<String> listargs = Arrays.asList(args); //The array will convert into a string.
 
-        List<String> listargs = Arrays.asList(args);
+        int index = 0; //This is the iteration
 
-        int index = 0;
+        String finalmessage = ""; //The compiler
 
-        String finalmessage = "";
+        for (String argument : listargs) { // For every arg
 
-        for (String argument : listargs) {
-
-
-            String possible_punctuation = "";
+            String possible_punctuation = ""; //self explanatory
 
             if (argument.endsWith("?") || argument.endsWith("!") || argument.endsWith(".") || argument.endsWith(",") || argument.endsWith(":") || argument.endsWith(";") || argument.endsWith("?!") || argument.endsWith("!?")) {
                 possible_punctuation = argument.substring(argument.length() - 1, argument.length());
                 argument = argument.substring(0, argument.length() - 1);
             }
 
-
             if (argument.startsWith("@")) {
                 if (argument.substring(1).equalsIgnoreCase("all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
                     p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+
+
                 } else if (Bukkit.getPlayer(argument.substring(1)) == null) {
 
-                } else if (Bukkit.getPlayer(argument.substring(1)).getName() == p.getName()) {
-                    if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
-                        argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
+                } else if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
+                    if (Bukkit.getPlayer(argument.substring(1)).getName().equalsIgnoreCase(p.getName())) {
+                        argument = ChatColor.GOLD + "" + ChatColor.BOLD + "@" + Bukkit.getPlayer(argument.substring(1)).getName() + ChatColor.GRAY;
                         p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+
+                    } else {
+                        argument = "@" + Bukkit.getPlayer(argument.substring(1)).getName();
+
                     }
                 }
+            } else if (argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")) {
+                if (argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@all")) {
+                    argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
+                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                } else {
 
+                    argument = ChatColor.stripColor(argument);
+
+                    if (argument.startsWith("@" + Bukkit.getPlayer(argument.substring(1)).getName())) {
+
+                        if (p.getName() != Bukkit.getPlayer(argument.substring(1)).getName()) {
+                            argument = "@" + Bukkit.getPlayer(argument.substring(1)).getName();
+                        }
+                    }
+                }
             }
+
+            String channelcolor = getChannelColor(p);
+
+
             if (index == 0) {
-                finalmessage += argument + possible_punctuation;
+                finalmessage += argument + possible_punctuation + channelcolor; //todo add a chat color for channel
             } else {
-                finalmessage += " " + argument + possible_punctuation;
+                finalmessage += " " + argument + possible_punctuation + channelcolor;
             }
             index++;
+
 
         }
         return finalmessage;

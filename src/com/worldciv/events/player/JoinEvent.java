@@ -4,15 +4,13 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.the60th.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import javax.xml.bind.Marshaller;
-
-import static com.worldciv.the60th.Main.getWorldGuard;
-import static com.worldciv.the60th.Main.vision_bypass;
+import static com.worldciv.the60th.Main.*;
 import static com.worldciv.utility.utilityArrays.visionregion;
 import static com.worldciv.utility.utilityMultimaps.chatchannels;
 
@@ -20,7 +18,12 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event){
 
+        //FIXIMG
 
+
+        String name = getEssentials().getUser(event.getPlayer().getUniqueId()).getNick(true);
+        String stripped = ChatColor.stripColor(name);
+        getEssentials().getUser(event.getPlayer().getUniqueId()).setNickname(stripped);
 
 
         Player player = event.getPlayer();
