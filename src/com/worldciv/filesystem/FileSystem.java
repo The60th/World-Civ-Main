@@ -443,6 +443,10 @@ public class FileSystem {
             case "v":
                 yml.set("toggle.VisionBypass", getToggleList("anim").add(p.getName()));
                 return;
+            case "socialspy":
+            case "ss":
+                yml.set("toggle.SocialSpy", getToggleList("ss").add(p.getName()));
+                return;
         }
     }
 
@@ -452,7 +456,7 @@ public class FileSystem {
         switch(toggle_name.toLowerCase()){
             case "scoreboard":
             case "sb":
-                if(yml.getStringList("toggle.Scoreboard").isEmpty()){
+                if(yml.getStringList("toggle.Scoreboard").isEmpty() || yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -460,7 +464,7 @@ public class FileSystem {
                 }
             case "sbanimation":
             case "anim":
-                if(yml.getStringList("toggle.ScoreboardAnimation").isEmpty()){
+                if(yml.getStringList("toggle.ScoreboardAnimation").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -469,7 +473,7 @@ public class FileSystem {
             case "visionmessages":
             case "vms":
             case "vm":
-                if(yml.getStringList("toggle.VisionMessages").isEmpty()){
+                if(yml.getStringList("toggle.VisionMessages").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -477,7 +481,7 @@ public class FileSystem {
                 }
             case "censorship":
             case "c":
-                if(yml.getStringList("toggle.Censorship").isEmpty()){
+                if(yml.getStringList("toggle.Censorship").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -485,7 +489,7 @@ public class FileSystem {
                 }
             case "timber":
             case "t":
-                if(yml.getStringList("toggle.Timber").isEmpty()){
+                if(yml.getStringList("toggle.Timber").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -494,7 +498,7 @@ public class FileSystem {
             case "timbermessages":
             case "tms":
             case "tm":
-                if(yml.getStringList("toggle.TimberMessages").isEmpty()){
+                if(yml.getStringList("toggle.TimberMessages").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -502,7 +506,7 @@ public class FileSystem {
                 }
             case "vision":
             case "v":
-                if(yml.getStringList("toggle.VisionBypass").isEmpty()){
+                if(yml.getStringList("toggle.VisionBypass").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -510,7 +514,7 @@ public class FileSystem {
                 }
             case "socialspy":
             case "ss":
-                if(yml.getStringList("toggle.SocialSpy").isEmpty()){
+                if(yml.getStringList("toggle.SocialSpy").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {

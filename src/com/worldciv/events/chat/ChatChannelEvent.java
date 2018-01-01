@@ -4,15 +4,13 @@ import com.earth2me.essentials.User;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
+import com.palmergames.bukkit.towny.object.*;
 import com.worldciv.utility.Fanciful.mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -950,6 +948,19 @@ public class ChatChannelEvent implements Listener {
         return null;
     }
 
+    public static boolean isTownLand(Entity entity) {
+        try {
+            if (WorldCoord.parseWorldCoord(entity).getTownBlock().hasTown()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return false;
+    }
 
     public static List<Resident> getNationResidents(Player player) {
         try {
@@ -1238,7 +1249,6 @@ public class ChatChannelEvent implements Listener {
      */
 
     public static boolean isTagMentioned(String[] args, Player p) {
-        //remove this
         return true;
     }
 
@@ -1287,7 +1297,10 @@ public class ChatChannelEvent implements Listener {
             }
 
             if (argument.startsWith("@")) {
-                if (argument.substring(1).equalsIgnoreCase("all")) {
+
+                if (argument.length() == 1) {
+
+                } else if (argument.substring(1).equalsIgnoreCase("all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
                     p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
 
@@ -1305,7 +1318,7 @@ public class ChatChannelEvent implements Listener {
                     }
                 }
             } else if (argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")) {
-                if (argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@all")) {
+                if (argument.equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "@all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
                     p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                 } else {
