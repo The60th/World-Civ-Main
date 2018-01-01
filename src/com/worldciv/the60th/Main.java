@@ -2,6 +2,7 @@ package com.worldciv.the60th;
 
 
 import com.earth2me.essentials.Essentials;
+import com.gmail.nossr50.mcMMO;
 import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -372,6 +373,17 @@ public class Main extends JavaPlugin {
         }
 
         return (PermissionsEx) plugin;
+    }
+
+    public static mcMMO getMCMMO(){
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("mcMMO");
+
+        //essentials may not beloaded
+        if(plugin == null || !(plugin instanceof mcMMO)){
+            return null;
+        }
+
+        return (mcMMO) plugin;
     }
 }
 

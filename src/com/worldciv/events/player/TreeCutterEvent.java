@@ -1,5 +1,8 @@
 package com.worldciv.events.player;
 
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
 import com.worldciv.the60th.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -20,6 +23,8 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 
+import static com.gmail.nossr50.mcMMO.getDatabaseManager;
+import static com.worldciv.the60th.Main.getMCMMO;
 import static com.worldciv.utility.utilityArrays.toggletimber;
 import static com.worldciv.utility.utilityArrays.toggletimbermessages;
 import static com.worldciv.utility.utilityStrings.worldciv;
@@ -265,6 +270,10 @@ public class TreeCutterEvent implements Listener{
 
         if (chopping.get(p.getName()).equals(e.getBlock())) {
             this.breakBlock(e.getBlock(), e.getPlayer());
+
+            PlayerProfile pprofile =  mcMMO.getDatabaseManager().loadPlayerProfile(p.getUniqueId());
+            pprofile.addXp(SkillType.WOODCUTTING, 75 * getAllLogs(block, p));
+            
             chopping_records.remove(p.getName());
             chopping.remove(p.getName());
             chopping_time.remove(p.getName());
@@ -399,6 +408,8 @@ public class TreeCutterEvent implements Listener{
                 return;
             }
 
+
+
         }
     }
 
@@ -415,8 +426,11 @@ public class TreeCutterEvent implements Listener{
     }
 
     public boolean isEffectiveAxe(final ItemStack item) {
+
         return item.getType().equals((Object) Material.IRON_AXE) || item.getType().equals((Object) Material.GOLD_AXE) || item.getType().equals((Object) Material.DIAMOND_AXE);
     }
+
+
 
     /**
      * Packet NMS and Craftbukkit
