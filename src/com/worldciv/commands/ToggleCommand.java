@@ -149,7 +149,6 @@ public class ToggleCommand implements CommandExecutor {
                 } else  if(!fileSystem.getToggleList("colorblind").contains(p.getName())){
                     fileSystem.addToggle(p, "colorblind");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "colorblind" + ChatColor.GRAY + " mode.");
-
                     return true;
                 }
             } else {

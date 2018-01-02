@@ -1,7 +1,6 @@
 package com.worldciv.events.inventory;
 
 import com.worldciv.filesystem.Gear;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -12,10 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class CraftCreate implements Listener {
     final String RII = "iron ingot";
-    final String Steel = "Steel";
+    final String Steel = "Steel is a core ingredient";
+    final String SteelBlock = "steel block";
     @EventHandler
     public void onCraftingPrepare(PrepareItemCraftEvent e) {
 
@@ -27,11 +28,76 @@ public class CraftCreate implements Listener {
 
         //ItemCrafting functions go here!
         dummyItemCraft(itemsInTable, e);
+        SteelBlock(itemsInTable, e);
+        AnvilCraft(itemsInTable, e);
 
     }
 
+
+    private void SteelBlock(ItemStack[] itemsInTable, PrepareItemCraftEvent e) {
+
+        if (itemsInTable[1].getType() != Material.AIR && itemsInTable[2].getType() != Material.AIR && itemsInTable[3].getType() != Material.AIR
+                && itemsInTable[4].getType() != Material.AIR
+                && itemsInTable[5].getType() != Material.AIR
+                && itemsInTable[6].getType() != Material.AIR
+                && itemsInTable[7].getType() != Material.AIR
+                && itemsInTable[8].getType() != Material.AIR
+                && itemsInTable[9].getType() != Material.AIR) {
+            if (itemsInTable[1].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[2].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[3].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[4].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[5].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[6].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[7].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[8].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[9].getItemMeta().getLore().get(0).contains(Steel)) {
+
+
+                ItemStack is = new ItemStack(Material.IRON_BLOCK, 1);
+                ItemMeta im = is.getItemMeta();
+                List<String> list = Arrays.asList(ChatColor.GRAY + "A steel block is used for", ChatColor.GRAY + "crafting a steel anvil.", "", ChatColor.YELLOW + "Follow the guide on the /wc links");
+                im.setLore(list);
+                im.setDisplayName(ChatColor.GRAY + "" +ChatColor.BOLD + "Steel Block");
+                is.setItemMeta(im);
+                e.getInventory().setResult(is);
+
+                return;
+            }
+        }
+    }
+
+    private void AnvilCraft(ItemStack[] itemsInTable, PrepareItemCraftEvent e) {
+
+        if (itemsInTable[1].getType() != Material.AIR && itemsInTable[2].getType() != Material.AIR
+                && itemsInTable[3].getType() != Material.AIR
+                && itemsInTable[5].getType() != Material.AIR
+                && itemsInTable[7].getType() != Material.AIR
+                && itemsInTable[8].getType() != Material.AIR
+                && itemsInTable[9].getType() != Material.AIR) {
+            if (itemsInTable[1].getItemMeta().getLore().get(0).contains(SteelBlock)
+                    && itemsInTable[2].getItemMeta().getLore().get(0).contains(SteelBlock)
+                    && itemsInTable[3].getItemMeta().getLore().get(0).contains(SteelBlock)
+                    && itemsInTable[5].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[7].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[8].getItemMeta().getLore().get(0).contains(Steel)
+                    && itemsInTable[9].getItemMeta().getLore().get(0).contains(Steel)
+                    ) {
+
+                ItemStack is = new ItemStack(Material.ANVIL, 1);
+                ItemMeta im = is.getItemMeta();
+                List<String> list = Arrays.asList(ChatColor.GRAY + "A steel anvil is more", ChatColor.GRAY + "resilient when custom crafting.", "", ChatColor.DARK_AQUA + "Damage Reduction:" + ChatColor.YELLOW + " 50%");
+                im.setLore(list);
+                im.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Steel Anvil");
+                is.setItemMeta(im);
+                e.getInventory().setResult(is);
+                return;
+            }
+        }
+    }
+
     private void dummyItemCraft(ItemStack[] itemsInTable, PrepareItemCraftEvent e) {
-        //Disable crafting of new diamond tools. I love jessi
+
         if (e.getInventory().getResult() == null) return;
         Material mat = e.getInventory().getResult().getType();
         if (mat == null) return;
@@ -40,12 +106,9 @@ public class CraftCreate implements Listener {
             e.getInventory().setResult(new ItemStack(Material.AIR));
         } else if (mat == Material.IRON_SWORD || mat == Material.IRON_HELMET || mat == Material.IRON_BOOTS || mat == Material.IRON_CHESTPLATE
                 || mat == Material.IRON_LEGGINGS) {
-            // Bukkit.broadcastMessage("dem2");
-            // Bukkit.broadcastMessage("dem2");
+
             for (int i = 0; i < itemsInTable.length; i++) {
-                //Bukkit.broadcastMessage("dem " + i);
-                //Handle replacement of default crafting recipes with iron block style recipes.
-                //Bukkit.broadcastMessage("dem3");
+
                 if (itemsInTable[i].getType() == Material.IRON_BLOCK) return;
                 //Bukkit.broadcastMessage("dem4");
 

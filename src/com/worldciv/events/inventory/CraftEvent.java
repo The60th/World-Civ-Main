@@ -1,16 +1,14 @@
 package com.worldciv.events.inventory;
 
-import com.worldciv.filesystem.*;
+import com.worldciv.filesystem.CustomItem;
+import com.worldciv.filesystem.Gear;
 import com.worldciv.the60th.Main;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.worldciv.utility.utilityStrings.worldciv;
 
@@ -38,41 +37,34 @@ public class CraftEvent implements Listener {
         if(result.equals(Gear.customTierOneSword.getResult().toString()) ||
                 result.equals(Gear.customTierOneSword2.getResult().toString()) ||
                 result.equals(Gear.customTierOneSword3.getResult().toString())){
-         fixDupe(event);
+            fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.tempHalfTier, ItemType.SWORD)));
-        }
-        else if(result.equals(Gear.customTierOneHelm.getResult().toString()) || result.equals(Gear.customTierOneHelm2.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneHelm.getResult().toString()) || result.equals(Gear.customTierOneHelm2.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem((CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.tempHalfTier, ItemType.HELM))));
-        }
-        else if(result.equals(Gear.customTierOneChest.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneChest.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.tempHalfTier, ItemType.CHESTPLATE)));
-        }
-        else if(result.equals(Gear.customTierOneLeg.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneLeg.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.tempHalfTier, ItemType.LEGGINGS)));
-        }
-        else if(result.equals(Gear.customTierOneBoots.getResult().toString()) || result.equals(Gear.customTierOneBoots2.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneBoots.getResult().toString()) || result.equals(Gear.customTierOneBoots2.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.tempHalfTier, ItemType.BOOTS)));
-        }
-        else if(result.equals(Gear.customTierOneShield.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneShield.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.SHIELD,1),Tier.tempHalfTier, ItemType.SHIELD)));
-        }
-        else if(result.equals(Gear.customTierOneBow.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneBow.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.tempHalfTier, ItemType.BOW)));
-        }
-        else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.tempHalfTier, ItemType.ARROW)));
@@ -80,14 +72,13 @@ public class CraftEvent implements Listener {
         }else if(result.equals(Gear.customTierOnePike.getResult().toString())){
             fixDupe(event);
             ItemStack itemStack = CustomItem.getItemFromCustomItem
-                            (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.PIKE));
+                    (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.PIKE));
             ItemMeta meta = itemStack.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addEnchant(Enchantment.DURABILITY,1,true);
             itemStack.setItemMeta(meta);
             event.setCurrentItem(itemStack);
-        }
-        else if(result.equals(Gear.customTierOneLance.getResult().toString())){
+        } else if(result.equals(Gear.customTierOneLance.getResult().toString())){
             fixDupe(event);
             ItemStack itemStack = CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.IRON_SPADE,1),Tier.tempHalfTier, ItemType.LANCE));
@@ -103,8 +94,7 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.I, ItemType.SWORD)));
-        }
-        else if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierTwoSword.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SWORD,1)), Tier.II, ItemType.SWORD)));
@@ -128,49 +118,43 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.I, ItemType.BOOTS)));
-        }
+        } else if(event.getCurrentItem().toString().equals(Gear.tierTwoHelm.toString())){
+            fixDupe(event);
+            event.setCurrentItem(CustomItem.getItemFromCustomItem
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.II, ItemType.HELM)));
 
-    else if(event.getCurrentItem().toString().equals(Gear.tierTwoHelm.toString())){
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoChest.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.IRON_HELMET,1)), Tier.II, ItemType.HELM)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.II, ItemType.CHESTPLATE)));
 
-    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoChest.toString())){
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLegs.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.IRON_CHESTPLATE,1)), Tier.II, ItemType.CHESTPLATE)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.II, ItemType.LEGGINGS)));
 
-    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoLegs.toString())){
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBoots.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.IRON_LEGGINGS,1)), Tier.II, ItemType.LEGGINGS)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.II, ItemType.BOOTS)));
 
-    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBoots.toString())){
+        }else if(event.getCurrentItem().toString().equals(Gear.tierOneShield.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.II, ItemType.BOOTS)));
-
-    }else if(event.getCurrentItem().toString().equals(Gear.tierOneShield.toString())){
+                    (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)),Tier.I, ItemType.SHIELD)));
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoShield.toString())) {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)),Tier.I, ItemType.SHIELD)));
-    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoShield.toString())) {
+                    (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)), Tier.II, ItemType.SHIELD)));
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneBow.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)), Tier.II, ItemType.SHIELD)));
-    }
-
-    else if(event.getCurrentItem().toString().equals(Gear.tierOneBow.toString())){
+                    (Main.fileSystem.createItem((new ItemStack(Material.BOW)),Tier.I, ItemType.BOW)));
+        }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBow.toString())) {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.BOW)),Tier.I, ItemType.BOW)));
-    }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBow.toString())) {
-            fixDupe(event);
-            event.setCurrentItem(CustomItem.getItemFromCustomItem
-                (Main.fileSystem.createItem((new ItemStack(Material.BOW)), Tier.II, ItemType.BOW)));
-    }
-
-        else if(event.getCurrentItem().toString().equals(Gear.tierOnePike.toString())){
+                    (Main.fileSystem.createItem((new ItemStack(Material.BOW)), Tier.II, ItemType.BOW)));
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOnePike.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.PIKE)));
@@ -178,9 +162,7 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.PIKE)));
-        }
-
-        else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
@@ -188,9 +170,7 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.LANCE)));
-        }
-
-        else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneLance.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)),Tier.I, ItemType.LANCE)));
@@ -198,19 +178,33 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_SPADE)), Tier.II, ItemType.LANCE)));
-        }
-
-        else if(event.getCurrentItem().toString().equals(Gear.tierOneArrow.toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneArrow.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
-            (Main.fileSystem.createItem((new ItemStack(Material.ARROW)),Tier.I, ItemType.ARROW)));
+                    (Main.fileSystem.createItem((new ItemStack(Material.ARROW)),Tier.I, ItemType.ARROW)));
 
             //Bukkit.broadcastMessage("sadsdass");
         }else if(event.getCurrentItem().toString().equals(Gear.tierTwoArrow.toString())) {
-           // Bukkit.broadcastMessage("sads");
+            // Bukkit.broadcastMessage("sads");
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.ARROW)), Tier.II, ItemType.ARROW)));
+        }
+
+        SteelBlock(event);
+
+    }
+
+    public void SteelBlock(CraftItemEvent e) {
+        fixDupe(e);
+        ItemStack is = new ItemStack(Material.IRON_INGOT, 1);
+        ItemMeta im = is.getItemMeta();
+        List<String> list = Arrays.asList(ChatColor.GRAY + "A steel block is used for", ChatColor.GRAY + "crafting a steel anvil.", "", ChatColor.YELLOW + "Follow the guide on the /wc links");
+        im.setLore(list);
+        is.setItemMeta(im);
+
+        if (e.getCurrentItem().equals(is)) {
+            e.setCurrentItem(is);
         }
     }
 

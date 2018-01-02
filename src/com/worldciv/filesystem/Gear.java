@@ -368,8 +368,6 @@ public class Gear {
     }
 
 
-
-
     public static void registerTierTwo(){
         ItemMeta meta;
 
