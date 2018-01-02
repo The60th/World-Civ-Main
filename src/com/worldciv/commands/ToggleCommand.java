@@ -30,7 +30,7 @@ public class ToggleCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("help")) {
 
                 p.sendMessage(maintop);
-                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c), timber (t), timbermessages (tm/tms)");
+                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c), timber (t), timbermessages (tm/tms), colorblind (cb).");
 
                 if (p.hasPermission("worldciv.togglevision")) {
                     p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v), socialspy (ss)");
@@ -137,6 +137,18 @@ public class ToggleCommand implements CommandExecutor {
                 } else  if(!fileSystem.getToggleList("vms").contains(p.getName())){
                     fileSystem.addToggle(p, "vms");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The vision message notifications have been disabled!");
+
+                    return true;
+                }
+            } else if (args[0].equalsIgnoreCase("colorblind") || args[0].equalsIgnoreCase("cb")) {
+                if(fileSystem.getToggleList("colorblind").contains(p.getName())){
+                    fileSystem.removeToggle(p, "colorblind");
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "colorblind" + ChatColor.GRAY + " mode.");
+                    return true;
+
+                } else  if(!fileSystem.getToggleList("colorblind").contains(p.getName())){
+                    fileSystem.addToggle(p, "colorblind");
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "colorblind" + ChatColor.GRAY + " mode.");
 
                     return true;
                 }

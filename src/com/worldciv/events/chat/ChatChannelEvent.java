@@ -132,6 +132,7 @@ public class ChatChannelEvent implements Listener {
          * This is the prefix_local formatting
          */
         String prefix_local = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_AQUA + "RP" + ChatColor.DARK_GRAY + "]"; //The prefix that is already formatted
+        ChatColor channelcolor = ChatColor.WHITE;
 
         /**
          * This is getting essentials nickname
@@ -168,7 +169,11 @@ public class ChatChannelEvent implements Listener {
                 officialmsg = getRawMessage(args);
             }
 
-            Fprefix.then(" ").then(getPexRankColor(sender) + nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(ChatColor.WHITE).send(receiver);
+            if(fileSystem.getToggleList("colorblind").contains(receiver.getName())){
+                channelcolor = ChatColor.LIGHT_PURPLE;
+            }
+
+            Fprefix.then(" ").then(getPexRankColor(sender) + nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(channelcolor).send(receiver);
             //Should send: [G][Nation][Pex] Nickname: MyRawMessage
         }
         e.setCancelled(true);

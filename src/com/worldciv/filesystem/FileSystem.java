@@ -420,11 +420,16 @@ public class FileSystem {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
         switch(channel.toLowerCase()){
             case "server":
-                yml.set("channels.Server", getChannelList("server").add(p.getName()));
+                List<String> list = getChannelList("server");
+                list.add(p.getName());
+                yml.set("channels.Server", list);
                 break;
             case "towny":
-                yml.set("channels.Towny", getChannelList("towny").add(p.getName()));
+                List<String> list2 = getChannelList("towny");
+                list2.add(p.getName());
+                yml.set("channels.Towny", list2);
                 break;
+
         }
 
         try{
@@ -437,11 +442,14 @@ public class FileSystem {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
         switch(channel.toLowerCase()){
             case "server":
-                yml.set("channels.Server", getChannelList("server").remove(p.getName()));
+                List<String> list = getChannelList("server");
+                list.remove(p.getName());
+                yml.set("channels.Server", list);
                 break;
-
             case "towny":
-                yml.set("channels.Towny", getChannelList("towny").remove(p.getName()));
+                List<String> list2 = getChannelList("towny");
+                list2.remove(p.getName());
+                yml.set("channels.Towny", list2);
                 break;
 
         }
@@ -487,6 +495,7 @@ public class FileSystem {
         yml.createSection("toggle.TimberMessages");
         yml.createSection("toggle.VisionBypass");
         yml.createSection("toggle.SocialSpy");
+        yml.createSection("toggle.Colorblind");
 
         try {
             yml.save(file);
@@ -507,33 +516,53 @@ public class FileSystem {
                 break;
             case "sbanimation":
             case "anim":
-                yml.set("toggle.ScoreboardAnimation", getToggleList("anim").add(p.getName()));
+                List<String> list2 = getToggleList("anim");
+                list2.add(p.getName());
+                yml.set("toggle.ScoreboardAnimation", list2);
                 break;
             case "visionmessages":
             case "vms":
             case "vm":
-                yml.set("toggle.VisionMessages", getToggleList("vms").add(p.getName()));
+                List<String> list3 = getToggleList("vms");
+                list3.add(p.getName());
+                yml.set("toggle.VisionMessages", list3);
                 break;
             case "censorship":
             case "c":
-                yml.set("toggle.Censorship", getToggleList("c").add(p.getName()));
+                List<String> list4 = getToggleList("c");
+                list4.add(p.getName());
+                yml.set("toggle.Censorship",list4);
                 break;
             case "timber":
             case "t":
-                yml.set("toggle.Timber", getToggleList("t").add(p.getName()));
+                List<String> list5 = getToggleList("timber");
+                list5.add(p.getName());
+                yml.set("toggle.Timber", list5);
                 break;
             case "timbermessages":
             case "tms":
             case "tm":
-                yml.set("toggle.TimberMessages", getToggleList("tms").add(p.getName()));
+                List<String> list6 = getToggleList("tms");
+                list6.add(p.getName());
+                yml.set("toggle.TimberMessages", list6);
                 break;
             case "vision":
             case "v":
-                yml.set("toggle.VisionBypass", getToggleList("anim").add(p.getName()));
+                List<String> list7 = getToggleList("v");
+                list7.add(p.getName());
+                yml.set("toggle.VisionBypass", list7);
                 break;
             case "socialspy":
             case "ss":
-                yml.set("toggle.SocialSpy", getToggleList("ss").add(p.getName()));
+                List<String> list8 = getToggleList("ss");
+                list8.add(p.getName());
+                yml.set("toggle.SocialSpy", list8);
+                break;
+            case "colorblind":
+            case "cb":
+                List<String> list9 = getToggleList("cb");
+                list9.add(p.getName());
+                yml.set("toggle.Colorblind", list9);
                 break;
         }
 
@@ -558,33 +587,53 @@ public class FileSystem {
                 break;
             case "sbanimation":
             case "anim":
-                yml.set("toggle.ScoreboardAnimation", getToggleList("anim").remove(p.getName()));
+                List<String> list2 = getToggleList("anim");
+                list2.remove(p.getName());
+                yml.set("toggle.ScoreboardAnimation", list2);
                 break;
             case "visionmessages":
             case "vms":
             case "vm":
-                yml.set("toggle.VisionMessages", getToggleList("vms").remove(p.getName()));
+                List<String> list3 = getToggleList("vms");
+                list3.remove(p.getName());
+                yml.set("toggle.VisionMessages", list3);
                 break;
             case "censorship":
             case "c":
-                yml.set("toggle.Censorship", getToggleList("c").remove(p.getName()));
+                List<String> list4 = getToggleList("c");
+                list4.remove(p.getName());
+                yml.set("toggle.Censorship",list4);
                 break;
             case "timber":
             case "t":
-                yml.set("toggle.Timber", getToggleList("t").remove(p.getName()));
+                List<String> list5 = getToggleList("timber");
+                list5.remove(p.getName());
+                yml.set("toggle.Timber", list5);
                 break;
             case "timbermessages":
             case "tms":
             case "tm":
-                yml.set("toggle.TimberMessages", getToggleList("tms").remove(p.getName()));
+                List<String> list6 = getToggleList("tms");
+                list6.remove(p.getName());
+                yml.set("toggle.TimberMessages", list6);
                 break;
             case "vision":
             case "v":
-                yml.set("toggle.VisionBypass", getToggleList("anim").remove(p.getName()));
+                List<String> list7 = getToggleList("v");
+                list7.remove(p.getName());
+                yml.set("toggle.VisionBypass", list7);
                 break;
             case "socialspy":
             case "ss":
-                yml.set("toggle.SocialSpy", getToggleList("ss").remove(p.getName()));
+                List<String> list8 = getToggleList("ss");
+                list8.remove(p.getName());
+                yml.set("toggle.SocialSpy", list8);
+                break;
+            case "colorblind":
+            case "cb":
+                List<String> list9 = getToggleList("cb");
+                list9.remove(p.getName());
+                yml.set("toggle.Colorblind", list9);
                 break;
         }
         try{
@@ -663,6 +712,14 @@ public class FileSystem {
                     return list;
                 } else {
                     return yml.getStringList("toggle.SocialSpy");
+                }
+            case "colorblind":
+            case "cb":
+                if(yml.getStringList("toggle.Colorblind").isEmpty()|| yml.getStringList("toggle.Colorblind") == null){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("toggle.Colorblind");
                 }
             default:
                 return null;
