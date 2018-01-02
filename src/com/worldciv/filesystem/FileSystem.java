@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static com.worldciv.dungeons.DungeonManager.activedungeons;
 import static com.worldciv.the60th.Main.logger;
@@ -422,10 +421,10 @@ public class FileSystem {
         switch(channel.toLowerCase()){
             case "server":
                 yml.set("channels.Server", getChannelList("server").add(p.getName()));
-                return;
+                break;
             case "towny":
                 yml.set("channels.Towny", getChannelList("towny").add(p.getName()));
-                return;
+                break;
         }
 
         try{
@@ -439,10 +438,12 @@ public class FileSystem {
         switch(channel.toLowerCase()){
             case "server":
                 yml.set("channels.Server", getChannelList("server").remove(p.getName()));
-                return;
+                break;
+
             case "towny":
                 yml.set("channels.Towny", getChannelList("towny").remove(p.getName()));
-                return;
+                break;
+
         }
 
         try{
@@ -461,7 +462,7 @@ public class FileSystem {
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
-                    return yml.getStringList("channel.Server");
+                    return yml.getStringList("channels.Server");
                 }
             case "towny":
                 if(yml.getStringList("channels.Towny").isEmpty() || yml.getStringList("channels.Towny") == null){
@@ -500,38 +501,40 @@ public class FileSystem {
         switch(toggle_name.toLowerCase()){
             case "scoreboard":
             case "sb":
-                yml.set("toggle.Scoreboard", getToggleList("sb").add(p.getName()));
-                return;
+                List<String> list = getToggleList("sb");
+                list.add(p.getName());
+                yml.set("toggle.Scoreboard", list);
+                break;
             case "sbanimation":
             case "anim":
                 yml.set("toggle.ScoreboardAnimation", getToggleList("anim").add(p.getName()));
-                return;
+                break;
             case "visionmessages":
             case "vms":
             case "vm":
                 yml.set("toggle.VisionMessages", getToggleList("vms").add(p.getName()));
-                return;
+                break;
             case "censorship":
             case "c":
                 yml.set("toggle.Censorship", getToggleList("c").add(p.getName()));
-                return;
+                break;
             case "timber":
             case "t":
                 yml.set("toggle.Timber", getToggleList("t").add(p.getName()));
-                return;
+                break;
             case "timbermessages":
             case "tms":
             case "tm":
                 yml.set("toggle.TimberMessages", getToggleList("tms").add(p.getName()));
-                return;
+                break;
             case "vision":
             case "v":
                 yml.set("toggle.VisionBypass", getToggleList("anim").add(p.getName()));
-                return;
+                break;
             case "socialspy":
             case "ss":
                 yml.set("toggle.SocialSpy", getToggleList("ss").add(p.getName()));
-                return;
+                break;
         }
 
         try{
@@ -549,38 +552,40 @@ public class FileSystem {
         switch(toggle_name.toLowerCase()){
             case "scoreboard":
             case "sb":
-                yml.set("toggle.Scoreboard", getToggleList("sb").remove(p.getName()));
-                return;
+                List<String> list = getToggleList("sb");
+                list.remove(p.getName());
+                yml.set("toggle.Scoreboard", list);
+                break;
             case "sbanimation":
             case "anim":
                 yml.set("toggle.ScoreboardAnimation", getToggleList("anim").remove(p.getName()));
-                return;
+                break;
             case "visionmessages":
             case "vms":
             case "vm":
                 yml.set("toggle.VisionMessages", getToggleList("vms").remove(p.getName()));
-                return;
+                break;
             case "censorship":
             case "c":
                 yml.set("toggle.Censorship", getToggleList("c").remove(p.getName()));
-                return;
+                break;
             case "timber":
             case "t":
                 yml.set("toggle.Timber", getToggleList("t").remove(p.getName()));
-                return;
+                break;
             case "timbermessages":
             case "tms":
             case "tm":
                 yml.set("toggle.TimberMessages", getToggleList("tms").remove(p.getName()));
-                return;
+                break;
             case "vision":
             case "v":
                 yml.set("toggle.VisionBypass", getToggleList("anim").remove(p.getName()));
-                return;
+                break;
             case "socialspy":
             case "ss":
                 yml.set("toggle.SocialSpy", getToggleList("ss").remove(p.getName()));
-                return;
+                break;
         }
         try{
             yml.save(toggle_file);
