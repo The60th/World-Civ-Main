@@ -11,10 +11,6 @@ public final class utilityArrays {
     public static ArrayList<Player> holdingLight = new ArrayList<Player>();
     public final static ArrayList<Player> visionteam = new ArrayList<Player>();
 
-    public static ArrayList<Player> globalMute = new ArrayList<Player>();
-    public static ArrayList<Player> townyMute = new ArrayList<Player>();
-
-
     public final static ArrayList<Player> setnewsmessage = new ArrayList<Player>();
     public final static ArrayList<Player> notreadylist = new ArrayList<Player>();
 

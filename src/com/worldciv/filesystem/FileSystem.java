@@ -40,8 +40,8 @@ public class FileSystem {
     File toggle_folder;
     File toggle_file;
 
-    File muted_folder;
-    File muted_file;
+    File channels_folder;
+    File channels_file;
 
 
     YamlConfiguration dungeons_yml;
@@ -59,6 +59,9 @@ public class FileSystem {
 
         toggle_folder = new File(Main.plugin.getDataFolder() + "/toggle");
         toggle_file = new File(toggle_folder, "toggle.yml");
+
+        channels_folder = new File(Main.plugin.getDataFolder() + "/channels");
+        channels_file = new File(channels_folder, "channels.yml");
 
         if(!custom_items_folder.exists()) {
             custom_items_folder.mkdir();
@@ -107,6 +110,18 @@ public class FileSystem {
             }
         }
 
+        if(!channels_folder.exists()){
+            channels_folder.mkdir();
+        }
+
+
+        if (!channels_file.exists()) {
+            try {
+                channels_file.createNewFile();
+                channelsSetup(channels_file);
+            } catch (Exception e) {
+            }
+        }
 
         if(!dungeons_file.exists()){
             saveResource("dungeons.yml", dungeons_folder, false);
@@ -387,6 +402,76 @@ public class FileSystem {
         } catch (IOException e){
             logger.info(worldciv + ChatColor.DARK_RED + " Failed to save dungeons file.");
             e.printStackTrace();
+        }
+    }
+
+    public void channelsSetup(File file) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
+        yml.createSection("channels");
+        yml.createSection("channels.Server");
+        yml.createSection("channels.Towny");
+
+        try {
+            yml.save(file);
+        } catch (Exception e) {
+        }
+
+    }
+    public void addChannels(Player p, String channel) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
+        switch(channel.toLowerCase()){
+            case "server":
+                yml.set("channels.Server", getChannelList("server").add(p.getName()));
+                return;
+            case "towny":
+                yml.set("channels.Towny", getChannelList("towny").add(p.getName()));
+                return;
+        }
+
+        try{
+            yml.save(channels_file);
+        }catch (Exception e){
+
+        }
+    }
+    public void removeChannels(Player p, String channel) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
+        switch(channel.toLowerCase()){
+            case "server":
+                yml.set("channels.Server", getChannelList("server").remove(p.getName()));
+                return;
+            case "towny":
+                yml.set("channels.Towny", getChannelList("towny").remove(p.getName()));
+                return;
+        }
+
+        try{
+            yml.save(channels_file);
+        }catch (Exception e){
+
+        }
+    }
+
+    public List<String> getChannelList(String channel){
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
+
+        switch(channel.toLowerCase()){
+            case "server":
+                if(yml.getStringList("channels.Server").isEmpty() || yml.getStringList("channels.Server") == null){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("channel.Server");
+                }
+            case "towny":
+                if(yml.getStringList("channels.Towny").isEmpty() || yml.getStringList("channels.Towny") == null){
+                    List<String> list = new ArrayList<>();
+                    return list;
+                } else {
+                    return yml.getStringList("channels.Towny");
+                }
+            default:
+                return null;
         }
     }
 

@@ -17,6 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.the60th.Main.getWorldGuard;
 import static com.worldciv.the60th.Main.plugin;
 import static com.worldciv.utility.utilityArrays.*;
@@ -134,20 +135,21 @@ public class WorldCivCommand implements CommandExecutor {
                          * If the player is not a mayor, and he's trying to mute the mayor or the assistant
                          */
 
-                        if (townyMute.contains(player_muted)) { //If the player is already muted, unmute him
+                        if(fileSystem.getChannelList("towny").contains(player_muted.getName())){
+                            //If the player is already muted, unmute him
                             for (Resident resident : ChatChannelEvent.getNationResidents((Player) sender)){
                                 Player player = Bukkit.getPlayer(resident.getName());
                                 player.sendMessage(worldciv + " " + ChatColor.AQUA + player_muted.getName() + ChatColor.RED + " is now able to participate in towny chat.");
 
                             }
-                            townyMute.remove(player_muted);
+                            fileSystem.removeChannels(player_muted, "towny");
                             return true;
                         } else { //if teh player is not muted
                             for (Resident resident : ChatChannelEvent.getNationResidents((Player) sender)){
                                 Player player = Bukkit.getPlayer(resident.getName());
                                 player.sendMessage(worldciv + " " + ChatColor.AQUA + player_muted.getName() + ChatColor.RED + " is muted from using towny chat.");
                             }
-                            townyMute.add(player_muted);
+                            fileSystem.addChannels(player_muted, "towny");
                             return true;
                         }
                     }
@@ -199,17 +201,17 @@ public class WorldCivCommand implements CommandExecutor {
                          * cant mute player of higher ranking
                          */
 
-                        if (globalMute.contains(player_muted)) {
+                        if(fileSystem.getChannelList("server").contains(player_muted.getName())){
                             for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
                                 onlineplayer.sendMessage(worldciv + " " + ChatColor.YELLOW + player_muted.getName() + ChatColor.RED + " is now able to participate in chat.");
                             }
-                            globalMute.remove(player_muted);
+                            fileSystem.removeChannels(player_muted, "server");
                             return true;
                         } else {
                             for (Player onlineplayer : Bukkit.getOnlinePlayers()) {
                                 onlineplayer.sendMessage(worldciv + " " + ChatColor.YELLOW + player_muted.getName() + ChatColor.RED + " is now muted from all chat.");
                             }
-                            globalMute.add(player_muted);
+                            fileSystem.addChannels(player_muted, "server");
                             return true;
                         }
                     }

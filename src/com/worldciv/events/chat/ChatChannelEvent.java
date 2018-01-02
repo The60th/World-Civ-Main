@@ -63,7 +63,8 @@ public class ChatChannelEvent implements Listener {
         String[] args = e.getMessage().split(" "); //Split the message into args
         Player official_sender = e.getPlayer(); //Player sending message
 
-        if (globalMute.contains(official_sender)) { //If you're server muted , cancel event.
+        if(fileSystem.getChannelList("server").contains(official_sender.getName())){
+            //If you're server muted , cancel event.
             official_sender.sendMessage(worldciv + ChatColor.RED + " You are server muted.");
             e.setCancelled(true);
             return;
@@ -253,8 +254,7 @@ public class ChatChannelEvent implements Listener {
 
     public static void pushNCMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
 
-
-        if (townyMute.contains(sender)) {
+        if(fileSystem.getChannelList("towny").contains(sender.getName())){
             sender.sendMessage(worldciv + ChatColor.RED + " You are towny-chat muted.");
             e.setCancelled(true);
             return;
@@ -343,7 +343,7 @@ public class ChatChannelEvent implements Listener {
 
     public static void pushANCMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
 
-        if (townyMute.contains(sender)) {
+        if(fileSystem.getChannelList("towny").contains(sender.getName())){
             sender.sendMessage(worldciv + ChatColor.RED + " You are towny-chat muted.");
             e.setCancelled(true);
             return;
@@ -448,7 +448,7 @@ public class ChatChannelEvent implements Listener {
 
     public static void pushTCMessage(Player sender, String rawmessage, AsyncPlayerChatEvent e) {
 
-        if (townyMute.contains(sender)) {
+        if(fileSystem.getChannelList("towny").contains(sender.getName())){
             sender.sendMessage(worldciv + ChatColor.RED + " You are towny-chat muted.");
             e.setCancelled(true);
             return;
