@@ -24,9 +24,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import static com.gmail.nossr50.mcMMO.getDatabaseManager;
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.the60th.Main.getMCMMO;
-import static com.worldciv.utility.utilityArrays.toggletimber;
-import static com.worldciv.utility.utilityArrays.toggletimbermessages;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class TreeCutterEvent implements Listener{
@@ -41,7 +40,7 @@ public class TreeCutterEvent implements Listener{
     public void onAbandonTree(PlayerMoveEvent e){
         Player p = e.getPlayer();
 
-        if(toggletimber.contains(p)){
+        if(fileSystem.getToggleList("timber").contains(p.getName())){
             return;
         }
 
@@ -49,7 +48,7 @@ public class TreeCutterEvent implements Listener{
          return;
         } else {
             if(p.getLocation().distance(chopping_records.get(p.getName()).getLocation()) > 5 ){
-                if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
+                if (!fileSystem.getToggleList("tms").contains(p.getName()))p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
                 chopping.remove(p.getName());
                 chopping_records.remove(p.getName());
                 return;
@@ -73,7 +72,7 @@ public class TreeCutterEvent implements Listener{
         Location loc = block.getLocation();
         Player p = e.getPlayer(); // player
 
-        if(toggletimber.contains(p)){
+        if(fileSystem.getToggleList("timber").contains(p.getName())){
             return;
         }
 
@@ -147,23 +146,23 @@ public class TreeCutterEvent implements Listener{
 
 
         if (!chopping_records.containsKey(p.getName())) { //If you haven't been recorded yet. Add.
-            if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            if (!fileSystem.getToggleList("tms").contains(p.getName()))p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.put(p.getName(), block);//Add a record of player cutting down a block. First time cutting down a log. take is easy :C
             chopping_time.put(p.getName(), duration);
             chopping.remove(p.getName());
         } else if (!chopping_records.get(p.getName()).equals(block)) { //this is a new block. replace it.
-            if (!toggletimbermessages.contains(p))  p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            if (!fileSystem.getToggleList("tms").contains(p.getName()))  p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.replace(p.getName(), block);
             chopping_time.replace(p.getName(), duration);
             chopping.remove(p.getName());
         } else if(chopping.get(p.getName()) == null) {
-            if (!toggletimbermessages.contains(p))    p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!fileSystem.getToggleList("tms").contains(p.getName()))    p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
             return;
         } else if(chopping.get(p.getName()).equals(block)) { //It's ready! :D
             // if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
 
             if(duration != chopping_time.get(p.getName())){
-                if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.RED + " This isn't the axe you first used...");
+                if (!fileSystem.getToggleList("tms").contains(p.getName())) p.sendMessage(worldciv + ChatColor.RED + " This isn't the axe you first used...");
 
                 chopping.remove(p.getName());
                 chopping_time.remove(p.getName());
@@ -175,7 +174,7 @@ public class TreeCutterEvent implements Listener{
             chopping.replace(p.getName(), block);
             return;
         } else if (chopping_records.get(p.getName()).equals(block)) {
-            if (!toggletimbermessages.contains(p)) p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!fileSystem.getToggleList("tms").contains(p.getName())) p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
             return;
             //im not sure if anything can be added here
         }
@@ -192,7 +191,7 @@ public class TreeCutterEvent implements Listener{
                 }
 
                 if (p.getLocation().distance(block.getLocation()) > 5) {
-                    if (!toggletimbermessages.contains(p))  p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
+                    if (!fileSystem.getToggleList("tms").contains(p.getName()))  p.sendMessage(worldciv + ChatColor.RED + " You abandoned the tree.");
                     chopping.remove(p.getName());
                     chopping_records.remove(p.getName());
                     chopping_time.remove(p.getName());
@@ -210,7 +209,7 @@ public class TreeCutterEvent implements Listener{
 
                 if (Math.floor(duration) <= iteration) {
                     chopping.put(p.getName(), block);
-                    if (!toggletimbermessages.contains(p))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+                    if (!fileSystem.getToggleList("tms").contains(p.getName()))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
                     cancel();
                     return;
                 }
@@ -234,7 +233,7 @@ public class TreeCutterEvent implements Listener{
         Player p = e.getPlayer();
         Block block = e.getBlock();
 
-        if(toggletimber.contains(p)){
+        if(fileSystem.getToggleList("timber").contains(p.getName())){
             return;
         }
 
@@ -264,7 +263,7 @@ public class TreeCutterEvent implements Listener{
 
         if(chopping.get(p.getName()) == null){
             e.setCancelled(true);
-            if (!toggletimbermessages.contains(p))p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+            if (!fileSystem.getToggleList("tms").contains(p.getName())) p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.RED + "not ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
             return;
         }
 

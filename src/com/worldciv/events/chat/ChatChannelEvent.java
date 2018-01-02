@@ -21,6 +21,7 @@ import ru.tehkode.permissions.PermissionUser;
 
 import java.util.*;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.the60th.Main.getEssentials;
 import static com.worldciv.the60th.Main.getPermissionsEx;
 import static com.worldciv.utility.utilityArrays.*;
@@ -142,7 +143,7 @@ public class ChatChannelEvent implements Listener {
 
         for (Player online_player : online_players) { //FOR ALL PLAYERS ONLINE
             long radius = Math.round(sender.getLocation().distance(online_player.getLocation())); //GET RANGE BETWEEN SENDER AND RECIPIENT
-            if (radius > 50 && !togglesocialspy.contains(online_player)) { //IF NOT NEAR 50
+            if (radius > 50 && !fileSystem.getToggleList("socialspy").contains(online_player.getName())) { //IF NOT NEAR 50
                 e.getRecipients().remove(online_player);
             }
         }
@@ -160,7 +161,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -232,7 +233,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -303,7 +304,7 @@ public class ChatChannelEvent implements Listener {
         List<Resident> residents = getNationResidents(sender);
 
         for (Player player : Bukkit.getOnlinePlayers()) { //For all online players
-            if (!residents.contains(getResident(player)) && !togglesocialspy.contains(player)) { //If you're not part of nation residents
+            if (!residents.contains(getResident(player)) && !fileSystem.getToggleList("socialspy").contains(player.getName())) { //If you're not part of nation residents
                 e.getRecipients().remove(player); //Remove player from being a part of it!
             }
         }
@@ -320,7 +321,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -405,7 +406,7 @@ public class ChatChannelEvent implements Listener {
         } */
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!ally_nation_residents.contains(getResident(player)) && !togglesocialspy.contains(player)) {
+            if (!ally_nation_residents.contains(getResident(player)) && !fileSystem.getToggleList("socialspy").contains(player.getName())) {
                 e.getRecipients().remove(player);
             }
         }
@@ -422,7 +423,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -484,7 +485,7 @@ public class ChatChannelEvent implements Listener {
         List<Resident> residents = getTownResidents(sender); //Get all town residents
 
         for (Player player : Bukkit.getOnlinePlayers()) { //All online players
-            if (!residents.contains(getResident(player)) && !togglesocialspy.contains(player)) { //If online player is not town resident
+            if (!residents.contains(getResident(player)) && !fileSystem.getToggleList("socialspy").contains(player.getName())) { //If online player is not town resident
                 e.getRecipients().remove(player); //remove from being a recipient
             }
         }
@@ -501,7 +502,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -554,7 +555,7 @@ public class ChatChannelEvent implements Listener {
 
         for (Player online_player : online_players) { //FOR ALL PLAYERS ONLINE
             long radius = Math.round(sender.getLocation().distance(online_player.getLocation())); //GET RANGE BETWEEN SENDER AND RECIPIENT
-            if (radius > 50 && !togglesocialspy.contains(online_player)) { //IF NOT NEAR 50
+            if (radius > 50 && !fileSystem.getToggleList("socialspy").contains(online_player.getName())) { //IF NOT NEAR 50
                 e.getRecipients().remove(online_player);
             }
         }
@@ -571,7 +572,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -641,7 +642,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);
@@ -709,7 +710,7 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if (!togglecensor.contains(receiver)) {
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
                 officialmsg = getCensoredMessage(args, getChannelColor(sender));
             } else {
                 officialmsg = getRawMessage(args);

@@ -6,15 +6,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 public final class utilityArrays {
-    public final static ArrayList<Player> togglevision = new ArrayList<Player>();
-    public final static ArrayList<Player> togglesocialspy = new ArrayList<Player>();
-    public final static ArrayList<Player> toggletimber = new ArrayList<Player>();
-    public final static ArrayList<Player> toggletimbermessages = new ArrayList<Player>();
-
-    public final static ArrayList<Player> dummytoggleboard = new ArrayList<Player>();
-    public final static ArrayList<Player> toggledisplay = new ArrayList<Player>();
-    public final static ArrayList<Player> togglevisionmessage = new ArrayList<Player>();
-    public final static ArrayList<Player> togglecensor = new ArrayList<Player>(); //the toggle is inversed from the other toggles
 
     public static ArrayList<Player> currentlyBlinded = new ArrayList<Player>();
     public static ArrayList<Player> holdingLight = new ArrayList<Player>();

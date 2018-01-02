@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.utility.utilityArrays.*;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
@@ -20,7 +21,7 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 public class LightLevelEvent  {
 
     public static void updateLightLevelEvent(Player player){
-        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || visionregion.contains(player)){
+        if (fileSystem.getToggleList("vision").contains(player.getName()) || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || visionregion.contains(player)){
             if (currentlyBlinded.contains(player)) {
                 unBlindPlayer(player);
                 currentlyBlinded.remove(player);
@@ -135,7 +136,7 @@ public class LightLevelEvent  {
 
         Location location = player.getLocation();
         Location vision = new Location(location.getWorld(), location.getX(), location.getY() + 1, location.getZ());
-        if(!togglevisionmessage.contains(player)){
+        if(!fileSystem.getToggleList("vms").contains(player.getName())){
 
             if(vision.getBlock().getType() == Material.WATER || vision.getBlock().getType() == Material.STATIONARY_WATER ){
                 if(player.getInventory().getItemInMainHand().getType() == Material.TORCH || player.getInventory().getItemInOffHand().getType() == Material.TORCH) {
@@ -155,7 +156,7 @@ public class LightLevelEvent  {
     }
 
     public static void unBlindPlayer(Player player) {
-        if(!togglevisionmessage.contains(player)) player.sendMessage(worldciv + ChatColor.GRAY + " Your vision becomes clear.");
+        if(!fileSystem.getToggleList("vms").contains(player.getName())) player.sendMessage(worldciv + ChatColor.GRAY + " Your vision becomes clear.");
         player.removePotionEffect(PotionEffectType.BLINDNESS);
     }
 

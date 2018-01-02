@@ -448,6 +448,60 @@ public class FileSystem {
                 yml.set("toggle.SocialSpy", getToggleList("ss").add(p.getName()));
                 return;
         }
+
+        try{
+            yml.save(toggle_file);
+        }catch (Exception e){
+
+        }
+
+
+    }
+
+    public void removeToggle(Player p, String toggle_name){
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(toggle_file);
+
+        switch(toggle_name.toLowerCase()){
+            case "scoreboard":
+            case "sb":
+                yml.set("toggle.Scoreboard", getToggleList("sb").remove(p.getName()));
+                return;
+            case "sbanimation":
+            case "anim":
+                yml.set("toggle.ScoreboardAnimation", getToggleList("anim").remove(p.getName()));
+                return;
+            case "visionmessages":
+            case "vms":
+            case "vm":
+                yml.set("toggle.VisionMessages", getToggleList("vms").remove(p.getName()));
+                return;
+            case "censorship":
+            case "c":
+                yml.set("toggle.Censorship", getToggleList("c").remove(p.getName()));
+                return;
+            case "timber":
+            case "t":
+                yml.set("toggle.Timber", getToggleList("t").remove(p.getName()));
+                return;
+            case "timbermessages":
+            case "tms":
+            case "tm":
+                yml.set("toggle.TimberMessages", getToggleList("tms").remove(p.getName()));
+                return;
+            case "vision":
+            case "v":
+                yml.set("toggle.VisionBypass", getToggleList("anim").remove(p.getName()));
+                return;
+            case "socialspy":
+            case "ss":
+                yml.set("toggle.SocialSpy", getToggleList("ss").remove(p.getName()));
+                return;
+        }
+        try{
+            yml.save(toggle_file);
+        }catch (Exception e){
+
+        }
     }
 
     public List<String> getToggleList(String toggle_name){

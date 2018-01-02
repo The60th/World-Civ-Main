@@ -10,8 +10,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import static com.worldciv.utility.utilityArrays.dummytoggleboard;
-import static com.worldciv.utility.utilityArrays.toggledisplay;
+import static com.worldciv.the60th.Main.fileSystem;
 
 public final class animationManager {
     private final ChatColor defaultcolor = ChatColor.GOLD;   //worldciv default coloring
@@ -36,7 +35,7 @@ public final class animationManager {
                 cancel();
             }
 
-            if(dummytoggleboard.contains(player) || toggledisplay.contains(player)){
+            if(fileSystem.getToggleList("scoreboard").contains(player.getName()) || fileSystem.getToggleList("sbanimation").contains(player.getName())){
                 newsTeam.setPrefix(ChatColor.RED + "/news");
                 objective.setDisplayName(defaultcolor + "World-Civ");
                 team.setPrefix(ChatColor.GRAY + "          ");
@@ -52,7 +51,7 @@ public final class animationManager {
             } else {
                 newsTeam.setPrefix(ChatColor.translateAlternateColorCodes('&', scroller.next()));  //to change go to top in static line numbers. | line 5.
             }
-        if (!toggledisplay.contains(player)) {
+        if (!fileSystem.getToggleList("sbanimation").contains(player.getName())) {
             if (rotation == 1000) {
                 objective.setDisplayName(defaultcolorrcom + "RCommunityMC");
                 team.setPrefix(ChatColor.GRAY + "          "); //use this format or setDisplay for future animations with title

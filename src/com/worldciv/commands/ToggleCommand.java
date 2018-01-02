@@ -8,10 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.utility.utilityArrays.*;
-import static com.worldciv.utility.utilityStrings.mainbot;
-import static com.worldciv.utility.utilityStrings.maintop;
-import static com.worldciv.utility.utilityStrings.worldciv;
+import static com.worldciv.utility.utilityStrings.*;
 
 public class ToggleCommand implements CommandExecutor {
     @Override
@@ -38,14 +37,14 @@ public class ToggleCommand implements CommandExecutor {
                 }
                 p.sendMessage(" " + mainbot);
             } else if (args[0].equalsIgnoreCase("sb") || args[0].equalsIgnoreCase("scoreboard")) {
-                if (dummytoggleboard.contains(p)) {
-                    dummytoggleboard.remove(p);
+                if (fileSystem.getToggleList("scoreboard").contains(p.getName())) {
+                    fileSystem.removeToggle(p, "scoreboard");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The scoreboard has been enabled!");
                     Main.getScoreboardManager().setScoreboard(p);
                     return true;
 
-                } else if (!dummytoggleboard.contains(p)) {
-                    dummytoggleboard.add(p);
+                } else if (!fileSystem.getToggleList("scoreboard").contains(p.getName())) {
+                    fileSystem.addToggle(p, "scoreboard");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The scoreboard has been disabled!");
                     p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                     return true;
@@ -55,27 +54,25 @@ public class ToggleCommand implements CommandExecutor {
                     p.sendMessage(worldciv + ChatColor.GRAY + " This command is only allowed for staff. If you believe this is an error, ask staff to provide you the" + ChatColor.AQUA + " worldciv.togglevision" + ChatColor.GRAY + " permission.");
                     return true;
                 }
-                if (!togglevision.contains(p)) {
-                    togglevision.add(p);
+                if (!fileSystem.getToggleList("vision").contains(p.getName())) {
+                    fileSystem.addToggle(p, "vision");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "vision bypass.");
-
                     return true;
-                }
-                if (togglevision.contains(p)) {
-                    togglevision.remove(p);
+                } else if (fileSystem.getToggleList("vision").contains(p.getName())) {
+                    fileSystem.removeToggle(p, "vision");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "vision bypass.");
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("censor") || args[0].equalsIgnoreCase("c")) {
 
-                if (!togglecensor.contains(p)) {
-                    togglecensor.add(p);
+                if (!fileSystem.getToggleList("c").contains(p.getName())) {
+                    fileSystem.addToggle(p, "c");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "censorship.");
 
                     return true;
                 }
-                if (togglecensor.contains(p)) {
-                    togglecensor.remove(p);
+                if (fileSystem.getToggleList("c").contains(p.getName())) {
+                    fileSystem.removeToggle(p, "c");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "censorship");
                     return true;
                 }
@@ -84,62 +81,61 @@ public class ToggleCommand implements CommandExecutor {
                     p.sendMessage(worldciv + ChatColor.GRAY + " This command is only allowed for staff. If you believe this is an error, ask staff to provide you the" + ChatColor.AQUA + " worldciv.socialspy" + ChatColor.GRAY + " permission.");
                     return true;
                 }
-                if (!togglesocialspy.contains(p)) {
-                    togglesocialspy.add(p);
+                if(!fileSystem.getToggleList("ss").contains(p.getName())){
+                    fileSystem.addToggle(p, "ss");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "social spy.");
 
                     return true;
                 }
-                if (togglesocialspy.contains(p)) {
-                    togglesocialspy.remove(p);
+                else if(fileSystem.getToggleList("ss").contains(p.getName())){
+                    fileSystem.removeToggle(p, "ss");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "social spy");
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("timbermessages") || args[0].equalsIgnoreCase("tm") || args[0].equalsIgnoreCase("tms")) {
-                if (toggletimbermessages.contains(p)) {
-                    toggletimbermessages.remove(p);
+                if(fileSystem.getToggleList("tms").contains(p.getName())){
+                    fileSystem.removeToggle(p, "tms");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "timber messages" + ChatColor.GRAY + ".");
                     return true;
 
-                } else if (!toggletimbermessages.contains(p)) {
-                    toggletimbermessages.add(p);
+                } else if(!fileSystem.getToggleList("tms").contains(p.getName())){
+                    fileSystem.addToggle(p, "tms");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "timber messages" + ChatColor.GRAY + ".");
-
                     return true;
                 }
             }else if (args[0].equalsIgnoreCase("timber") || args[0].equalsIgnoreCase("t")) {
-                if (toggletimber.contains(p)) {
-                    toggletimber.remove(p);
+                if(fileSystem.getToggleList("timber").contains(p.getName())){
+                    fileSystem.removeToggle(p, "timber");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have enabled " + ChatColor.YELLOW + "timber" + ChatColor.GRAY + ".");
                     return true;
 
-                } else if (!toggletimber.contains(p)) {
-                    toggletimber.add(p);
+                } else if(!fileSystem.getToggleList("timber").contains(p.getName())){
+                    fileSystem.addToggle(p, "timber");
                     p.sendMessage(worldciv + ChatColor.GRAY + " You have disabled " + ChatColor.YELLOW + "timber" + ChatColor.GRAY + ".");
 
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("sbanimation") || args[0].equalsIgnoreCase("anim")) {
-                if (toggledisplay.contains(p)) {
-                    toggledisplay.remove(p);
+                if(fileSystem.getToggleList("sbanimation").contains(p.getName())){
+                    fileSystem.removeToggle(p, "sbanimation");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The display title's animation has been enabled!");
                     Main.getScoreboardManager().setScoreboard(p);
                     return true;
 
-                } else if (!toggledisplay.contains(p)) {
-                    toggledisplay.add(p);
+                } else  if(!fileSystem.getToggleList("sbanimation").contains(p.getName())){
+                    fileSystem.addToggle(p, "sbanimation");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The display title's animation has been disabled!");
 
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("visionmessages") || args[0].equalsIgnoreCase("vm") || args[0].equalsIgnoreCase("vms")) {
-                if (togglevisionmessage.contains(p)) {
-                    togglevisionmessage.remove(p);
+                if(fileSystem.getToggleList("vms").contains(p.getName())){
+                    fileSystem.removeToggle(p, "vms");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The vision message notifications have been enabled!");
                     return true;
 
-                } else if (!togglevisionmessage.contains(p)) {
-                    togglevisionmessage.add(p);
+                } else  if(!fileSystem.getToggleList("vms").contains(p.getName())){
+                    fileSystem.addToggle(p, "vms");
                     p.sendMessage(worldciv + ChatColor.GRAY + " The vision message notifications have been disabled!");
 
                     return true;

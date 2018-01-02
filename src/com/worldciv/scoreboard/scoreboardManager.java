@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.*;
 
 import java.util.List;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.utility.utilityArrays.*;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
@@ -102,7 +103,7 @@ public class scoreboardManager {
         //blankscore
 
 
-        if(dummytoggleboard.contains(player)){
+        if(fileSystem.getToggleList("scoreboard").contains(player.getName())){
             return;
         }
 
@@ -124,7 +125,7 @@ public class scoreboardManager {
 
         // SCORE TO HAVE ✓ OR ✗ MARK
 
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || togglevision.contains(player) || visionregion.contains(player)) {
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || fileSystem.getToggleList("vision").contains(player.getName()) || visionregion.contains(player)) {
             torchTeam.setPrefix(ChatColor.YELLOW + "VISION BYPASS");
             torchTeam.setSuffix(ChatColor.RESET + "");
         } else {
@@ -147,7 +148,7 @@ public class scoreboardManager {
 
     public static void updateVisionTeam(Player player) {
 
-        if (togglevision.contains(player) || player.getGameMode() == GameMode.CREATIVE){
+        if (fileSystem.getToggleList("vision").contains(player.getName()) || player.getGameMode() == GameMode.CREATIVE){
             if (currentlyBlinded.contains(player)) {
 
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tab player " + player.getName() + " tagprefix &e[V] &f"); //<3 the tab
@@ -175,7 +176,7 @@ public class scoreboardManager {
 
                 if (holdingLight.contains(player) && !visionteam.contains(player)) { //if you are being lit and you are already not in vision.
 
-                    if(!togglevisionmessage.contains((Player)entitylist.get(i)))
+                    if(!fileSystem.getToggleList("vms").contains(entitylist.get(i).getName()))
                         entitylist.get(i).sendMessage(worldciv + ChatColor.GRAY + " You have been provided vision by " + ChatColor.AQUA + player.getDisplayName());
 
                 }
