@@ -3,6 +3,7 @@ package com.worldciv.events.inventory;
 import com.worldciv.filesystem.CustomItem;
 import com.worldciv.filesystem.Gear;
 import com.worldciv.the60th.Main;
+import com.worldciv.utility.CraftingItemStack;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
 import org.bukkit.ChatColor;
@@ -196,15 +197,11 @@ public class CraftEvent implements Listener {
     }
 
     public void SteelBlock(CraftItemEvent e) {
-        fixDupe(e);
-        ItemStack is = new ItemStack(Material.IRON_INGOT, 1);
-        ItemMeta im = is.getItemMeta();
-        List<String> list = Arrays.asList(ChatColor.GRAY + "A steel block is used for", ChatColor.GRAY + "crafting a steel anvil.", "", ChatColor.YELLOW + "Follow the guide on the /wc links");
-        im.setLore(list);
-        is.setItemMeta(im);
 
-        if (e.getCurrentItem().equals(is)) {
-            e.setCurrentItem(is);
+
+        if (e.getCurrentItem().equals(CraftingItemStack.getSteelAnvil())) {
+            fixDupe(e);
+            e.setCurrentItem(CraftingItemStack.getSteelAnvil());
         }
     }
 

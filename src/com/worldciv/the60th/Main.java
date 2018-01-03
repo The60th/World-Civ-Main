@@ -44,7 +44,6 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class Main extends JavaPlugin {
 
-
     protected static scoreboardManager scoreboardManager;
     public static Plugin plugin;
     public static JavaPlugin javaPlugin;
@@ -286,6 +285,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new mobAttack(), this);
         pm.registerEvents(new PlayerAttackEvents(), this);
         pm.registerEvents(new CancelEnderpearlEvent(), this);
+        pm.registerEvents(new SteelAnvilEvent(), this);
     }
 
     public void registerChatChannels(){

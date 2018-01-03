@@ -1,6 +1,7 @@
 package com.worldciv.events.inventory;
 
 import com.worldciv.filesystem.Gear;
+import com.worldciv.utility.CraftingItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -84,13 +85,7 @@ public class CraftCreate implements Listener {
                     && itemsInTable[9].getItemMeta().getLore().get(0).contains(Steel)
                     ) {
 
-                ItemStack is = new ItemStack(Material.ANVIL, 1);
-                ItemMeta im = is.getItemMeta();
-                List<String> list = Arrays.asList(ChatColor.GRAY + "A steel anvil is more", ChatColor.GRAY + "resilient when custom crafting.", "", ChatColor.DARK_AQUA + "Damage Reduction:" + ChatColor.YELLOW + " 50%");
-                im.setLore(list);
-                im.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Steel Anvil");
-                is.setItemMeta(im);
-                e.getInventory().setResult(is);
+                e.getInventory().setResult(CraftingItemStack.getSteelAnvil());
                 return;
             }
         }

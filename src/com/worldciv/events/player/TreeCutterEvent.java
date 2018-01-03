@@ -270,7 +270,7 @@ public class TreeCutterEvent implements Listener{
         if (chopping.get(p.getName()).equals(e.getBlock())) {
             this.breakBlock(e.getBlock(), e.getPlayer());
 
-            PlayerProfile pprofile =  mcMMO.getDatabaseManager().loadPlayerProfile(p.getUniqueId());
+            PlayerProfile pprofile = mcMMO.getDatabaseManager().loadPlayerProfile(p.getUniqueId());
             pprofile.addXp(SkillType.WOODCUTTING, 75 * getAllLogs(block, p));
 
             chopping_records.remove(p.getName());

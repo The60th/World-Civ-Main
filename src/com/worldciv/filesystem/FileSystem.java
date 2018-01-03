@@ -42,7 +42,7 @@ public class FileSystem {
     File channels_folder;
     File channels_file;
 
-
+//todo database, custom blocks, add anvil
     YamlConfiguration dungeons_yml;
 
     public FileSystem(){

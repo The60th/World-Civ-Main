@@ -17,11 +17,6 @@ import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class Party {
 
-
-    public Party() { //rip empty constructor
-
-    }
-
     public void create(final Player p) {  // This function creates the party for the sender.
 
         UUID uuid = UUID.randomUUID(); //RANDOM UUID
