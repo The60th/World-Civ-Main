@@ -657,7 +657,7 @@ public class FileSystem {
                 }
             case "sbanimation":
             case "anim":
-                if(yml.getStringList("toggle.ScoreboardAnimation").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.ScoreboardAnimation").isEmpty()|| yml.getStringList("toggle.ScoreboardAnimation") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -666,7 +666,7 @@ public class FileSystem {
             case "visionmessages":
             case "vms":
             case "vm":
-                if(yml.getStringList("toggle.VisionMessages").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.VisionMessages").isEmpty()|| yml.getStringList("toggle.VisionMessages") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -674,7 +674,7 @@ public class FileSystem {
                 }
             case "censorship":
             case "c":
-                if(yml.getStringList("toggle.Censorship").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.Censorship").isEmpty()|| yml.getStringList("toggle.Censorship") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -682,7 +682,7 @@ public class FileSystem {
                 }
             case "timber":
             case "t":
-                if(yml.getStringList("toggle.Timber").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.Timber").isEmpty()|| yml.getStringList("toggle.Timber") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -691,7 +691,7 @@ public class FileSystem {
             case "timbermessages":
             case "tms":
             case "tm":
-                if(yml.getStringList("toggle.TimberMessages").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.TimberMessages").isEmpty()|| yml.getStringList("toggle.TimberMessages") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -699,7 +699,7 @@ public class FileSystem {
                 }
             case "vision":
             case "v":
-                if(yml.getStringList("toggle.VisionBypass").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.VisionBypass").isEmpty()|| yml.getStringList("toggle.VisionBypass") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {
@@ -707,7 +707,7 @@ public class FileSystem {
                 }
             case "socialspy":
             case "ss":
-                if(yml.getStringList("toggle.SocialSpy").isEmpty()|| yml.getStringList("toggle.Scoreboard") == null){
+                if(yml.getStringList("toggle.SocialSpy").isEmpty()|| yml.getStringList("toggle.SocialSpy") == null){
                     List<String> list = new ArrayList<>();
                     return list;
                 } else {

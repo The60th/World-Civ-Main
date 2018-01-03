@@ -1132,7 +1132,7 @@ public class ChatChannelEvent implements Listener {
 
         if (!argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")) { //If the argument does not start with a tag mention
             temp = ChatColor.stripColor(argument); //Strip the color to &4thismessage
-            temp = argument.replaceAll("[^A-Za-z0-9_]", "");
+            temp = temp.replaceAll("[^A-Za-z0-9 _ &]", "");
 
         } else {
             if(isTagMentioned(argument)){
@@ -1148,7 +1148,6 @@ public class ChatChannelEvent implements Listener {
                 temp = temp.substring(2); //message
             }
         }
-
         switch (temp.toLowerCase()) {
             case "fuck":
             case "shit":

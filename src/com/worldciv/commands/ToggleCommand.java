@@ -6,10 +6,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.util.List;
+
 import static com.worldciv.the60th.Main.fileSystem;
-import static com.worldciv.utility.utilityArrays.*;
 import static com.worldciv.utility.utilityStrings.*;
 
 public class ToggleCommand implements CommandExecutor {
@@ -25,15 +28,57 @@ public class ToggleCommand implements CommandExecutor {
             Player p = (Player) sender; //declare player
 
             if (args.length == 0) {
-                p.sendMessage(worldciv + ChatColor.RED + " Invalid arguments! Use " + ChatColor.YELLOW + "/toggle help" + ChatColor.RED + ". Example: " + ChatColor.YELLOW + "/toggle sb");
+
+                p.sendMessage(worldciv + ChatColor.GRAY + " These are your current toggle settings:");
+                File toggle_folder = new File(Main.plugin.getDataFolder() + "/toggle");
+                File toggle_file = new File(toggle_folder, "toggle.yml");
+                YamlConfiguration yml = YamlConfiguration.loadConfiguration(toggle_file);
+                for (Object key : yml.getKeys(true)) {
+
+                    if(key.equals("toggle")){
+                        continue;
+                    }
+
+                    String key_string = key.toString().substring(7);
+
+                    List<String> list = yml.getStringList("toggle." + key_string);
+                    String status;
+                    ChatColor color = ChatColor.YELLOW;
+
+                    if (!list.contains(p.getName()) && !isInverse(key_string)) {
+                        status = ChatColor.GREEN + "ON";
+                    } else if (!list.contains(p.getName()) && (isInverse(key_string))){
+                        status = ChatColor.RED + "OFF";
+                    } else if(list.contains(p.getName()) && !isInverse(key_string)){
+                        status = ChatColor.RED + "OFF";
+                    } else if (list.contains(p.getName()) && (isInverse(key_string))){
+                        status = ChatColor.GREEN + "ON";
+                    } else {
+                        status = "null";
+                    }
+
+                    if (key_string.equalsIgnoreCase("VisionBypass") || key_string.equalsIgnoreCase("SocialSpy")) {
+                        if (!p.hasPermission("worldciv.admin")) {
+                            continue;
+                        } else {
+                            color = ChatColor.RED;
+                        }
+                    }
+
+                    p.sendMessage(color + key_string + ChatColor.GRAY + ": " + status);
+                    continue;
+
+
+                }
+
                 return true;
             } else if (args[0].equalsIgnoreCase("help")) {
 
                 p.sendMessage(maintop);
-                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.AQUA + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c), timber (t), timbermessages (tm/tms), colorblind (cb).");
+                p.sendMessage(ChatColor.GRAY + " The toggle commands are:" + ChatColor.YELLOW + " scoreboard (sb), sbanimation (anim), visionmessages (vm/vms), censorship (c), timber (t), timbermessages (tm/tms), colorblind (cb).");
 
                 if (p.hasPermission("worldciv.togglevision")) {
-                    p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.AQUA + " vision (v), socialspy (ss)");
+                    p.sendMessage(ChatColor.GRAY + " The staff toggle commands are (only staff can see this):" + ChatColor.RED + " vision (v), socialspy (ss)");
                 }
                 p.sendMessage(" " + mainbot);
             } else if (args[0].equalsIgnoreCase("sb") || args[0].equalsIgnoreCase("scoreboard")) {
@@ -160,7 +205,18 @@ public class ToggleCommand implements CommandExecutor {
         return true;
 
     }
-
+    public boolean isInverse(String key){
+        switch(key.toLowerCase()){
+            case "visionbypass":
+                return true;
+            case "colorblind":
+                return true;
+            case "socialspy":
+                return true;
+            default:
+                return false;
+        }
+    }
 
 
 }
