@@ -1,5 +1,7 @@
 package com.worldciv.events.player;
 
+import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.mcMMO;
@@ -268,11 +270,12 @@ public class TreeCutterEvent implements Listener{
         }
 
         if (chopping.get(p.getName()).equals(e.getBlock())) {
+
+            int xp = 75 * getAllLogs(block , p);
+            ExperienceAPI.addRawXP(p, "WOODCUTTING", xp);
+            if (!fileSystem.getToggleList("tms").contains(p.getName())) p.sendMessage(worldciv + ChatColor.GRAY + " You gained " + ChatColor.YELLOW + xp + ChatColor.GRAY + " WOODCUTTING from Timber.");
+
             this.breakBlock(e.getBlock(), e.getPlayer());
-
-            PlayerProfile pprofile = mcMMO.getDatabaseManager().loadPlayerProfile(p.getUniqueId());
-            pprofile.addXp(SkillType.WOODCUTTING, 75 * getAllLogs(block, p));
-
             chopping_records.remove(p.getName());
             chopping.remove(p.getName());
             chopping_time.remove(p.getName());

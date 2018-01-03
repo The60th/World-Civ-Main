@@ -29,8 +29,10 @@ public class JoinEvent implements Listener {
         }
 
         // SCOREBOARD CREATION //
-        Main.getScoreboardManager().setScoreboard(player);
 
+if(!fileSystem.getToggleList("scoreboard").contains(player.getName())) {
+    Main.getScoreboardManager().setScoreboard(player);
+}
 
         ApplicableRegionSet set = getWorldGuard().getRegionManager(player.getWorld()).getApplicableRegions(player.getLocation());
 

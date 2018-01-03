@@ -40,22 +40,24 @@ public class SteelAnvilEvent implements Listener {
     }
 
     @EventHandler
-    public void x(EntityDamageByEntityEvent e){
-
-    }
-
-    @EventHandler
     public void onSteelAnvilRemoval(SteelAnvilBreakEvent e) {
+
         Block b = e.getBlock();
-
-
-
     }
 
 
     /**
      * On removal of block
      */
+
+    @EventHandler
+    public void onPhysics(BlockPhysicsEvent e){
+        Block b = e.getBlock();
+        if(b.getType().equals(Material.ANVIL)){
+            SteelAnvilBreakEvent event = new SteelAnvilBreakEvent(b);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+        }
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {

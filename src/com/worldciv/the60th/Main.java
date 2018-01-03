@@ -28,7 +28,9 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -264,6 +266,7 @@ public class Main extends JavaPlugin {
 
     public void registerEvents(){
         PluginManager pm = getServer().getPluginManager();
+
         pm.registerEvents(new QuitEvent(), this);
         pm.registerEvents(new CommandPreprocess(), this);
         pm.registerEvents(new WeatherChangingEvent(), this);
@@ -286,6 +289,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new PlayerAttackEvents(), this);
         pm.registerEvents(new CancelEnderpearlEvent(), this);
         pm.registerEvents(new SteelAnvilEvent(), this);
+
     }
 
     public void registerChatChannels(){
