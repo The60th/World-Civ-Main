@@ -44,9 +44,21 @@ public class Gear {
 
     public  static ShapedRecipe customTierOneLance;
 
+    public static ItemStack tierOneHelmIS;
+    public static ItemStack tierOneChestIS;
+    public static ItemStack tierOneLegsIS;
+    public static ItemStack tierOneBootsIS;
+    public static ItemStack tierOneSwordIS;
+    public static ItemStack tierOneBowIS;
+    public static ItemStack tierOneShieldIS;
+    public static ItemStack tierOnePikeIS;
+    public static ItemStack tierOneLanceIS;
+    public static ItemStack tierOneArrowIS;
+
     public static ShapedRecipe lance;
     public static ShapedRecipe pike;
     public static ShapedRecipe arrow;
+    public static ShapedRecipe shield;
 
     public static ItemStack tierTwoHelm;
     public static ItemStack tierTwoChest;
@@ -69,6 +81,7 @@ public class Gear {
     public static ItemStack tierOnePike;
     public static ItemStack tierOneLance;
     public static ItemStack tierOneArrow;
+
     public static void registerRecipes(){
         customTierOneSword();
         customTierOneHelm();
@@ -146,6 +159,9 @@ public class Gear {
         pike.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(pike);
     }
+    private static void registerShield(){
+
+    }
     private static void customTierOneHelm(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
         ItemStack item = new ItemStack(Material.IRON_HELMET, 1);
@@ -168,6 +184,7 @@ public class Gear {
                 "@ @");
         customTierOneHelm2.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneHelm2);
+        tierOneHelmIS = item;
     }
     private static void customTierOneChest(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
@@ -184,6 +201,7 @@ public class Gear {
         customTierOneChest.setIngredient('@',Material.IRON_BLOCK);
 
         Bukkit.getServer().addRecipe(customTierOneChest);
+        tierOneChestIS = item;
     }
     private static void customTierOneLegs(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
@@ -200,6 +218,7 @@ public class Gear {
         customTierOneLeg.setIngredient('@',Material.IRON_BLOCK);
 
         Bukkit.getServer().addRecipe(customTierOneLeg);
+        tierOneLegsIS = item;
     }
     private static void customTierOneBoots(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
@@ -225,6 +244,7 @@ public class Gear {
         );
         customTierOneBoots2.setIngredient('@',Material.IRON_BLOCK);
         Bukkit.getServer().addRecipe(customTierOneBoots2);
+        tierOneBootsIS = item;
     }
     private static void customTierOneSword(){
         //ItemStack item = CustomItem.getItemFromCustomItem(MainCombat.fileSystem.createItem((new ItemStack(Material.WOOD_SWORD,1)),Tier.five,ItemType.SWORD ));
@@ -260,6 +280,7 @@ public class Gear {
         customTierOneSword3.setIngredient('@',Material.IRON_BLOCK);
         customTierOneSword3.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneSword3);
+        tierOneSwordIS = item;
     }
 
     private static void CustomTierOneShield(){
@@ -277,10 +298,19 @@ public class Gear {
                 "@#@",
                 " @ "
         );
+        customTierOneShield.setIngredient('@',Material.IRON_BLOCK);
+        customTierOneShield.setIngredient('#',Material.IRON_FENCE);
+        customTierOneShield = new ShapedRecipe(item);
+        customTierOneShield.shape(
+                "@ @",
+                "@#@",
+                " @ "
+        );
         customTierOneShield.setIngredient('@',Material.IRON_INGOT);
         customTierOneShield.setIngredient('#',Material.IRON_FENCE);
 
         Bukkit.getServer().addRecipe(customTierOneShield);
+        tierOneShieldIS = item;
     }
     private static void CustomTierOneArrow(){
 
@@ -297,10 +327,11 @@ public class Gear {
                 "  #",
                 "   "
         );
-        customTierOneArrow.setIngredient('@',Material.IRON_INGOT);
+        customTierOneArrow.setIngredient('@',Material.IRON_BLOCK);
         customTierOneArrow.setIngredient('#',Material.STICK);
 
         Bukkit.getServer().addRecipe(customTierOneArrow);
+        tierOneArrowIS = item;
     }
     private static void CustomTierOneBow(){
 
@@ -317,10 +348,19 @@ public class Gear {
                 "@ #",
                 " @#"
         );
+        customTierOneBow.setIngredient('@',Material.IRON_BLOCK);
+        customTierOneBow.setIngredient('#',Material.STRING);
+        customTierOneBow.shape(
+                " @#",
+                "@ #",
+                " @#"
+        );
         customTierOneBow.setIngredient('@',Material.IRON_INGOT);
         customTierOneBow.setIngredient('#',Material.STRING);
 
+
         Bukkit.getServer().addRecipe(customTierOneBow);
+        tierOneBowIS = item;
     }
     private static void  CustomTierOnePike(){
         ItemStack item = new ItemStack(Material.IRON_SPADE,1);
@@ -343,6 +383,7 @@ public class Gear {
         customTierOnePike.setIngredient('@',Material.IRON_BLOCK);
         customTierOnePike.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOnePike);
+        tierOnePikeIS = item;
     }
     private static void  CustomTierOneLance(){
         ItemStack item = new ItemStack(Material.IRON_SPADE,1);
@@ -365,6 +406,7 @@ public class Gear {
         customTierOneLance.setIngredient('@',Material.IRON_BLOCK);
         customTierOneLance.setIngredient('#',Material.STICK);
         Bukkit.getServer().addRecipe(customTierOneLance);
+        tierOneLanceIS = item;
     }
 
 

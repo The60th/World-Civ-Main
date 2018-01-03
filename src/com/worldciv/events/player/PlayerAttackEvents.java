@@ -5,6 +5,7 @@ import com.worldciv.the60th.Main;
 import com.worldciv.utility.ExampleSelfCancelingTask;
 import com.worldciv.utility.ItemType;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static com.worldciv.the60th.Main.getDungeonManager;
 
 //Based off of old new combat stats plugin
 public class PlayerAttackEvents implements Listener {
@@ -110,12 +113,22 @@ public class PlayerAttackEvents implements Listener {
                     return;
                 }
                 else if (pDefender.getHealth() - damagePostArmor < 0) {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     //Lets the player die normally.
                     event.setDamage(999); //Make sure the player dies
                     defenderArmorTracker.remove(pDefender);
                     return;
                 }else
                 {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     pDefender.setHealth(pDefender.getHealth() - (damagePostArmor));
                     event.setDamage(0);
                     defenderArmorTracker.remove(pDefender);
@@ -132,13 +145,28 @@ public class PlayerAttackEvents implements Listener {
         } else {
             if(damagePostArmor >= 6) damagePostArmor = 6;
             if (pDefender.getHealth() - damagePostArmor < 0) {
+                if (getDungeonManager.getDungeon(pDefender) != null) {
+                    pDefender.setHealth(pDefender.getMaxHealth());
+                    Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                    pDefender.teleport(location);
+                }
                 //Lets the player die normally.
                 event.setDamage(999); //Make sure the player dies
             } else {
                 try {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     pDefender.setHealth(pDefender.getHealth() - (damagePostArmor)); //Cant set neg major bug
                     event.setDamage(0);
                 } catch (IllegalArgumentException e) {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     event.setDamage(999);
                     //Catch the negative bug we were running into and let the player die normally.
                 }
