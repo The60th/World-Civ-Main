@@ -153,6 +153,11 @@ public class AnvilCreate implements Listener {
     public void onAnvilInteraction(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
+
+        if(b.getType() == null){
+            return;
+        }
+
         if (b.getType() == Material.ANVIL){
             if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 if(p.isSneaking()){
