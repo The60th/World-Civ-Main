@@ -62,6 +62,8 @@ public class ItemGenerator {
         else if(itemType == ItemType.SHIELD){
             damage = (calculateStat(rarity,tier)/3);
             if(damage < 1) damage = 1;
+            armor = (calculateStat(rarity,tier));
+            if(armor <1) armor = 1;
         }
         else if(itemType == ItemType.SWORD){
             damage = calculateStat(rarity,tier);
@@ -244,7 +246,7 @@ public class ItemGenerator {
     private static ItemType checkItemType(ItemType itemType){
         switch (itemType){
             case SHIELD:
-                return ItemType.SWORD;
+                return ItemType.SHIELD;
             case AXE:
                 return ItemType.AXE;
             case SWORD:

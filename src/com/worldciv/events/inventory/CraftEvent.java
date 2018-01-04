@@ -6,6 +6,7 @@ import com.worldciv.the60th.Main;
 import com.worldciv.utility.CraftingItemStack;
 import com.worldciv.utility.ItemType;
 import com.worldciv.utility.Tier;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -57,15 +58,15 @@ public class CraftEvent implements Listener {
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.IRON_BOOTS,1)), Tier.tempHalfTier, ItemType.BOOTS)));
-        } else if(result.equals(Gear.customTierOneShield.getResult().toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneShieldIS.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.SHIELD,1),Tier.tempHalfTier, ItemType.SHIELD)));
-        } else if(result.equals(Gear.customTierOneBow.getResult().toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneBowIS.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.BOW,1),Tier.tempHalfTier, ItemType.BOW)));
-        } else if(result.equals(Gear.customTierOneArrow.getResult().toString())){
+        } else if(event.getCurrentItem().toString().equals(Gear.tierOneArrowIS.toString())){
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem(new ItemStack(Material.ARROW,1),Tier.tempHalfTier, ItemType.ARROW)));
@@ -148,10 +149,12 @@ public class CraftEvent implements Listener {
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.SHIELD)), Tier.II, ItemType.SHIELD)));
         } else if(event.getCurrentItem().toString().equals(Gear.tierOneBow.toString())){
+            //Bukkit.broadcastMessage("2");
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.BOW)),Tier.I, ItemType.BOW)));
         }else if(event.getCurrentItem().toString().equals(Gear.tierTwoBow.toString())) {
+            //Bukkit.broadcastMessage("3");
             fixDupe(event);
             event.setCurrentItem(CustomItem.getItemFromCustomItem
                     (Main.fileSystem.createItem((new ItemStack(Material.BOW)), Tier.II, ItemType.BOW)));

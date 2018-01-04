@@ -1,6 +1,8 @@
 package com.worldciv.events.mob;
 
+import com.worldciv.the60th.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import static com.worldciv.events.player.PlayerAttackEvents.defenderArmorTracker;
 import static com.worldciv.events.player.PlayerAttackEvents.getArmorFromArray;
 import static com.worldciv.events.player.PlayerAttackEvents.getArmorItems;
+import static com.worldciv.the60th.Main.getDungeonManager;
 
 public class mobAttack  implements Listener {
     @EventHandler
@@ -41,12 +44,22 @@ public class mobAttack  implements Listener {
                     return;
                 }
                 if ((pDefender.getHealth() - damagePostArmor) < 0) {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     //Lets the player die normally.
                     event.setDamage(999); //Make sure the player dies
                     defenderArmorTracker.remove(pDefender);
                     return;
                 }else
                 {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     pDefender.setHealth(pDefender.getHealth() - (damagePostArmor));
                     event.setDamage(0);
                     defenderArmorTracker.remove(pDefender);
@@ -64,12 +77,27 @@ public class mobAttack  implements Listener {
             if(damagePostArmor >= 6) damagePostArmor = 6;
             if (pDefender.getHealth() - damagePostArmor < 0) {
                 //Lets the player die normally.
+                if (getDungeonManager.getDungeon(pDefender) != null) {
+                    pDefender.setHealth(pDefender.getMaxHealth());
+                    Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                    pDefender.teleport(location);
+                }
                 event.setDamage(999); //Make sure the player dies
             } else {
                 try {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     pDefender.setHealth(pDefender.getHealth() - (damagePostArmor)); //Cant set neg major bug
                     event.setDamage(0);
                 } catch (IllegalArgumentException e) {
+                    if (getDungeonManager.getDungeon(pDefender) != null) {
+                        pDefender.setHealth(pDefender.getMaxHealth());
+                        Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(pDefender).getDungeonID()); //Location is dungeon respawn point.
+                        pDefender.teleport(location);
+                    }
                     event.setDamage(999);
                     //Catch the negative bug we were running into and let the player die normally.
                 }

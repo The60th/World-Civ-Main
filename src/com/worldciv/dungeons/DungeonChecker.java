@@ -64,13 +64,11 @@ public class DungeonChecker implements Listener {
     public void respawnHandler(PlayerRespawnEvent event){
         Player player = event.getPlayer();
         if (getDungeonManager.getDungeon(player) != null) {
+            player.setHealth(player.getMaxHealth());
             Location location = Main.fileSystem.getPlayerSpawn(getDungeonManager.getDungeon(player).getDungeonID()); //Location is dungeon respawn point.
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
-                @Override
-                public void run() {
-                    player.teleport(location);
+            player.teleport(location);
                 }
-            }, 10);
+
         }
     }
-}
+
