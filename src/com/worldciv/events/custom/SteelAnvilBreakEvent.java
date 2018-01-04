@@ -1,4 +1,4 @@
-package com.worldciv.events.player;
+package com.worldciv.events.custom;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;

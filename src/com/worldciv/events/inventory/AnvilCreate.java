@@ -1,16 +1,23 @@
 package com.worldciv.events.inventory;
 
+import com.worldciv.utility.Fanciful.mkremins.fanciful.FancyMessage;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.Packet;
+import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.Random;
 
+import static com.worldciv.the60th.Main.fileSystem;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class AnvilCreate implements Listener {
@@ -49,19 +57,24 @@ public class AnvilCreate implements Listener {
 
     public void anvilBreakShiftLeft(Block anvil, HumanEntity p){
 
-
-        for(int y=0; y < 5; y++) {
+        for(int y = 0; y < 5; y++) {
             Random r = new Random();
-            int x = r.nextInt(100);
+            int x;
+            if (fileSystem.getBlocksList("steel anvil").contains(anvil.getLocation())) {
+                x = r.nextInt(150);
+
+            } else {
+                x = r.nextInt(100);
+            }
             if (anvil.getData() < Byte.valueOf("6")) {
-                if (x <= 2) {
+                if (x <= 5) {
                     anvil.setData(Byte.valueOf("6"));
                     anvil.getState().update();
                     p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
                 }
             } else if (anvil.getData() < Byte.valueOf("10")) {
 
-                if (x <= 3) {
+                if (x <= 5) {
                     anvil.setData(Byte.valueOf("11"));
                     anvil.getState().update();
                     p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
@@ -69,7 +82,7 @@ public class AnvilCreate implements Listener {
                 }
             } else if (anvil.getData() <= Byte.valueOf("11")) {
 
-                if (x <= 5) {
+                if (x <= 10) {
                     anvil.setType(Material.AIR);
                     p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");
                     ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
@@ -78,29 +91,33 @@ public class AnvilCreate implements Listener {
         }
 
 
-
     }
 
     public void anvilBreakSingleClick(Block anvil, HumanEntity p){
         Random r = new Random();
-        int x = r.nextInt(100);
+        int x;
+        if (fileSystem.getBlocksList("steel anvil").contains(anvil.getLocation())) {
+            x = r.nextInt(150);
+        } else {
+            x = r.nextInt(100);
+        }
 
         if (anvil.getData() < Byte.valueOf("6")) {
-            if (x <= 2) {
+            if (x <= 5) {
                 anvil.setData(Byte.valueOf("6"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is starting to tear apart...");
             }
         } else if (anvil.getData() < Byte.valueOf("10")) {
 
-            if (x <= 3) {
+            if (x <= 5) {
                 anvil.setData(Byte.valueOf("11"));
                 anvil.getState().update();
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil is in critical health!");
             }
         } else if (anvil.getData() <= Byte.valueOf("11")) {
 
-            if (x <= 5) {
+            if (x <= 10) {
                 anvil.setType(Material.AIR);
                 ((Player) p).playSound(anvil.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 3L, 0L);
                 p.sendMessage(worldciv + ChatColor.RED + " The anvil broke from heavy forging!");
@@ -108,6 +125,43 @@ public class AnvilCreate implements Listener {
         }
 
     }
+
+    public static void AnvilID(Player p) {
+
+        Block b = p.getTargetBlock(null, 20);
+
+        if (b.getType().equals(Material.ANVIL)) {
+
+            if (fileSystem.getBlocksList("steel anvil").contains(b.getLocation())) {
+                String x = new FancyMessage("Steel Anvil").color(ChatColor.GRAY).toJSONString();
+
+                // Title or subtitle, text, fade in (ticks), display time (ticks), fade out (ticks).
+                PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, IChatBaseComponent.ChatSerializer.a(x), 1, 3, 1);
+             //   PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, IChatBaseComponent.ChatSerializer.a("{\"text\":\"to my server\"}"), 20, 40, 20);
+                ((CraftPlayer) p.getPlayer()).getHandle().playerConnection.sendPacket(title);
+                // ((CraftPlayer) p.getPlayer()).getHandle().playerConnection.sendPacket(subtitle);
+            } else {
+                String x = new FancyMessage("Standard Anvil").color(ChatColor.GRAY).toJSONString();
+
+                PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, IChatBaseComponent.ChatSerializer.a(x), 1, 5, 1);
+                ((CraftPlayer) p.getPlayer()).getHandle().playerConnection.sendPacket(title);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onAnvilInteraction(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        Block b = e.getClickedBlock();
+        if (b.getType() == Material.ANVIL){
+            if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+                if(p.isSneaking()){
+                    AnvilID(p);
+                }
+            }
+    }
+
+}
 
     @EventHandler
     public void onAnvilPrepare(PrepareAnvilEvent e) {
@@ -262,65 +316,65 @@ public class AnvilCreate implements Listener {
         {
             if(itemsInAnvil[0].getDurability() != 1 && itemsInAnvil[1].getDurability() != 1){ //this is coal coal from underground  *NOT* charcoal
 
-            Block anvil = e.getInventory().getLocation().getBlock();
+                Block anvil = e.getInventory().getLocation().getBlock();
 
 
-            if (e.isShiftClick() && ((p.getInventory().firstEmpty() != -1) || !isAllFull(p, resultitem5))) {  //checking if shift click and is not full for 5!
+                if (e.isShiftClick() && ((p.getInventory().firstEmpty() != -1) || !isAllFull(p, resultitem5))) {  //checking if shift click and is not full for 5!
 
 
-                if (itemsInAnvil[0].getAmount() < 5 || itemsInAnvil[1].getAmount() < 5) { //When you dont have 5 of the required items! in either slot!
-                    p.sendMessage(worldciv + ChatColor.GRAY + " Not enough material to buy " + ChatColor.YELLOW + "5 " + resultname);
-                    return;
+                    if (itemsInAnvil[0].getAmount() < 5 || itemsInAnvil[1].getAmount() < 5) { //When you dont have 5 of the required items! in either slot!
+                        p.sendMessage(worldciv + ChatColor.GRAY + " Not enough material to buy " + ChatColor.YELLOW + "5 " + resultname);
+                        return;
+                    }
+
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have added " + ChatColor.YELLOW + "5 " + ChatColor.GRAY + resultname);
+
+                    if (itemsInAnvil[0].getAmount() == 5) { //check for first slot has 5 items
+                        itemsInAnvil[0].setAmount(-1); //remove them to emptiness
+                    }
+
+                    if (itemsInAnvil[1].getAmount() == 5) { //same as above
+                        itemsInAnvil[1].setAmount(-1);
+                    }
+
+                    anvilBreakShiftLeft(anvil, p);
+
+                    itemsInAnvil[0].setAmount(itemsInAnvil[0].getAmount() - 5); //Removes 5 every time! hype! Once you have emptiness these lines dont matter. the more negative the more emptiness!
+                    itemsInAnvil[1].setAmount(itemsInAnvil[1].getAmount() - 5);
+
+                    p.getInventory().addItem(resultitem5); //Add that item! ohayo~!
+
+                    ((Player) p).updateInventory(); //update inventory cos glitchy sometimes!
+
+                } else if (!isAllFull(p, resultitem) || (p.getInventory().firstEmpty() != -1)) { //same as the check before this. just single clicks
+
+                    p.sendMessage(worldciv + ChatColor.GRAY + " You have added " + ChatColor.YELLOW + "1 " + ChatColor.GRAY + resultname);
+
+                    if (itemsInAnvil[0].getAmount() == 1) { //same as stuff above with 5, no need to spam here now..
+                        itemsInAnvil[0].setAmount(-1);
+                    }
+
+                    if (itemsInAnvil[1].getAmount() == 1) {
+                        itemsInAnvil[1].setAmount(-1);
+                    }
+
+
+                    anvilBreakSingleClick(anvil, p);
+                    itemsInAnvil[0].setAmount(itemsInAnvil[0].getAmount() - 1);
+                    itemsInAnvil[1].setAmount(itemsInAnvil[1].getAmount() - 1);
+
+
+                    p.getInventory().addItem(resultitem);
+
+                    ((Player) p).updateInventory();
+
+
+                } else {
+
+                    p.sendMessage(worldciv + ChatColor.GRAY + " Inventory is full! You can't forge this!"); //no inv space :)
+
                 }
-
-                p.sendMessage(worldciv + ChatColor.GRAY + " You have added " + ChatColor.YELLOW + "5 " + ChatColor.GRAY + resultname);
-
-                if (itemsInAnvil[0].getAmount() == 5) { //check for first slot has 5 items
-                    itemsInAnvil[0].setAmount(-1); //remove them to emptiness
-                }
-
-                if (itemsInAnvil[1].getAmount() == 5) { //same as above
-                    itemsInAnvil[1].setAmount(-1);
-                }
-
-                anvilBreakShiftLeft(anvil, p);
-
-                itemsInAnvil[0].setAmount(itemsInAnvil[0].getAmount() - 5); //Removes 5 every time! hype! Once you have emptiness these lines dont matter. the more negative the more emptiness!
-                itemsInAnvil[1].setAmount(itemsInAnvil[1].getAmount() - 5);
-
-                p.getInventory().addItem(resultitem5); //Add that item! ohayo~!
-
-                ((Player) p).updateInventory(); //update inventory cos glitchy sometimes!
-
-            } else if (!isAllFull(p, resultitem) || (p.getInventory().firstEmpty() != -1)) { //same as the check before this. just single clicks
-
-                p.sendMessage(worldciv + ChatColor.GRAY + " You have added " + ChatColor.YELLOW + "1 " + ChatColor.GRAY + resultname);
-
-                if (itemsInAnvil[0].getAmount() == 1) { //same as stuff above with 5, no need to spam here now..
-                    itemsInAnvil[0].setAmount(-1);
-                }
-
-                if (itemsInAnvil[1].getAmount() == 1) {
-                    itemsInAnvil[1].setAmount(-1);
-                }
-
-
-                anvilBreakSingleClick(anvil, p);
-                itemsInAnvil[0].setAmount(itemsInAnvil[0].getAmount() - 1);
-                itemsInAnvil[1].setAmount(itemsInAnvil[1].getAmount() - 1);
-
-
-                p.getInventory().addItem(resultitem);
-
-                ((Player) p).updateInventory();
-
-
-            } else {
-
-                p.sendMessage(worldciv + ChatColor.GRAY + " Inventory is full! You can't forge this!"); //no inv space :)
-
             }
-        }
         }
 
     }
@@ -448,7 +502,7 @@ public class AnvilCreate implements Listener {
         if (itemsInAnvil[0].getType() == firstitem && itemsInAnvil[1].getType() == seconditem) {  //if only stuff was as this easy..
 
             if (itemsInAnvil[0].getDurability() != 1 && itemsInAnvil[1].getDurability() != 1) {
-            //THIS IS COAL
+                //THIS IS COAL
                 e.setResult(resultitem); //display the item
             }
         }

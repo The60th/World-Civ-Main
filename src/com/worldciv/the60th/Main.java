@@ -101,6 +101,7 @@ public class Main extends JavaPlugin {
         //Check time of day!
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             public void run(){
+
                 Server server = getServer();
                 long time = server.getWorld("world").getTime();
 
@@ -112,6 +113,7 @@ public class Main extends JavaPlugin {
                 }
 
                 for (Player players : Bukkit.getOnlinePlayers()) {
+
                     Location loc = players.getLocation();
                     World world = players.getWorld();
                     Biome biome = world.getBiome(loc.getBlockX(), loc.getBlockZ());

@@ -8,6 +8,7 @@ import com.worldciv.utility.Tier;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +43,9 @@ public class FileSystem {
     File channels_folder;
     File channels_file;
 
-//todo database, custom blocks, add anvil
+    File blocks_folder;
+    File blocks_file;
+
     YamlConfiguration dungeons_yml;
 
     public FileSystem(){
@@ -50,6 +53,9 @@ public class FileSystem {
 
         dungeons_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder()+"/dungeons");
         dungeons_file = new File(dungeons_folder, "dungeons.yml");
+
+        blocks_folder = new File(Main.plugin.getDataFolder() + "/blocks");
+        blocks_file = new File(blocks_folder, "blocks.yml");
 
         polls_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder() + "/polls");
         pollsdata_folder = new File(Bukkit.getPluginManager().getPlugin("WorldCivMaster").getDataFolder() + "/polls/pollsdata");
@@ -124,6 +130,19 @@ public class FileSystem {
 
         if(!dungeons_file.exists()){
             saveResource("dungeons.yml", dungeons_folder, false);
+        }
+
+        if (!blocks_folder.exists()) {
+            blocks_folder.mkdir();
+        }
+
+        if (!blocks_file.exists()) {
+            try {
+                blocks_file.createNewFile();
+                blocksSetup(blocks_file);
+            } catch (Exception e) {
+
+            }
         }
 
         dungeons_yml = YamlConfiguration.loadConfiguration(dungeons_file);
@@ -416,6 +435,76 @@ public class FileSystem {
         }
 
     }
+
+    public void blocksSetup(File file) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
+        yml.createSection("blocks");
+        yml.createSection("blocks.SteelAnvil");
+        try {
+            yml.save(file);
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void addBlocks(Block b, String blocks) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(blocks_file);
+        switch (blocks.toLowerCase()) {
+            case "steelanvil":
+            case "steel anvil":
+                List<Location> list = getBlocksList("steel anvil");
+                list.add(b.getLocation());
+                yml.set("blocks.SteelAnvil", list);
+                break;
+        }
+
+        try {
+            yml.save(blocks_file);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void removeBlocks(Block b, String blocks) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(blocks_file);
+        switch (blocks.toLowerCase()) {
+            case "steelanvil":
+            case "steel anvil":
+                List<Location> list = getBlocksList("steel anvil");
+                list.remove(b.getLocation());
+                yml.set("blocks.SteelAnvil", list);
+                break;
+        }
+
+        try {
+            yml.save(blocks_file);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public List<Location> getBlocksList(String customBlockName) {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(blocks_file);
+
+
+        switch (customBlockName.toLowerCase()) {
+            case "steel anvil":
+            case "steelanvil":
+                if (yml.getList("blocks.SteelAnvil") == null
+                        || yml.get("blocks.SteelAnvil") == null
+                        || yml == null) {
+                    List<Location> list = new ArrayList<>();
+                    return list;
+                } else {
+                    List<Location> list = (List<Location>) yml.getList("blocks.SteelAnvil");;
+                    return list;
+                }
+            default:
+                return null;
+        }
+
+    }
+
     public void addChannels(Player p, String channel) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(channels_file);
         switch(channel.toLowerCase()){
