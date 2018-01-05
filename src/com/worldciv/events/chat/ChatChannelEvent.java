@@ -21,10 +21,7 @@ import ru.tehkode.permissions.PermissionUser;
 
 import java.util.*;
 
-import static com.worldciv.the60th.Main.fileSystem;
-import static com.worldciv.the60th.Main.getEssentials;
-import static com.worldciv.the60th.Main.getPermissionsEx;
-import static com.worldciv.utility.utilityArrays.*;
+import static com.worldciv.the60th.Main.*;
 import static com.worldciv.utility.utilityMultimaps.chatchannels;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
@@ -163,14 +160,14 @@ public class ChatChannelEvent implements Listener {
             mentionmsg = getTagMentionMessage(args, receiver);
             args = mentionmsg.split(" ");
 
-            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
-                officialmsg = getCensoredMessage(args, getChannelColor(sender));
-            } else {
-                officialmsg = getRawMessage(args);
-            }
-
             if(fileSystem.getToggleList("colorblind").contains(receiver.getName())){
                 channelcolor = ChatColor.LIGHT_PURPLE;
+            }
+
+            if(!fileSystem.getToggleList("c").contains(receiver.getName())){
+                officialmsg = getCensoredMessage(args, channelcolor);
+            } else {
+                officialmsg = getRawMessage(args);
             }
 
             Fprefix.then(" ").then(getPexRankColor(sender) + nick).tooltip(ChatColor.GRAY + "No information added yet!").then(ChatColor.GRAY + ": ").then(officialmsg).color(channelcolor).send(receiver);
@@ -231,12 +228,15 @@ public class ChatChannelEvent implements Listener {
         String[] args = rawmessage.split(" "); //Split the message into args
         for (Player receiver : e.getRecipients()) {
 
+            //Bukkit.broadcastMessage("Iterating: " + receiver.getName()); //todo remove
+
             String mentionmsg = "";
             String officialmsg = "";
 
             FancyMessage Fprefix = getFancyChannelPrefix(prefix_global, sender);
 
             mentionmsg = getTagMentionMessage(args, receiver);
+           // Bukkit.broadcastMessage(mentionmsg); //todo remove
             args = mentionmsg.split(" ");
 
             if(!fileSystem.getToggleList("c").contains(receiver.getName())){
@@ -1069,25 +1069,25 @@ public class ChatChannelEvent implements Listener {
         return official_chat_channel;
     }
 
-    public static String getChannelColor(Player player) {
+    public static ChatColor getChannelColor(Player player) {
         String channelname = getChannel(player);
 
         if (channelname.equalsIgnoreCase("local")) {
-            return ChatColor.WHITE + "";
+            return ChatColor.WHITE ;
         } else if (channelname.equalsIgnoreCase("global")) {
-            return ChatColor.GRAY + "";
+            return ChatColor.GRAY ;
         } else if (channelname.equalsIgnoreCase("ooc")) {
-            return ChatColor.GRAY + "";
+            return ChatColor.GRAY ;
         } else if (channelname.equalsIgnoreCase("nc")) {
-            return ChatColor.GOLD + "";
+            return ChatColor.GOLD ;
         } else if (channelname.equalsIgnoreCase("anc")) {
-            return ChatColor.YELLOW + "";
+            return ChatColor.YELLOW;
         } else if (channelname.equalsIgnoreCase("tc")) {
-            return ChatColor.DARK_AQUA + "";
+            return ChatColor.DARK_AQUA;
         } else if (channelname.equalsIgnoreCase("mod")) {
-            return ChatColor.BLUE + "";
+            return ChatColor.BLUE ;
         } else if (channelname.equalsIgnoreCase("admin")) {
-            return ChatColor.RED + "";
+            return ChatColor.RED ;
         } else {
             return null;
         }
@@ -1123,7 +1123,7 @@ public class ChatChannelEvent implements Listener {
         return null;
     }
 
-    public static String getCensoredWord(String argument, String channelcolor) {
+    public static String getCensoredWord(String argument, ChatColor channelcolor) {
 
         // argument = argument.replaceAll("[^A-Za-z]+", "");
 
@@ -1189,7 +1189,7 @@ public class ChatChannelEvent implements Listener {
         return ChatColorPrefix + possible_at + argument + channelcolor;
     }
 
-    public static String getCensoredMessage(String[] args, String channelcolor) {
+    public static String getCensoredMessage(String[] args, ChatColor channelcolor) {
 
         List<String> listargs = Arrays.asList(args);
 
@@ -1284,7 +1284,7 @@ public class ChatChannelEvent implements Listener {
         }
     }
 
-    public static String getTagMentionMessage(String[] args, Player p) {
+    public static String getTagMentionMessage(String[] args, Player receiver) {
 
         List<String> listargs = Arrays.asList(args); //The array will convert into a string.
 
@@ -1302,50 +1302,67 @@ public class ChatChannelEvent implements Listener {
             }
 
             if (argument.startsWith("@")) {
+             //   receiver.sendMessage("PROC at @"); //todo remove
 
                 if (argument.length() == 1) {
 
-                } else if (argument.substring(1).equalsIgnoreCase("all")) {
+                } else if (argument.equalsIgnoreCase("@all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
-                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                    receiver.playSound(receiver.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
 
 
                 } else if (Bukkit.getPlayer(argument.substring(1)) == null) {
+                    //receiver.sendMessage("Check this out: "+ argument.substring(1)); //todo remove
+                   // receiver.sendMessage("confuseD???"); //todo remove
 
                 } else if (Bukkit.getPlayer(argument.substring(1)).isOnline()) {
-                    if (Bukkit.getPlayer(argument.substring(1)).getName().equalsIgnoreCase(p.getName())) {
+
+
+                  //  receiver.sendMessage("The player " + argument.substring(1) + " is online!"); //todo remove
+
+                    if (Bukkit.getPlayer(argument.substring(1)) == (receiver)) {
+
+                  //   receiver.sendMessage("You are " + argument.substring(1) + " and were tagged"); //todo remove
+
                         argument = ChatColor.GOLD + "" + ChatColor.BOLD + "@" + Bukkit.getPlayer(argument.substring(1)).getName() + ChatColor.GRAY;
-                        p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                        receiver.playSound(receiver.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
 
                     } else {
+                   //     receiver.sendMessage("You are not " + argument.substring(1) + " and were not tagged"); //todo remove
+
                         argument = "@" + Bukkit.getPlayer(argument.substring(1)).getName();
 
                     }
                 }
             } else if (argument.startsWith(ChatColor.GOLD + "" + ChatColor.BOLD + "@")) {
+
+             //   receiver.sendMessage("PROC at COLORED @"); //todo remove
+
+
                 if (argument.equalsIgnoreCase(ChatColor.GOLD + "" + ChatColor.BOLD + "@all")) {
                     argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
-                    p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                    receiver.playSound(receiver.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
                 } else {
 
                     argument = ChatColor.stripColor(argument);
 
-                    if (argument.startsWith("@" + Bukkit.getPlayer(argument.substring(1)).getName())) {
+                    if (argument.equalsIgnoreCase("@all")) {
+                        argument = ChatColor.GOLD + "" + ChatColor.BOLD + argument + ChatColor.GRAY;
+                        receiver.playSound(receiver.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+                    } else  if (argument.startsWith("@" + Bukkit.getPlayer(argument.substring(1)).getName())) {
 
-                        if (p.getName() != Bukkit.getPlayer(argument.substring(1)).getName()) {
+
+                        if (receiver.getName() != Bukkit.getPlayer(argument.substring(1)).getName()) {
                             argument = "@" + Bukkit.getPlayer(argument.substring(1)).getName();
                         }
                     }
                 }
             }
 
-            String channelcolor = getChannelColor(p);
-
-
             if (index == 0) {
-                finalmessage += argument + possible_punctuation + channelcolor; //todo add a chat color for channel
+                finalmessage += argument + possible_punctuation; //todo add a chat color for channel
             } else {
-                finalmessage += " " + argument + possible_punctuation + channelcolor;
+                finalmessage += " " + argument + possible_punctuation;
             }
             index++;
 

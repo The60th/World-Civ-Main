@@ -154,6 +154,10 @@ public class AnvilCreate implements Listener {
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
 
+        if(b == null){
+            return;
+        }
+
         if(b.getType() == null){
             return;
         }

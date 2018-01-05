@@ -1,10 +1,6 @@
 package com.worldciv.events.player;
 
 import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.mcMMO;
 import com.worldciv.the60th.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -25,9 +21,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 
-import static com.gmail.nossr50.mcMMO.getDatabaseManager;
 import static com.worldciv.the60th.Main.fileSystem;
-import static com.worldciv.the60th.Main.getMCMMO;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
 public class TreeCutterEvent implements Listener{
@@ -148,12 +142,12 @@ public class TreeCutterEvent implements Listener{
 
 
         if (!chopping_records.containsKey(p.getName())) { //If you haven't been recorded yet. Add.
-            if (!fileSystem.getToggleList("tms").contains(p.getName()))p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+            p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.put(p.getName(), block);//Add a record of player cutting down a block. First time cutting down a log. take is easy :C
             chopping_time.put(p.getName(), duration);
             chopping.remove(p.getName());
         } else if (!chopping_records.get(p.getName()).equals(block)) { //this is a new block. replace it.
-            if (!fileSystem.getToggleList("tms").contains(p.getName()))  p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
+           p.sendMessage(worldciv + ChatColor.GRAY + " Log(s) Found: " + ChatColor.YELLOW + amount_of_logs + ChatColor.GRAY + ". Duration: " + ChatColor.YELLOW + String.valueOf(duration) + ChatColor.GRAY + ".");
             chopping_records.replace(p.getName(), block);
             chopping_time.replace(p.getName(), duration);
             chopping.remove(p.getName());
@@ -211,7 +205,7 @@ public class TreeCutterEvent implements Listener{
 
                 if (Math.floor(duration) <= iteration) {
                     chopping.put(p.getName(), block);
-                    if (!fileSystem.getToggleList("tms").contains(p.getName()))   p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
+                    p.sendMessage(worldciv + ChatColor.GRAY + " This tree is " + ChatColor.GREEN + "ready".toUpperCase() + ChatColor.GRAY + " for you to chop down.");
                     cancel();
                     return;
                 }

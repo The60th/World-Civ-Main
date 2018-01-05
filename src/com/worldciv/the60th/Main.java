@@ -6,12 +6,10 @@ import com.gmail.nossr50.mcMMO;
 import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.worldciv.commands.*;
 import com.worldciv.dungeons.DungeonChecker;
 import com.worldciv.dungeons.DungeonManager;
@@ -28,9 +26,7 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -40,7 +36,6 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import static com.worldciv.utility.utilityArrays.visionregion;
 import static com.worldciv.utility.utilityMultimaps.chatchannels;
 import static com.worldciv.utility.utilityStrings.worldciv;
 
@@ -71,43 +66,16 @@ public class Main extends JavaPlugin {
 
     }
 
-    public void onEnable() {
-        logger = Logger.getLogger("Minecraft");
-        plugin = this;
-        javaPlugin = this;
-
-        scoreboardManager = new scoreboardManager();
-        PluginDescriptionFile pdfFile = this.getDescription();
-
-        getConfig().options().copyDefaults(true); //creates data folder for pl ----> move to filesystem some later time, not crucial, just looks messy
-        fileSystem = new FileSystem();
-        getDungeonManager = new DungeonManager();
-
-
-        if (getConfig().getString("newsmessage") == null) {
-            getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");
-        }
-        saveConfig();
-
-
-        logger.info(pdfFile.getName()
-                + " has successfully enabled. The current version is: "
-                + pdfFile.getVersion());
-
-        registerEvents();
-        registerCommands();
-        registerChatChannels();
-
-        //Check time of day!
+    public void onTorchRainEffect() {
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            public void run(){
+            public void run() {
 
                 Server server = getServer();
                 long time = server.getWorld("world").getTime();
 
-                if(time >= 13200 && time <=13239 ){
+                if (time >= 13200 && time <= 13239) {
                     Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is setting.");
-                } else if (time >= 22390 && time <= 22429){ //2399 is last tick or 2400? use 2399 for safety
+                } else if (time >= 22390 && time <= 22429) { //2399 is last tick or 2400? use 2399 for safety
                     Bukkit.broadcastMessage(worldciv + ChatColor.GRAY + " The sun is rising.");
 
                 }
@@ -123,7 +91,6 @@ public class Main extends JavaPlugin {
                         if (!(biome == Biome.DESERT || biome == Biome.DESERT_HILLS | biome == Biome.MUTATED_DESERT || biome == Biome.MESA || biome == Biome.MESA_CLEAR_ROCK
                                 || biome == Biome.MESA_ROCK || biome == Biome.MUTATED_MESA || biome == Biome.MUTATED_MESA_CLEAR_ROCK || biome == Biome.MUTATED_MESA_ROCK
                                 || biome == Biome.SAVANNA || biome == Biome.SAVANNA_ROCK || biome == Biome.MUTATED_SAVANNA || biome == Biome.MUTATED_SAVANNA_ROCK)) {
-
 
 
                             if (world.getHighestBlockYAt(loc.getBlockX(), loc.getBlockZ()) < players.getLocation().getBlockY() + 1) {
@@ -183,6 +150,37 @@ public class Main extends JavaPlugin {
 
             }
         }, 0, 40); //every 2s, try not to jam the server!
+    }
+
+    public void onEnable() {
+        logger = Logger.getLogger("Minecraft");
+        plugin = this;
+        javaPlugin = this;
+
+        scoreboardManager = new scoreboardManager();
+        PluginDescriptionFile pdfFile = this.getDescription();
+
+        getConfig().options().copyDefaults(true); //creates data folder for pl ----> move to filesystem some later time, not crucial, just looks messy
+        fileSystem = new FileSystem();
+        getDungeonManager = new DungeonManager();
+
+
+        if (getConfig().getString("newsmessage") == null) {
+            getConfig().set("newsmessage", "          " + ChatColor.GRAY + "This must be a new server. Set a news message with /news set <message>");
+        }
+        saveConfig();
+
+
+        logger.info(pdfFile.getName()
+                + " has successfully enabled. The current version is: "
+                + pdfFile.getVersion());
+
+        registerEvents();
+        registerCommands();
+        registerChatChannels();
+
+        //Check time of day!
+        onTorchRainEffect();
 
         for (Player p : Bukkit.getOnlinePlayers()){
 
@@ -190,8 +188,7 @@ public class Main extends JavaPlugin {
                 chatchannels.put("global", p.getName());
             }
 
-            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard()); //REMOVES CURRENT SB if at all any.
-           scoreboardManager.setScoreboard(p);
+            scoreboardManager.setScoreboard(p);
         }
 
         //CraftingRecipes.registerRecipes();
