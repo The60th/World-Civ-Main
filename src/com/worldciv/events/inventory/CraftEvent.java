@@ -223,7 +223,7 @@ public void fixDupe(CraftItemEvent event){
         clicked.sendMessage(worldciv + ChatColor.GRAY + " You need an open inventory slot to craft this recipe.");
         clicked.playSound(clicked.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 5, 1);
         event.setCancelled(true);
-        return;
+        return; //sadadsa
     }
 }
 

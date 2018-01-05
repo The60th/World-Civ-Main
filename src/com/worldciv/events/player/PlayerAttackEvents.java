@@ -48,20 +48,20 @@ public class PlayerAttackEvents implements Listener {
         //TODO Create a damage scaler function for ranged damage.
         if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             //Do arrow stuff here.
-            System.out.println("ChangeArrowDamage");
+           // System.out.println("ChangeArrowDamage");
             CustomItem[] customItems = new CustomItem[2];
             double damage;
             Arrow eArrow = (Arrow) event.getDamager();
             if (eArrow.hasMetadata(ArrowEvents.ARROW_META_TAG)) {
                 for (MetadataValue mdv : eArrow.getMetadata(ArrowEvents.ARROW_META_TAG)) {
-                    System.out.println("Arrow lore: " + mdv.asString());
+                    //System.out.println("Arrow lore: " + mdv.asString());
                     //Create a custom item from UUID.
                     customItems[0] = CustomItem.getCustomItemFromUUID(mdv.asString().substring(7));
                 }
             }
             if (eArrow.hasMetadata(ArrowEvents.BOW_META_TAG)) {
                 for (MetadataValue mdv : eArrow.getMetadata(ArrowEvents.BOW_META_TAG)) {
-                    System.out.println("Bow Lore: " + mdv.asString());
+                  //  System.out.println("Bow Lore: " + mdv.asString());
                     customItems[1] = CustomItem.getCustomItemFromUUID(mdv.asString().substring(7));
                 }
             }
